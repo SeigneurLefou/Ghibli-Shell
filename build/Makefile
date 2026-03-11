@@ -1,12 +1,15 @@
 CC := cc
-CFLAGS := -g -Wall -Wextra -Werror
 SHELL := /bin/bash
+
+ifdef DEBUG
+	CFLAGS += -g 
+else
+	CFLAGS := -Wall -Wextra -Werror
+endif
 
 FILE_COUNT := $(shell printf '%s' '$(subst ','"'"',$(SRC))' | wc -w)
 
 LOAD_BAR_SIZE := 30
-
-INCLUDES = list,include
 
 OBJ = $(SRC:%.c=$(OUTPUT_DIR)/%.o)
 
