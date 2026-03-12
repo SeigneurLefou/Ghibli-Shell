@@ -13,8 +13,12 @@ LOAD_BAR_SIZE := 30
 
 OBJ = $(SRC:%.c=$(OUTPUT_DIR)/%.o)
 
+file_processed = 0
+current_file_processed = 0
+size = 0
+
 $(NAME): $(OUT_DIRS) $(OBJ)
-	@/bin/echo -e "\n\n\e[33m\e[2KLinking binary\e[0m"
+	@/bin/echo -e "\e[33m\e[2KLinking binary\e[0m"
 	@$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $@
 	@/bin/echo -e "\e[92m\e[?25hDone!"
 
@@ -22,43 +26,21 @@ $(OUT_DIRS):
 	@echo Creating build directories
 	@mkdir -p $(OUT_DIRS)
 
+$(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
+	@if [ $(current_file_processed) -eq 0 ]; then echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n "; fi
+	$(eval current_file_processed=1)
+	@/bin/echo -e "\e[?25l\e[15F"
+	@/bin/echo -e "\e[0m$(FRAME$(shell echo $(shell expr $(file_processed) / 3 % 10 + 1)))"
+	@/bin/echo -e "\e[33mCurrently building: $@\e[0m\e[0K"
 
-$(OUTPUT_DIR)/%.o: %.c
-	@/bin/echo -e "\e[?25l\e[33mCurrently building: $@\e[0m\e[0K"
-	$(eval file_processed=$(shell echo $$(($(file_processed)+1))))
-	@printf '['; \
-	SIZE=$$(( $(file_processed) * $(LOAD_BAR_SIZE) / $(FILE_COUNT) )); \
-	printf %$$((SIZE))s | tr " " "="; \
-	printf %$$(($(LOAD_BAR_SIZE) - SIZE))s | tr " " " "; \
-	printf "] $$((SIZE * 100 / $(LOAD_BAR_SIZE)))%%\n"
-	@$(CC) -o $@ -c $< $(CFLAGS) -I$(INCLUDES) || (EXIT_CODE=$$? && /bin/echo -e "\e[?25h" && $$(exit $$EXIT_CODE))
-	@printf '\e[2F'
+	@printf '[';
+	$(eval size=$(shell expr $(file_processed) "*" $(LOAD_BAR_SIZE) / $(FILE_COUNT) ))
+	@printf %$(size)s | tr " " "=";
+	@printf "%$(shell expr $(LOAD_BAR_SIZE) - $(size))s";
+	@printf "] $(shell expr $(size) "*" 100 / $(LOAD_BAR_SIZE))%%\n"
+	@$(CC) -o $@ -c $< $(CFLAGS) -I$(INCLUDES) || (EXIT_CODE=$? && /bin/echo -e "\e[?25h" && $$(exit $(EXIT_CODE)))
 
-anim: padding
-	@/bin/echo -e -n "\e[?25l\e[0m\e[11F$(FRAME1)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME2)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME3)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME4)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME5)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME6)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME7)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME8)"
-	@sleep 0.3
-	@/bin/echo -e -n "\e[0m\e[11F$(FRAME9)"
-	@sleep 0.3
-	@/bin/echo -e "\e[0m\e[11F$(FRAME10)\e[?25h"
-
-all: padding $(NAME)
-
-padding:
-	@/bin/echo -e "\n\n\n\n\n\n\n\n\n\n "
+all: $(NAME)
 
 clean:
 	@echo Cleaning output
@@ -71,3 +53,11 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean all re fclean
+
+define PROGRESS_MACRO
+$1_progress:
+	$$(eval file_processed=$$(shell expr $$(file_processed) + 1))
+
+endef
+
+$(foreach obj, $(OBJ), $(eval $(call PROGRESS_MACRO, $(obj))))
