@@ -1,35 +1,30 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include "../list/list.h"
+#include "../vec/vec.h"
 
-#include <readline/readline.h>
-#include <readline/history.h>
+typedef struct s_btree
+{
+	t_list			*tokens;
+	struct s_btree	*left;
+	struct s_btree	*right;
+}					t_btree;
 
 int	main(int argc, char **argv, char **env)
 {
-	(void)argc;
-	(void)argv;
-	char pwd[255];
-	getcwd(pwd, 255);
-	printf("%s", pwd);
-	char *line = (char *)1;
-	while (line > 0)
+	t_vec	vec;
+
+	vec_init(&vec, sizeof(int), 100000);
+	int a = 1;
+	for (unsigned int i = 0; i < 1000000; i++)
 	{
-		line = readline(" > ");
-		if (!line)
-			break;
-		if (!strcmp(line, "exit"))
-		{
-			free(line);
-			break;
-		}
-		printf("%s", pwd);
-		int pid = fork();
-		if (pid == 0)
-			execve("/bin/bash", (char *[]){"bash", "-c", line, 0}, env);
-		else
-			wait(NULL);
-		free(line);
+		vec_append(&vec, &a);
 	}
+
+	vec_truncate(&vec);
+
+	/*for (unsigned int i = 0; i < 100000000; i++)
+	{
+		vec_get(&vec, &a);
+	}*/
+
+	vec_free(&vec);
 }
