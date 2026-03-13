@@ -6,12 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:58:03 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/02/20 17:55:52 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/13 08:40:42 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_H
 # define LIST_H
+
 # include <stdbool.h>
 # include <stdlib.h>
 

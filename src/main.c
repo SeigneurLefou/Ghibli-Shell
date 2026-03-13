@@ -1,5 +1,5 @@
-#include "../list/list.h"
-#include "../vec/vec.h"
+#include "list.h"
+#include "vec.h"
 
 typedef struct s_btree
 {

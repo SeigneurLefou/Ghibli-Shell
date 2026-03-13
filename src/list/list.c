@@ -6,11 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 12:51:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/01/15 14:47:01 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/13 08:40:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./list.h"
+#include "list.h"
 
 t_list	*list_new(void)
 {
