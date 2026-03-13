@@ -1,16 +1,16 @@
 NAME = minishell
 
-OUTPUT_DIR = output
+OUTPUT_DIR = build
 
 SRC_DIR = src
 
-OUT_DIRS := $(OUTPUT_DIR)/src
+OUT_DIRS := $(OUTPUT_DIR)/$(SRC_DIR)
 
-SRC = src/main.c
+SRC = $(SRC_DIR)/main.c
 
 LDFLAGS := -lreadline
 
-INCLUDES = list,include,libft
+INCLUDES = includes
 
 FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\
@@ -157,8 +157,8 @@ FRAME10 = \
 \n⠀⠀⠈⠛⠛⠛⠛⠛⠛⠉⠀⠀⠀⠀⠀⠀🌱⠀🌱⠀🌱⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
 
-include libft/Makefile
-include list/Makefile
-include vec/Makefile
+include src/libft/Makefile
+include src/list/Makefile
+include src/vec/Makefile
 
-include build/Makefile
+include src/Makefile

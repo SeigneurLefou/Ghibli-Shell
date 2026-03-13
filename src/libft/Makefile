@@ -1,4 +1,4 @@
-LIB_PATH := libft
+LIB_PATH := src/libft
 
 SRC += $(LIB_PATH)/ft_isalpha.c       \
 	   $(LIB_PATH)/ft_memcpy.c        \
@@ -34,4 +34,4 @@ SRC += $(LIB_PATH)/ft_isalpha.c       \
 	   $(LIB_PATH)/ft_putendl_fd.c    \
 	   $(LIB_PATH)/ft_putnbr_fd.c
 
-OUT_DIRS += $(OUTPUT_DIR)/libft
+OUT_DIRS += $(OUTPUT_DIR)/$(LIB_PATH)

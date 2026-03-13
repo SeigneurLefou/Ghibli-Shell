@@ -6,14 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/11 14:46:18 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/13 08:40:30 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VEC_H
 # define VEC_H
 
-# include "../libft/libft.h"
 # include <stdbool.h>
 # include <stdlib.h>
 

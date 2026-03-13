@@ -38,7 +38,7 @@ $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
 	@printf %$(size)s | tr " " "=";
 	@printf "%$(shell expr $(LOAD_BAR_SIZE) - $(size))s";
 	@printf "] $(shell expr $(size) "*" 100 / $(LOAD_BAR_SIZE))%%\n"
-	@$(CC) -o $@ -c $< $(CFLAGS) -I$(INCLUDES) || (EXIT_CODE=$? && /bin/echo -e "\e[?25h" && $$(exit $(EXIT_CODE)))
+	@$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ -c $< || (EXIT_CODE=$? && /bin/echo -e "\e[?25h" && $$(exit $(EXIT_CODE)))
 
 all: $(NAME)
 
