@@ -18,7 +18,26 @@ current_file_processed = 0
 size = 0
 
 $(NAME): $(OUT_DIRS) $(OBJ)
-	@/bin/echo -e "\e[33m\e[2KLinking binary\e[0m"
+	@/bin/echo -e "\e[?25l\e[3F"
+	@export frame=$$(($(file_processed) + 1)); \
+	while [ $$(($$frame % 10 + 1 )) -ne 5 ]; \
+		do \
+		frame=$$(( $$frame + 1 )); \
+		/bin/echo -e "\e[13F"; \
+		export frames=$(FRAMES); /bin/echo -e "\e[0m$${frames[$$(( $$frame / 3 % 10))]}"; \
+		sleep 0.1; \
+	done
+
+	@export frame=0; \
+	while [ $$frame -le 6 ]; \
+		do \
+		/bin/echo -e "\e[13F"; \
+		export frames=$(END_FRAMES); /bin/echo -e "\e[0m$${frames[$$frame]}"; \
+		frame=$$(( $$frame + 1 )); \
+		sleep 0.1; \
+	done
+
+	@/bin/echo -e "\n\n\n\e[33m\e[2KLinking binary\e[0m"
 	@$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $@
 	@/bin/echo -e "\e[92m\e[?25hDone!"
 
@@ -30,7 +49,7 @@ $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
 	@if [ $(current_file_processed) -eq 0 ]; then echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n "; fi
 	$(eval current_file_processed=1)
 	@/bin/echo -e "\e[?25l\e[15F"
-	@/bin/echo -e "\e[0m$(FRAME$(shell echo $(shell expr $(file_processed) / 3 % 10 + 1)))"
+	@export frames=$(FRAMES); /bin/echo -e "\e[0m$${frames[$(shell expr $(file_processed) / 3 % 10)]}"
 	@/bin/echo -e "\e[33mCurrently building: $@\e[0m\e[0K"
 
 	@printf '[';
