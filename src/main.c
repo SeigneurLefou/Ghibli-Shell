@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -12,6 +13,14 @@
 
 #include "minishell.h"
 
+typedef enum e_tokeniser_error
+{
+	tokeniser_error_succes,
+	tokeniser_error_unterminated_quoted_string,
+} t_tokeniser_error;
+
+t_tokeniser_error tokenise(char *expr, t_vec *command);
+
 int	main(int argc, char **argv, char **env)
 {
 	char *test;
@@ -23,12 +32,20 @@ int	main(int argc, char **argv, char **env)
 /*int	main(int argc, char **argv, char **env)
 {
 	t_vec	vec;
+	t_vec parsed;
+	t_tokeniser_error result = tokenise(argv[1], &parsed);
+	if (result == tokeniser_error_succes)
+		printf("Parser success\n");
+	if (result == tokeniser_error_unterminated_quoted_string)
+		printf("Parser error: Unterminated quoted string.\n");
 
-	vec_init(&vec, sizeof(int), 100000);
-	int a = 1;
-	for (unsigned int i = 0; i < 1000000; i++)
-	{
-		vec_append(&vec, &a);
+	unsigned int i = 0;
+	while (i < parsed.size) {
+		t_vec cmd = *(t_vec *)vec_get(&parsed, i);
+		write(1, (char *)cmd.data, cmd.size);
+		write(1, "\n", 1);
+		vec_free(&cmd);
+		i++;
 	}
 
 	vec_truncate(&vec);
