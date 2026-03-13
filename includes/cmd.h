@@ -8,9 +8,8 @@ typedef struct s_cmd
 {
 	char			**cmd_argv;
 	char			*cmd_name;
-	int				index;
+	int				open_mode
 	struct s_cmd	*next;
-	struct s_cmd	*previous;
 }				t_cmd;
 
 t_cmd	*ft_cmdnew(char *cmd_line, int index);

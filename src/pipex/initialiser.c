@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:44 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/05 13:21:20 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/13 16:07:42 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,17 @@ t_cmd	*init_list_cmd(int argc, char **argv)
 
 void	init_pipex(int argc, char **argv, t_pipex *pipex_var)
 {
-	pipex_var->fd[0] = open(argv[1], O_RDONLY);
-	if (errno)
-		perror(argv[1]);
-	if (pipex_var->fd[0] == -1)
-	{
-		pipex_var->fd[0] = fake_fdin();
-		pipex_var->cmd = init_list_cmd(argc - 4, argv + 3);
-		pipex_var->pid = ft_calloc(sizeof(int), argc - 3);
-	}
-	else
-	{
-		pipex_var->cmd = init_list_cmd(argc - 3, argv + 2);
-		pipex_var->pid = ft_calloc(sizeof(int), argc - 2);
-	}
-	pipex_var->pid_i = 0;
-}
-
-void	init_pipex_bonus(int argc, char **argv, t_pipex *pipex_var)
-{
 	int	number_move_right_argv;
 
 	number_move_right_argv = 2;
-	if (!ft_strcmp(argv[1], "here_doc"))
+	if ((argc < 2 && !ft_strcmp(argv[0], "<<"))
+		|| (argc < 3 && !ft_strcmp(argv[1], "<<")))
 	{
 		number_move_right_argv = 3;
 		pipex_var->fd[0] = here_doc_file(argv);
 	}
-	else
+	else if ((argc < 2 && !ft_strcmp(argv[0], "<"))
+		|| (argc < 3 && !ft_strcmp(argv[1], "<")))
 	{
 		number_move_right_argv = 2;
 		pipex_var->fd[0] = open(argv[1], O_RDONLY);
