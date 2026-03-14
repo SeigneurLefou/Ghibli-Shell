@@ -69,6 +69,7 @@ all: $(NAME)
 
 clean:
 	@echo -e "\e[33mCleaning output... Please wait for the Catbus...\e[0m"
+
 ifndef DEBUG
 	@export size=80;                                                                                 \
 	for ((cam_x = 80 ; cam_x >= -80 ; cam_x--)); do                                                   \
