@@ -24,33 +24,33 @@ $(NAME): $(OUT_DIRS) $(OBJ)
 		do \
 		frame=$$(( $$frame + 1 )); \
 		/bin/echo -e "\e[13F"; \
-		export frames=$(FRAMES); /bin/echo -e "\e[0m$${frames[$$(( $$frame / 3 % 10))]}"; \
-		sleep 0.1; \
+		export frames=$(BUILD_FRAMES); /bin/echo -e "\e[0m$${frames[$$(( $$frame / 3 % 10 ))]}"; \
+		sleep 0.05; \
 	done
 
 	@export frame=0; \
 	while [ $$frame -le 6 ]; \
 		do \
 		/bin/echo -e "\e[13F"; \
-		export frames=$(END_FRAMES); /bin/echo -e "\e[0m$${frames[$$frame]}"; \
+		export frames=$(END_BUILD_FRAMES); /bin/echo -e "\e[0m$${frames[$$frame]}"; \
 		frame=$$(( $$frame + 1 )); \
-		sleep 0.1; \
+		sleep 0.05; \
 	done
 
-	@/bin/echo -e "\n\n\n\e[33m\e[2KLinking binary\e[0m"
+	@/bin/echo -e "\n\n\n\e[33m\e[2KLittle Totoro is linking your binary. Please wait...\e[0m"
 	@$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $@
-	@/bin/echo -e "\e[92m\e[?25hDone!"
+	@/bin/echo -e "\e[92m\e[?25hDone!\e[0m"
 
 $(OUT_DIRS):
-	@echo Creating build directories
+	@/bin/echo -e "\e[33mLittle Totoro is seeding your build directories.\e[0m"
 	@mkdir -p $(OUT_DIRS)
 
 $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
 	@if [ $(current_file_processed) -eq 0 ]; then echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n "; fi
 	$(eval current_file_processed=1)
 	@/bin/echo -e "\e[?25l\e[15F"
-	@export frames=$(FRAMES); /bin/echo -e "\e[0m$${frames[$(shell expr $(file_processed) / 3 % 10)]}"
-	@/bin/echo -e "\e[33mCurrently building: $@\e[0m\e[0K"
+	@export frames=$(BUILD_FRAMES); /bin/echo -e "\e[0m$${frames[$(shell expr $(file_processed) / 3 % 10)]}"
+	@/bin/echo -e "\e[33mCurrently growing: $@\e[0m\e[0K"
 
 	@printf '[';
 	$(eval size=$(shell expr $(file_processed) "*" $(LOAD_BAR_SIZE) / $(FILE_COUNT) ))
@@ -62,11 +62,35 @@ $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
 all: $(NAME)
 
 clean:
-	@echo Cleaning output
+	@echo -e "\e[33mCleaning output... Please wait for the Catbus...\e[0m"
+	@export size=80;                                                                                 \
+	for ((cam_x = 80 ; cam_x >= -80 ; cam_x--)); do                                                   \
+		if [ $$(($$cam_x / 15 % 2)) -eq 0 ];                                                          \
+			then export frame="$(CLEAN_FRAME1)";                                                      \
+		else                                                                                          \
+			export frame="$(CLEAN_FRAME2)";                                                           \
+		fi;                                                                                           \
+		/bin/echo -e -n "$$frame" |                                                                   \
+		while read line ;                                                                             \
+		do                                                                                            \
+			if [ $$cam_x -gt 0 ];                                                                     \
+				then printf "%$${cam_x}s";                                                            \
+			fi;                                                                                       \
+			if [ $$cam_x -lt 0 ]; then                                                                \
+				echo -e "$${line:$$(( 0 - $$cam_x )):$$(( $$size - $$cam_x ))}\e[0K";                 \
+			else                                                                                      \
+				echo -e "$${line:0:$$(( $$size - $$cam_x ))}\e[0K";                                   \
+			fi;                                                                                       \
+		done;                                                                                         \
+		/bin/echo -e "\e[?25l\e[14F";                                                                 \
+		sleep 0.01;                                                                                   \
+	done
+
 	@rm -rf $(OUTPUT_DIR)
+	@echo -e "\e[32mCatbus cleaned the objects. Thank you Catbus!\e[0m"
 
 fclean: clean
-	@echo Cleaning binary
+	@echo -e "\e[32mCatbus cleaned the binary too!\e[0m"
 	@rm -f $(NAME)
 
 re: fclean all
