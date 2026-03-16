@@ -124,11 +124,11 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 					append_token(command, &current_token, token_type_scope_delimiter);
 				}
 				else
-					{
+				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
 					vec_append(&current_token.data, "|");
-					append_token(command, &current_token, token_type_scope_delimiter);
+					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
 			else if (expr[i] == '&')
@@ -146,7 +146,7 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 					append_token(command, &current_token, token_type_plain);
 					i ++;
 					vec_append(&current_token.data, "&");
-					append_token(command, &current_token, token_type_scope_delimiter);
+					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
 			else if (expr[i] == '<')
@@ -157,14 +157,14 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 					i ++;
 					vec_append(&current_token.data, "<");
 					vec_append(&current_token.data, "<");
-					append_token(command, &current_token, token_type_scope_delimiter);
+					append_token(command, &current_token, token_type_command_delimiter);
 				}
 				else
 					{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
 					vec_append(&current_token.data, "<");
-					append_token(command, &current_token, token_type_scope_delimiter);
+					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
 			else if (expr[i] == '>')
@@ -175,14 +175,14 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 					i ++;
 					vec_append(&current_token.data, ">");
 					vec_append(&current_token.data, ">");
-					append_token(command, &current_token, token_type_scope_delimiter);
+					append_token(command, &current_token, token_type_command_delimiter);
 				}
 				else
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
 					vec_append(&current_token.data, ">");
-					append_token(command, &current_token, token_type_scope_delimiter);
+					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
 			else if (expr[i] == ' ')
