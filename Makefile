@@ -7,7 +7,6 @@ SRC_DIR = src
 OUT_DIRS := $(OUTPUT_DIR)/$(SRC_DIR)
 
 SRC = $(SRC_DIR)/main.c
-
 LDFLAGS := #-lreadline
 
 INCLUDES = includes
