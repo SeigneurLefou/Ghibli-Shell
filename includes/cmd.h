@@ -7,7 +7,9 @@
 typedef struct s_cmd
 {
 	char			**cmd_argv;
-	char			*cmd_name;
+	char			*cmd_path;
+	char			iofile[2];
+	bool			is_heredoc;
 	int				open_mode
 	struct s_cmd	*next;
 }				t_cmd;
