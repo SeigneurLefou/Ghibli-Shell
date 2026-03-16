@@ -11,7 +11,6 @@ LDFLAGS := #-lreadline
 
 INCLUDES = includes
 
-<<<<<<< HEAD
 include src/pipex/Makefile
 include src/gnl/Makefile
 include src/cmd/Makefile
@@ -19,12 +18,6 @@ include src/libft/Makefile
 include src/list/Makefile
 include src/vec/Makefile
 include src/minishell/Makefile
-=======
-include src/parser/Makefile
-include src/libft/Makefile
-include src/list/Makefile
-include src/vec/Makefile
->>>>>>> d75c5b0 (feat (parser): File refactor and define btree_structs)
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\

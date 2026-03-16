@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -60,6 +61,7 @@ int	main(int argc, char **argv, char **env)
 		write(1, "\n", 1);
 		i++;
 	}
+<<<<<<< HEAD
 	t_token_btree_node root;
 	root.expr_start = 0;
 	root.expr_stop = parsed.size - 1;
@@ -69,3 +71,7 @@ int	main(int argc, char **argv, char **env)
 	
 	vec_free(&parsed);
 }
+=======
+	vec_free(&parsed);
+}*/
+>>>>>>> 516e250 (feat (parser): File refactor and define btree_structs)
