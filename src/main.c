@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -42,13 +43,5 @@ int	main(int argc, char **argv, char **env)
 		vec_free(&cmd.data);
 		i++;
 	}
-
-	vec_truncate(&vec);
-
-	for (unsigned int i = 0; i < 100000000; i++)
-	{
-		vec_get(&vec, &a);
-	}
-
-	vec_free(&vec);
+	vec_free(&parsed);
 }*/
