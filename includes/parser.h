@@ -23,6 +23,7 @@ typedef struct s_token_btree
 typedef enum e_token_type
 {
 	token_type_scope_delimiter,
+	token_type_command_delimiter,
 	token_type_plain,
 }							t_token_type;
 
