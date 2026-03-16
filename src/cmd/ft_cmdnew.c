@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:06:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/13 15:41:47 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/16 15:21:45 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ t_cmd	*ft_cmdnew(char **cmd_line, int index)
 	new_cmd->cmd_argv = cmd_line;
 	new_cmd->cmd_path g ft_ft_strcpy(cmd_argv[0]);
 	new_cmd->next = NULL;
+	new_cmd-iofile = ft_calloc(3, sizeof(char *))
 	return (new_cmd);
 }

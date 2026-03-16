@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/26 08:10:53 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:03:38 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ int	get_file_while_not_limiter(int fd, char *limiter, char **buffer)
 	return (0);
 }
 
-int	here_doc_file(char **argv)
+int	here_doc_file(char *limiter)
 {
 	int		pipe_fd[2];
 	char	*input_user;
 	char	*limiter;
 	char	*limiter_with_enter;
 
-	limiter = ft_strdup(argv[2]);
 	limiter_with_enter = ft_strjoin(limiter, "\n");
 	input_user = NULL;
 	pipe(pipe_fd);
