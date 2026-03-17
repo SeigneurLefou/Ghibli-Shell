@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/05 08:30:41 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:36:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ char	*get_cmd_path(t_pipex *pipex_var)
 
 void	take_child(t_pipex *pipex_var, char *cmd_path)
 {
-	dup2(pipex_var->fd[0], 0);
-	close(pipex_var->fd[0]);
-	dup2(pipex_var->fd[2], 1);
-	close(pipex_var->fd[2]);
-	close(pipex_var->fd[1]);
-	if (cmd_path && !(pipex_var->fd[0] == -1 && !pipex_var->cmd->previous))
+	dup2(pipex_var->fds[0], 0);
+	close(pipex_var->fds[0]);
+	dup2(pipex_var->fds[2], 1);
+	close(pipex_var->fds[2]);
+	close(pipex_var->fds[1]);
+	if (cmd_path && pipex_var->fds[0] != -1)
 		execve(cmd_path, pipex_var->cmd->cmd_argv, pipex_var->env);
 	if (cmd_path)
 		free(cmd_path);

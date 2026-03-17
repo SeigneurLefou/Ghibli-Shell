@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gnl.h                                              :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/13 09:47:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 08:52:44 by lchamard         ###   ########.fr       */
+/*   Created: 2026/02/11 09:53:56 by lchamard          #+#    #+#             */
+/*   Updated: 2026/02/11 09:58:22 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_H
-# define GNL_H
+#include "pipex.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "libft.h"
+char	*ft_strcpy(char *dest, const char *src)
+{
+	size_t	i;
+	size_t	len_src;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 200
-# endif
-
-char	*while_no_newline(int fd, char *buffer, char *line);
-char	*join_line_with_previous_line(char	*buffer, char *line);
-char	*give_next_line(char *buffer);
-char	*get_next_line(int fd);
-
-# endif
+	i = 0;
+	len_src = 0;
+	while (src[len_src])
+		len_src++;
+	while ((i < len_src))
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}

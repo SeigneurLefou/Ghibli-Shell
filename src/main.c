@@ -1,8 +1,8 @@
 #include "parser.h"
-      
+
 int	main(int argc, char **argv, char **env)
 {
-	t_vec parsed;
+		t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
 		printf("Parser success\n");

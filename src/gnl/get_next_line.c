@@ -6,11 +6,11 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 09:37:41 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/12 12:20:35 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 08:54:22 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "gnl.h"
 
 char	*join_line_with_previous_line(char	*buffer, char *line)
 {

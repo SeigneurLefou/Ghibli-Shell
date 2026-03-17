@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdsize.c                                       :+:      :+:    :+:   */
+/*   ft_cmdnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:06:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/01/13 15:06:19 by lchamard         ###   ########.fr       */
+/*   Created: 2026/01/13 15:06:07 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 09:58:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "cmd.h"
 
-int	ft_cmdsize(t_cmd **cmd)
+t_cmd	*ft_cmdnew(char **cmd_line, int index)
 {
-	size_t	len;
-	t_cmd	*tmp;
+	t_cmd	*new_cmd;
 
-	len = 1;
-	if (!cmd)
-		return (0);
-	tmp = *cmd;
-	if (!tmp)
-		return (0);
-	while (tmp->next)
-	{
-		tmp = tmp->next;
-		len++;
-	}
-	return (len);
+	new_cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!new_cmd)
+		return (NULL);
+	new_cmd->cmd_argv = cmd_line;
+	new_cmd->next = NULL;
+	new_cmd->iofile = ft_calloc(3, sizeof(char *));
+	return (new_cmd);
 }
