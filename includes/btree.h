@@ -6,7 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/03/17 17:30:49 by lchamard         ###   ########.fr       */
+=======
+/*   Updated: 2026/03/17 14:32:30 by lchamard         ###   ########.fr       */
+>>>>>>> 1e6ec0b ([erase conflicts bug]])
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +20,7 @@
 # include "cmd.h"
 # include "libft.h"
 # include "pipex.h"
-# include "token.h"
+# include "vec.h"
 # include <stdbool.h>
 # include <stdlib.h>
 
