@@ -28,13 +28,13 @@ bool	is_a_delimiter(t_token *token)
 			|| token->data.data[0] == ';'));
 }
 
-bool	contains_scope_delimiter(t_vec *expr)
+bool	contains_scope_delimiter(t_vec *expr, t_token_btree_node *node)
 {
 	unsigned int	index;
 	t_token			*token;
 
-	index = 0;
-	while (index < expr->size)
+	index = node->expr_start;
+	while (index < node->expr_stop)
 	{
 		token = (t_token *)vec_get(expr, index);
 		if (is_a_delimiter(token))
@@ -51,11 +51,11 @@ void	parse_token_btree(t_vec *expr, t_token_btree_node *node)
 	unsigned int		cmd_stop;
 	t_token				*token;
 
-	if (!contains_scope_delimiter(expr))
+	if (!contains_scope_delimiter(expr, node))
 	{
 		node->expr_start = node->expr_start;
 		node->expr_stop = node->expr_stop;
-		node->operator= operator_none;
+		node->operator = operator_none;
 		node->left = NULL;
 		node->right = NULL;
 		return ;
@@ -63,7 +63,7 @@ void	parse_token_btree(t_vec *expr, t_token_btree_node *node)
 	btree_a = malloc(sizeof(t_token_btree_node));
 	btree_b = malloc(sizeof(t_token_btree_node));
 	// TODO: Handle malloc fail
-	cmd_stop = 0;
+	cmd_stop = node->expr_start;
 	token = (t_token *)vec_get(expr, cmd_stop);
 	while (!is_a_delimiter(token))
 	{
@@ -76,11 +76,13 @@ void	parse_token_btree(t_vec *expr, t_token_btree_node *node)
 	btree_b->expr_stop = node->expr_stop;
 	node->left = btree_a;
 	node->right = btree_b;
+	parse_token_btree(expr, node->left);
+	parse_token_btree(expr, node->right);
 	token = (t_token *)vec_get(expr, cmd_stop);
 	if (token->data.data[0] == '&')
-		node->operator = operator_and;
+		node->operator= operator_and;
 	else if (token->data.data[0] == '|')
-		node->operator = operator_or;
+		node->operator= operator_or;
 	else if (token->data.data[0] == ';')
-		node->operator = operator_semicolon;
+		node->operator= operator_semicolon;
 }
