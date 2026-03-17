@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 11:16:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/13 08:40:45 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:42:35 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ size_t				ft_strlen(const char *s);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 char				*ft_strchr(const char *s, int c);
+char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strrchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				*ft_strnstr(const char *big, const char *little,
 						size_t len);
+char				*ft_strjoin(char *s1, char *s2);
+char				*ft_strnjoin(char *s1, char *s2, size_t n);
+
 
 char				*ft_strdup(const char *s);
 
@@ -60,5 +64,8 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+
+void				ft_double_free(char **double_list);
+void				ft_double_free_start(char **double_list, int start);
 
 #endif

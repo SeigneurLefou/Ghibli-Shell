@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdsize.c                                       :+:      :+:    :+:   */
+/*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:06:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 09:47:13 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/17 08:59:39 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 09:12:59 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
+#ifndef TOKEN_H
+# define TOKEN_H
 
-int	ft_cmdsize(t_cmd **cmd)
+typedef enum e_token_type
 {
-	size_t	len;
-	t_cmd	*tmp;
+	token_type_scope_delimiter,
+	token_type_command_delimiter,
+	token_type_plain,
+}							t_token_type;
 
-	len = 1;
-	if (!cmd)
-		return (0);
-	tmp = *cmd;
-	if (!tmp)
-		return (0);
-	while (tmp->next)
-	{
-		tmp = tmp->next;
-		len++;
-	}
-	return (len);
-}
+typedef struct s_token
+{
+	t_vec					data;
+	t_token_type			type;
+}							t_token;
+
+typedef enum e_tokeniser_error
+{
+	tokeniser_error_succes,
+	tokeniser_error_unterminated_quoted_string,
+}			t_tokeniser_error;
+
+# endif

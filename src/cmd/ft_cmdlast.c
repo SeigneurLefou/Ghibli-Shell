@@ -6,11 +6,11 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:04:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/17 08:59:33 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:47:05 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "cmd.h"
 
 t_cmd	*ft_cmdlast(t_cmd *cmd)
 {

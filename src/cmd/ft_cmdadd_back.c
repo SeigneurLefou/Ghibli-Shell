@@ -6,11 +6,11 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:35 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/17 08:58:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:53:31 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "cmd.h"
 
 void	ft_cmdadd_back(t_cmd **cmd, t_cmd **new)
 {
@@ -26,5 +26,4 @@ void	ft_cmdadd_back(t_cmd **cmd, t_cmd **new)
 	tmp = *cmd;
 	tmp = ft_cmdlast(tmp);
 	tmp->next = *new;
-	(*new)->previous = tmp;
 }

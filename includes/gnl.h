@@ -6,16 +6,16 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 09:47:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/13 09:51:46 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 08:52:44 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GNL_H
 # define GNL_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include "libft.h"
+# include <unistd.h>
+# include <stdlib.h>
+# include "libft.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 200

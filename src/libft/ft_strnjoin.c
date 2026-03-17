@@ -1,25 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdfirst.c                                      :+:      :+:    :+:   */
+/*   ft_strnjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/17 08:55:47 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/17 11:20:13 by lchamard         ###   ########.fr       */
+/*   Created: 2025/11/05 09:38:30 by lchamard          #+#    #+#             */
+/*   Updated: 2026/02/18 08:49:44 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-t_cmd	*ft_cmdfirst(t_cmd *cmd)
+char	*ft_strnjoin(char *s1, char *s2, size_t size)
 {
-	t_cmd	*tmp;
+	char	*joinstr;
+	size_t	i;
+	size_t	j;
 
-	tmp = cmd;
-	while (tmp->previous)
+	joinstr = ft_calloc(size + 1, sizeof(char));
+	if (!joinstr)
+		return (NULL);
+	i = 0;
+	while (s1 && s1[i] && i < size)
 	{
-		tmp = tmp->previous;
+		joinstr[i] = s1[i];
+		i++;
 	}
-	return (tmp);
+	j = 0;
+	while (s2 && s2[j] && i < size)
+	{
+		joinstr[i] = s2[j];
+		i++;
+		j++;
+	}
+	return (joinstr);
 }

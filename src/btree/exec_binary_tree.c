@@ -6,11 +6,12 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/16 18:06:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:21:39 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "btree.h"
+
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env)
 {
 	t_pipex	pipex_var;

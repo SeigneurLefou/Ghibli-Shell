@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdsize.c                                       :+:      :+:    :+:   */
+/*   ft_double_free.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:06:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 09:47:13 by lchamard         ###   ########.fr       */
+/*   Created: 2026/02/11 10:32:40 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 09:41:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
+#include "pipex.h"
 
-int	ft_cmdsize(t_cmd **cmd)
+void	ft_double_free(char **double_list)
 {
-	size_t	len;
-	t_cmd	*tmp;
+	size_t	i;
 
-	len = 1;
-	if (!cmd)
-		return (0);
-	tmp = *cmd;
-	if (!tmp)
-		return (0);
-	while (tmp->next)
+	i = 0;
+	while (double_list[i])
 	{
-		tmp = tmp->next;
-		len++;
+		free(double_list[i]);
+		i++;
 	}
-	return (len);
+	free(double_list);
+}
+
+void	ft_double_free_start(char **double_list, int start)
+{
+	size_t	i;
+
+	i = start;
+	while (double_list[i])
+	{
+		free(double_list[i]);
+		i++;
+	}
+	free(double_list);
 }

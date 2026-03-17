@@ -1,4 +1,4 @@
-GNL_PATH = src/pipex
+GNL_PATH = src/gnl/
 
 SRC += $(GNL_PATH)get_next_line.c
 

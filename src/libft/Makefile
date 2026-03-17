@@ -10,7 +10,10 @@ SRC += $(LIBFT_PATH)/ft_isalpha.c       \
 	   $(LIBFT_PATH)/ft_isdigit.c       \
 	   $(LIBFT_PATH)/ft_memset.c        \
 	   $(LIBFT_PATH)/ft_strnstr.c       \
-	   $(LIBFT_PATH)/ft_bzero.c         \
+	   $(LIBFT_PATH)/ft_strcpy.c       \
+	   $(LIBFT_PATH)/ft_strjoin.c       \
+	   $(LIBFT_PATH)/ft_strnjoin.c		\
+	   $(LIBFT_PATH)/ft_bzero.c			\
 	   $(LIBFT_PATH)/ft_isprint.c       \
 	   $(LIBFT_PATH)/ft_strchr.c        \
 	   $(LIBFT_PATH)/ft_strrchr.c       \
@@ -32,6 +35,7 @@ SRC += $(LIBFT_PATH)/ft_isalpha.c       \
 	   $(LIBFT_PATH)/ft_putchar_fd.c    \
 	   $(LIBFT_PATH)/ft_putstr_fd.c     \
 	   $(LIBFT_PATH)/ft_putendl_fd.c    \
+	   $(LIBFT_PATH)/ft_double_free.c	\
 	   $(LIBFT_PATH)/ft_putnbr_fd.c
 
 OUT_DIRS += $(OUTPUT_DIR)/$(LIBFT_PATH)

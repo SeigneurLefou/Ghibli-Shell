@@ -6,11 +6,11 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/13 15:37:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 10:01:08 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "cmd.h"
 
 void	ft_cmdclear(t_cmd *cmd)
 {
@@ -18,7 +18,6 @@ void	ft_cmdclear(t_cmd *cmd)
 	t_cmd	*last;
 	int		i;
 
-	tmp = ft_cmdfirst(cmd);
 	while (tmp)
 	{
 		last = tmp;
