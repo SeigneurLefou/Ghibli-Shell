@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/03/17 17:34:49 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/03/17 15:15:58 by yben-dje         ###   ########.fr       */
->>>>>>> 045c2aa ([Parser] Start support for parentheses)
+/*   Updated: 2026/03/17 17:38:28 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +69,3 @@ int	main(int argc, char **argv, char **env)
 	
 	vec_free(&parsed);
 }
-
