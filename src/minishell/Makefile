@@ -1,5 +1,5 @@
-PIPEX_PATH = src/minishell/
+MINISHELL_PATH = src/minishell
 
-SRC += $(PIPEX_PATH)main.c
+SRC +=
 
-OUT_DIRS += $(OUTPUT_DIR)/$(PIPEX_PATH)
+OUT_DIRS += $(OUTPUT_DIR)/$(MINISHELL_PATH)
