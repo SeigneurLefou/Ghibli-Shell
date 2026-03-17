@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 14:27:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:15:58 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+void print_tree(t_vec *expr, t_token_btree_node *node)
+{
+	if (node->operator == operator_none)
+	{
+		for (int i = node->expr_start; i <= node->expr_stop; i++)
+		{
+			t_token *token = (t_token *)vec_get(expr, i);
+			write(1, token->data.data, token->data.size);
+			write(1, " - ", 3);
+		}
+		
+		write(1, "\n", 1);
+	}
+	else
+	{
+		print_tree(expr, node->left);
+		if (node->operator == operator_and)
+			printf("Operator: And\n");
+		if (node->operator == operator_or)
+			printf("Operator: Or\n");
+		if (node->operator == operator_semicolon)
+			printf("Operator: Semicolon\n");
+		print_tree(expr, node->right);
+	}
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -38,26 +65,8 @@ int	main(int argc, char **argv, char **env)
 	root.expr_stop = parsed.size - 1;
 	parse_token_btree(&parsed, &root);
 
-	printf("%d - %d \n", root.left->expr_start, root.left->expr_stop);
-	printf("%d - %d \n", root.right->expr_start, root.right->expr_stop);
-
-	for (int i = root.left->expr_start; i <= root.left->expr_stop; i ++)
-	{
-		printf("%s - ", ((t_token *)vec_get(&parsed, i))->data.data);
-	}
-	printf("\n------------------\n\n");
-	for (int i = root.right->expr_start; i <= root.right->expr_stop; i ++)
-	{
-		printf("%s - ", ((t_token *)vec_get(&parsed, i))->data.data);
-	}
-	printf("\n");
-
-	if (root.operator == operator_and)
-		printf("Operator: And\n");
-	if (root.operator == operator_or)
-		printf("Operator: Or\n");
-	if (root.operator == operator_semicolon)
-		printf("Operator: Semicolon\n");
-
+	print_tree(&parsed, &root);
+	
 	vec_free(&parsed);
 }
+
