@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 10:01:51 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:27:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	pipe_gestion(t_pipex *pipex_var)
 		}
 		pipex_var->fds[2] = open(pipex_var->cmd->iofile[1],
 				O_CREAT | O_WRONLY | pipex_var->cmd->open_mode, 0644);
-		if (pipex_var->fds[2] == -1 || pipe_error)
+		if (pipex_var->fds[2] == -1)
 			return (1);
 	}
 	else

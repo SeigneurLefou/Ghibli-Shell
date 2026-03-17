@@ -6,13 +6,13 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:06:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 09:58:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:28:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
 
-t_cmd	*ft_cmdnew(char **cmd_line, int index)
+t_cmd	*ft_cmdnew(char **cmd_line)
 {
 	t_cmd	*new_cmd;
 

@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 10:01:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:28:17 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_cmdclear(t_cmd *cmd)
 	t_cmd	*last;
 	int		i;
 
+	tmp = cmd;
 	while (tmp)
 	{
 		last = tmp;

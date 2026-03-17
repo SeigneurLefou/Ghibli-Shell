@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:59:39 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 11:08:03 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:48:07 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,4 @@ typedef enum e_tokeniser_error
 	tokeniser_error_unterminated_quoted_string,
 }			t_tokeniser_error;
 
-# endif
+#endif

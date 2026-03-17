@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 11:16:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/17 09:42:35 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:47:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stddef.h>
 # include <unistd.h>
 
-// Part 1
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
@@ -39,7 +38,6 @@ char				*ft_strnstr(const char *big, const char *little,
 char				*ft_strjoin(char *s1, char *s2);
 char				*ft_strnjoin(char *s1, char *s2, size_t n);
 
-
 char				*ft_strdup(const char *s);
 
 int					ft_atoi(const char *nptr);
@@ -53,7 +51,6 @@ int					ft_memcmp(const void *s1, const void *s2, size_t n);
 
 void				*ft_calloc(size_t nmemb, size_t size);
 
-// Part 2
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);

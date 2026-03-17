@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 11:09:48 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:44:47 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_pipex	cmd_to_pipex(t_cmd *cmd, char **env)
 	pipex_var.cmd = cmd;
 }
 
-int exec_pipe(t_cmd cmds, char **env)
+int	exec_pipe(t_cmd cmds, char **env)
 {
 	int		werror;
 	int		exit_code;
@@ -50,17 +50,17 @@ int	exec_binary_tree(t_cmd_btree *tree, char **env)
 	if (!tree->left && !tree->right)
 		wstatus_left = exec_pipe(tree->node);
 	if (tree->left)
-		wstatus_left = exec_binary_tree(tree->left)
+		wstatus_left = exec_binary_tree(tree->left);
 	if (!wstatus_left && tree->operator == operator_and && tree->right)
-		wstatus_right = exec_binary_tree(tree->right)
+		wstatus_right = exec_binary_tree(tree->right);
 	else if (wstatus_left && tree->operator == operator_or && tree->right)
-		wstatus_right = exec_binary_tree(tree->right)
+		wstatus_right = exec_binary_tree(tree->right);
 	else if (tree->operator == operator_semicolon && tree->right)
-		wstatus_right = exec_binary_tree(tree->right)
+		wstatus_right = exec_binary_tree(tree->right);
 	if (tree->operator == operator_and)
-		return (wstatus_left & wstatus_right)
+		return (wstatus_left & wstatus_right);
 	else if (tree->operator == operator_or)
-		return (wstatus_left | wstatus_right)
+		return (wstatus_left | wstatus_right);
 	else if (tree->operator == operator_semicolon)
 		return (wstatus_right);
 }
