@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdadd_front.c                                  :+:      :+:    :+:   */
+/*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:03:41 by lchamard          #+#    #+#             */
-/*   Updated: 2026/01/13 15:03:42 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/17 08:59:39 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 11:08:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#ifndef TOKEN_H
+# define TOKEN_H
 
-void	ft_cmdadd_front(t_cmd **cmd, t_cmd **new)
+# include "vec.h"
+
+typedef enum e_token_type
 {
-	if (!(*cmd) || !(*new))
-	{
-		*cmd = *new;
-		return ;
-	}
-	(*cmd)->previous = *new;
-	(*new)->next = *cmd;
-	*cmd = *new;
-}
+	token_type_scope_delimiter,
+	token_type_command_delimiter,
+	token_type_plain,
+}							t_token_type;
+
+typedef struct s_token
+{
+	t_vec					data;
+	t_token_type			type;
+}							t_token;
+
+typedef enum e_tokeniser_error
+{
+	tokeniser_error_succes,
+	tokeniser_error_unterminated_quoted_string,
+}			t_tokeniser_error;
+
+# endif

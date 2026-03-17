@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdshow.c                                       :+:      :+:    :+:   */
+/*   ft_double_free.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 09:04:02 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/17 17:01:11 by lchamard         ###   ########.fr       */
+/*   Created: 2026/02/11 10:32:40 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 09:41:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_cmdshow(t_cmd *cmd)
+void	ft_double_free(char **double_list)
 {
-	int		i;
+	size_t	i;
 
 	i = 0;
-	ft_printf("previous [%p], cmd_name [%s], actual [%p], next [%p]\n",
-		*cmd->previous, cmd->cmd_name, cmd, cmd->next);
-	while (cmd->cmd_argv[i])
+	while (double_list[i])
 	{
-		ft_printf("argv[%d] : [%s]\n", i, cmd->cmd_argv[i]);
+		free(double_list[i]);
 		i++;
 	}
+	free(double_list);
 }
 
-void	ft_showallcmd(t_cmd **cmd)
+void	ft_double_free_start(char **double_list, int start)
 {
-	t_cmd	*tmp;
+	size_t	i;
 
-	tmp = *cmd;
-	ft_putendl_fd("=== === === === ===", 1);
-	while (tmp)
+	i = start;
+	while (double_list[i])
 	{
-		ft_cmdshow(tmp);
-		tmp = tmp->next;
+		free(double_list[i]);
+		i++;
 	}
-	ft_putendl_fd("=== === === === ===", 1);
+	free(double_list);
 }

@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdclear.c                                      :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/17 11:17:21 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 11:07:13 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-void	ft_cmdclear(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	t_cmd	*last;
-	int		i;
+# include "btree.h"
+# include "cmd.h"
+# include "vec.h"
+# include "gnl.h"
+# include "libft.h"
+# include "list.h"
+# include "pipex.h"
+# include "token.h"
+# include <stdio.h>
 
-	tmp = ft_cmdfirst(cmd);
-	while (tmp)
-	{
-		last = tmp;
-		tmp = tmp->next;
-		i = 0;
-		while (last->cmd_argv[i])
-		{
-			free(last->cmd_argv[i]);
-			i++;
-		}
-		free(last->cmd_argv);
-		free(last);
-	}
-	if (tmp)
-		free(tmp);
-	cmd = NULL;
-}
+#endif
