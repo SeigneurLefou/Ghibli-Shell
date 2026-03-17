@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:59:39 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 13:13:57 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:24:19 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define TOKEN_H
 
 # include "vec.h"
+# include "btree.h"
+# include <stdio.h>
+# include <unistd.h>
 
 typedef enum e_token_type
 {
@@ -27,5 +30,14 @@ typedef struct s_token
 	t_vec					data;
 	t_token_type			type;
 }							t_token;
+
+typedef enum e_tokeniser_error
+{
+	tokeniser_error_succes,
+	tokeniser_error_unterminated_quoted_string,
+}					t_tokeniser_error;
+
+t_tokeniser_error	tokenise(char *expr, t_vec *command);
+void				parse_token_btree(t_vec *expr, t_token_btree_node *node);
 
 # endif

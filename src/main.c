@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 14:20:00 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:27:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +58,6 @@ int	main(int argc, char **argv, char **env)
 		printf("Operator: Or\n");
 	if (root.operator == operator_semicolon)
 		printf("Operator: Semicolon\n");
-<<<<<<< HEAD
-	vec_free(&parsed);
-}
-=======
 
 	vec_free(&parsed);
 }
->>>>>>> 1b5b0c5558ee38bccc67faaaf306a9ac9eee8ab3

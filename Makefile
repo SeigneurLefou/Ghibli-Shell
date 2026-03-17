@@ -12,7 +12,7 @@ LDFLAGS := #-lreadline
 INCLUDES = includes
 
 include src/minishell/Makefile
-include src/parser/Makefile
+include src/token/Makefile
 include src/libft/Makefile
 include src/pipex/Makefile
 include src/list/Makefile
