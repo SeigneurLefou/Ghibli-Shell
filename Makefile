@@ -15,6 +15,10 @@ INCLUDES = includes
 include src/pipex/Makefile
 include src/gnl/Makefile
 include src/cmd/Makefile
+include src/libft/Makefile
+include src/list/Makefile
+include src/vec/Makefile
+include src/minishell/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\
@@ -280,9 +284,5 @@ CLEAN_FRAME2 = \
 
 BUILD_FRAMES = ("$(BUILD_FRAME1)" "$(BUILD_FRAME2)" "$(BUILD_FRAME3)" "$(BUILD_FRAME4)" "$(BUILD_FRAME5)" "$(BUILD_FRAME6)" "$(BUILD_FRAME7)" "$(BUILD_FRAME8)" "$(BUILD_FRAME9)" "$(BUILD_FRAME10)")
 END_BUILD_FRAMES = ("$(BUILD_FRAME11)" "$(BUILD_FRAME12)" "$(BUILD_FRAME13)" "$(BUILD_FRAME13)" "$(BUILD_FRAME14)" "$(BUILD_FRAME15)" "$(BUILD_FRAME16)")
-
-include src/libft/Makefile
-include src/list/Makefile
-include src/vec/Makefile
 
 include src/Makefile

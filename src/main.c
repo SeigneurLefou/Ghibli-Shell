@@ -1,14 +1,26 @@
-#include "list.h"
-#include "vec.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/17 11:04:41 by lchamard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-typedef struct s_btree
-{
-	t_list			*tokens;
-	struct s_btree	*left;
-	struct s_btree	*right;
-}					t_btree;
+#include "minishell.h"
 
 int	main(int argc, char **argv, char **env)
+{
+	char *test;
+
+	test = readline("coucou\nsalut\nbonjour\n");
+	printf("%s\n", test);
+}
+
+/*int	main(int argc, char **argv, char **env)
 {
 	t_vec	vec;
 
@@ -21,10 +33,10 @@ int	main(int argc, char **argv, char **env)
 
 	vec_truncate(&vec);
 
-	/*for (unsigned int i = 0; i < 100000000; i++)
+	for (unsigned int i = 0; i < 100000000; i++)
 	{
 		vec_get(&vec, &a);
-	}*/
+	}
 
 	vec_free(&vec);
-}
+}*/

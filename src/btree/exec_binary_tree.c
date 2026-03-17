@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 09:21:39 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 11:09:48 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ t_pipex	cmd_to_pipex(t_cmd *cmd, char **env)
 	pipex_var.cmd = cmd;
 }
 
-int exec_pipe(t_node_btree node, char **env)
+int exec_pipe(t_cmd cmds, char **env)
 {
 	int		werror;
 	int		exit_code;
 	t_pipex	pipex_var;
 	t_cmd	*cmd_save;
 
-	if (!node->cmd)
+	if (!cmds)
 	{
 		ft_printf(strerror(EINVAL));
 		exit(1);
 	}
-	pipex_var = cmd_to_pipex(node->cmd);
+	pipex_var = cmd_to_pipex(cmds);
 	execution_loop(&pipex_var);
 	close(pipex_var.fd[0]);
 	werror = wait_all_pid(&pipex_var);
