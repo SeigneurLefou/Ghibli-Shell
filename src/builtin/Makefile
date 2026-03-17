@@ -1,0 +1,5 @@
+BUILTIN_PATH = src/builtin
+
+SRC += 
+
+OUT_DIRS += $(OUTPUT_DIR)/$(BUILTIN_PATH)
