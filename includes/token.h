@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:59:39 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 11:08:03 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 13:13:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,5 @@ typedef struct s_token
 	t_vec					data;
 	t_token_type			type;
 }							t_token;
-
-typedef enum e_tokeniser_error
-{
-	tokeniser_error_succes,
-	tokeniser_error_unterminated_quoted_string,
-}			t_tokeniser_error;
 
 # endif
