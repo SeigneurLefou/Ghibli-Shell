@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 08:59:39 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 17:33:28 by lchamard         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef TOKEN_H
 # define TOKEN_H
 
@@ -35,7 +23,10 @@ typedef enum e_tokeniser_error
 {
 	tokeniser_error_succes,
 	tokeniser_error_unterminated_quoted_string,
-}			t_tokeniser_error;
+}					t_tokeniser_error;
+
+t_tokeniser_error	tokenise(char *expr, t_vec *command);
+void				parse_token_btree(t_vec *expr, t_token_btree_node *node);
 
 t_tokeniser_error	tokenise(char *expr, t_vec *command);
 void				parse_token_btree(t_vec *expr, t_token_btree_node *node);
