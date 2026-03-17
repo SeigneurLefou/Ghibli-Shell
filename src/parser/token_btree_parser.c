@@ -1,48 +1,86 @@
 #include "parser.h"
 
 /* 0 = error */
-unsigned int get_matching_parethese(t_vec *expr, unsigned int index,
+unsigned int	get_matching_parethese(t_vec *expr, unsigned int index,
 		unsigned int end)
 {
-    unsigned int count = 1;
+	unsigned int	count;
+	t_token			*token;
 
-    while (index < end)
-    {
-        t_token *token = (t_token *)vec_get(expr, index);
-        if (token->data.data[0] == '(')
-            count++;
-        if (token->data.data[0] == '(')
-            count--;
-        if (count == 0)
-            return (index);
-    }
-    return (0);
+	count = 1;
+	while (index < end)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->data.data[0] == '(')
+			count++;
+		if (token->data.data[0] == '(')
+			count--;
+		if (count == 0)
+			return (index);
+	}
+	return (0);
 }
 
-t_token_btree	*parse_token_btree(t_vec *expr, unsigned int start,
-		unsigned int end)
+bool	is_a_delimiter(t_token *token)
 {
-    unsigned int index = 0;
-    int current_command = 0;
+	return (token->type == token_type_scope_delimiter
+		&& (token->data.data[0] == '&' || token->data.data[0] == '|'
+			|| token->data.data[0] == ';'));
+}
 
-    t_token_btree command_a;
-    vec_init(&command_a.tokens, sizeof(t_token), 5);
-    t_token_btree command_b;
-    vec_init(&command_b.tokens, sizeof(t_token), 5);
-    while (index < end)
-    {
-        t_token *token = (t_token *)vec_get(expr, start + index);
-        if (token->type == token_type_scope_delimiter && token->data.data[0])
-        {
-            unsigned int scope_end = get_matching_parethese(expr, start + index, end);
-            if (!scope_end)
-                printf("Parsing error!");
-            parse_token_btree(expr, start + index + 1, scope_end);
-        }
-        else
-        {
-            vec_append(&command_a, token);
-        }
-        index++;
-    }
+bool	contains_scope_delimiter(t_vec *expr)
+{
+	unsigned int	index;
+	t_token			*token;
+
+	index = 0;
+	while (index < expr->size)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (is_a_delimiter(token))
+			return (true);
+		index++;
+	}
+	return (false);
+}
+
+void	parse_token_btree(t_vec *expr, t_token_btree_node *node)
+{
+	t_token_btree_node	*btree_a;
+	t_token_btree_node	*btree_b;
+	unsigned int		cmd_stop;
+	t_token				*token;
+
+	if (!contains_scope_delimiter(expr))
+	{
+		node->expr_start = node->expr_start;
+		node->expr_stop = node->expr_stop;
+		node->operator= operator_none;
+		node->left = NULL;
+		node->right = NULL;
+		return ;
+	}
+	btree_a = malloc(sizeof(t_token_btree_node));
+	btree_b = malloc(sizeof(t_token_btree_node));
+	// TODO: Handle malloc fail
+	cmd_stop = 0;
+	token = (t_token *)vec_get(expr, cmd_stop);
+	while (!is_a_delimiter(token))
+	{
+		cmd_stop++;
+		token = (t_token *)vec_get(expr, cmd_stop);
+	}
+	btree_a->expr_stop = cmd_stop - 1;
+	btree_a->expr_start = node->expr_start;
+	btree_b->expr_start = cmd_stop + 1;
+	btree_b->expr_stop = node->expr_stop;
+	node->left = btree_a;
+	node->right = btree_b;
+	token = (t_token *)vec_get(expr, cmd_stop);
+	if (token->data.data[0] == '&')
+		node->operator = operator_and;
+	else if (token->data.data[0] == '|')
+		node->operator = operator_or;
+	else if (token->data.data[0] == ';')
+		node->operator = operator_semicolon;
 }
