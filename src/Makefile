@@ -18,6 +18,7 @@ current_file_processed = 0
 size = 0
 
 $(NAME): $(OUT_DIRS) $(OBJ)
+ifndef DEBUG
 	@/bin/echo -e "\e[?25l\e[3F"
 	@export frame=$$(($(file_processed) + 1)); \
 	while [ $$(($$frame % 10 + 1 )) -ne 5 ]; \
@@ -36,6 +37,7 @@ $(NAME): $(OUT_DIRS) $(OBJ)
 		frame=$$(( $$frame + 1 )); \
 		sleep 0.05; \
 	done
+endif
 
 	@/bin/echo -e "\n\n\n\e[33m\e[2KLittle Totoro is linking your binary. Please wait...\e[0m"
 	@$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $@
@@ -46,6 +48,7 @@ $(OUT_DIRS):
 	@mkdir -p $(OUT_DIRS)
 
 $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
+ifndef DEBUG
 	@if [ $(current_file_processed) -eq 0 ]; then echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n "; fi
 	$(eval current_file_processed=1)
 	@/bin/echo -e "\e[?25l\e[15F"
@@ -57,12 +60,16 @@ $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress
 	@printf %$(size)s | tr " " "=";
 	@printf "%$(shell expr $(LOAD_BAR_SIZE) - $(size))s";
 	@printf "] $(shell expr $(size) "*" 100 / $(LOAD_BAR_SIZE))%%\n"
-	@$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ -c $< || (EXIT_CODE=$? && /bin/echo -e "\e[?25h" && $$(exit $(EXIT_CODE)))
+else
+	@/bin/echo -e "\e[33m\e[1FCurrently growing: $@\e[0m\e[0K"
+endif
+	@$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ -c $< || (EXIT_CODE=$$? && /bin/echo -e "\e[?25h" && $$(exit $$EXIT_CODE))
 
 all: $(NAME)
 
 clean:
 	@echo -e "\e[33mCleaning output... Please wait for the Catbus...\e[0m"
+ifndef DEBUG
 	@export size=80;                                                                                 \
 	for ((cam_x = 80 ; cam_x >= -80 ; cam_x--)); do                                                   \
 		if [ $$(($$cam_x / 15 % 2)) -eq 0 ];                                                          \
@@ -85,7 +92,7 @@ clean:
 		/bin/echo -e "\e[?25l\e[14F";                                                                 \
 		sleep 0.01;                                                                                   \
 	done
-
+endif
 	@rm -rf $(OUTPUT_DIR)
 	@echo -e "\e[32mCatbus cleaned the objects. Thank you Catbus!\e[0m"
 
