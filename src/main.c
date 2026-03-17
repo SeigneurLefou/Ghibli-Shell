@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -8,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 17:24:26 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/17 17:32:05 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +60,6 @@ int	main(int argc, char **argv, char **env)
 		write(1, "\n", 1);
 		i++;
 	}
-<<<<<<< HEAD
 	t_token_btree_node root;
 	root.expr_start = 0;
 	root.expr_stop = parsed.size - 1;
@@ -72,7 +69,3 @@ int	main(int argc, char **argv, char **env)
 	
 	vec_free(&parsed);
 }
-=======
-	vec_free(&parsed);
-}*/
->>>>>>> 516e250 (feat (parser): File refactor and define btree_structs)
