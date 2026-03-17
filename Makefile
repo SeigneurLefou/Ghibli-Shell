@@ -11,14 +11,14 @@ LDFLAGS := #-lreadline
 
 INCLUDES = includes
 
-include src/pipex/Makefile
-include src/gnl/Makefile
-include src/cmd/Makefile
-include src/libft/Makefile
-include src/list/Makefile
-include src/vec/Makefile
 include src/minishell/Makefile
 include src/parser/Makefile
+include src/libft/Makefile
+include src/pipex/Makefile
+include src/list/Makefile
+include src/gnl/Makefile
+include src/cmd/Makefile
+include src/vec/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\

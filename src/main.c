@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -14,7 +15,6 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	t_vec	vec;
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
@@ -59,5 +59,11 @@ int	main(int argc, char **argv, char **env)
 		printf("Operator: Or\n");
 	if (root.operator == operator_semicolon)
 		printf("Operator: Semicolon\n");
+<<<<<<< HEAD
 	vec_free(&parsed);
 }
+=======
+
+	vec_free(&parsed);
+}
+>>>>>>> 1b5b0c5558ee38bccc67faaaf306a9ac9eee8ab3
