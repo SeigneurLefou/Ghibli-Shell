@@ -16,30 +16,23 @@ typedef enum e_operator
 	operator_none,
 }								t_operator;
 
-typedef struct s_token_btree_node
+typedef struct s_btree_node
 {
 	unsigned int				expr_start;
 	unsigned int				expr_stop;
 	t_operator					operator;
-	struct s_token_btree_node	*left;
-	struct s_token_btree_node	*right;
-}								t_token_btree_node;
+	t_cmd						*cmds;
+	struct s_btree_node	*left;
+	struct s_btree_node	*right;
+}								t_btree_node;
 
-typedef struct s_token_btree
+typedef struct s__btree
 {
 	t_vec						expr;
-	struct s_token_btree_node	root_node;
-}								t_token_btree;
+	struct s_btree_node	root_node;
+}								t_btree;
 
-typedef struct s_cmd_btree
-{
-	t_cmd						cmds;
-	t_operator					operator;
-	struct s_token_btree		*left;
-	struct s_token_btree		*right;
-}								t_cmd_btree;
-
-int		exec_binary_tree(t_cmd_btree *tree, char **env);
+int		exec_binary_tree(t_btree *tree, char **env);
 int		exec_pipe(t_cmd cmds, char **env);
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
 
