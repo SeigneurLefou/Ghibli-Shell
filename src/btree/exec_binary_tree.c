@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 15:44:47 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/18 10:00:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exec_pipe(t_cmd cmds, char **env)
 	exit(exit_code);
 }
 
-int	exec_binary_tree(t_cmd_btree *tree, char **env)
+int	exec_binary_tree(t_btree *tree, char **env)
 {
 	int	wstatus_left;
 	int	wstatus_right;

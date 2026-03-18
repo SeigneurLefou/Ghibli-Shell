@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 
-void print_tree(t_vec *expr, t_token_btree_node *node)
+void print_tree(t_vec *expr, t_btree_node *node)
 {
 	if (node->operator == operator_none)
 	{
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **env)
 		write(1, "\n", 1);
 		i++;
 	}
-	t_token_btree_node root;
+	t_btree_node root;
 	root.expr_start = 0;
 	root.expr_stop = parsed.size - 1;
 	parse_token_btree(&parsed, &root);

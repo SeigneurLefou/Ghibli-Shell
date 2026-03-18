@@ -29,7 +29,7 @@ bool	is_a_delimiter(t_token *token)
 			|| token->data.data[0] == ';'));
 }
 
-bool	contains_scope_delimiter(t_vec *expr, t_token_btree_node *node)
+bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 {
 	unsigned int	index;
 	t_token			*token;
@@ -45,10 +45,10 @@ bool	contains_scope_delimiter(t_vec *expr, t_token_btree_node *node)
 	return (false);
 }
 
-void	parse_token_btree(t_vec *expr, t_token_btree_node *node)
+void	parse_token_btree(t_vec *expr, t_btree_node *node)
 {
-	t_token_btree_node	*btree_a;
-	t_token_btree_node	*btree_b;
+	t_btree_node	*btree_a;
+	t_btree_node	*btree_b;
 	unsigned int		expr_stop;
 	t_token				*token;
 
@@ -61,8 +61,8 @@ void	parse_token_btree(t_vec *expr, t_token_btree_node *node)
 		node->right = NULL;
 		return ;
 	}
-	btree_a = malloc(sizeof(t_token_btree_node));
-	btree_b = malloc(sizeof(t_token_btree_node));
+	btree_a = malloc(sizeof(t_btree_node));
+	btree_b = malloc(sizeof(t_btree_node));
 	// TODO: Handle malloc fail
 	expr_stop = node->expr_start;
 	btree_a->expr_start = node->expr_start;
