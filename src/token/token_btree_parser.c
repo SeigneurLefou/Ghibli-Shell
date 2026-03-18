@@ -33,12 +33,17 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 {
 	unsigned int	index;
 	t_token			*token;
+	int parenthese_count = 0;
 
 	index = node->expr_start;
 	while (index <= node->expr_stop)
 	{
 		token = (t_token *)vec_get(expr, index);
-		if (is_a_delimiter(token))
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == '(')
+			parenthese_count++;
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			parenthese_count--;
+		if (is_a_delimiter(token) && !parenthese_count)
 			return (true);
 		index++;
 	}
@@ -67,29 +72,32 @@ void	parse_token_btree(t_vec *expr, t_btree_node *node)
 	expr_stop = node->expr_start;
 	btree_a->expr_start = node->expr_start;
 	token = (t_token *)vec_get(expr, expr_stop);
+	unsigned int operator_index;
 	if (token->data.data[0] == '(')
 	{
-		expr_stop = get_matching_parethese(expr, node->expr_start, node->expr_stop) + node->expr_start;
+		expr_stop = get_matching_parethese(expr, node->expr_start, node->expr_stop);
 		if (!expr_stop)
 			printf("Parsing error my bro.");
 		btree_a->expr_start ++;
+		operator_index = expr_stop + 1;
 	}
 	else
 	{
-		while (!is_a_delimiter(token))
+		while (token && !is_a_delimiter(token))
 		{
 			expr_stop++;
 			token = (t_token *)vec_get(expr, expr_stop);
 		}
+		operator_index = expr_stop;
 	}
 	btree_a->expr_stop = expr_stop - 1;
-	btree_b->expr_start = expr_stop + 1;
+	btree_b->expr_start = operator_index + 1;
 	btree_b->expr_stop = node->expr_stop;
 	node->left = btree_a;
 	node->right = btree_b;
 	parse_token_btree(expr, node->left);
 	parse_token_btree(expr, node->right);
-	token = (t_token *)vec_get(expr, expr_stop);
+	token = (t_token *)vec_get(expr, operator_index);
 	if (token->data.data[0] == '&')
 		node->operator= operator_and;
 	else if (token->data.data[0] == '|')
