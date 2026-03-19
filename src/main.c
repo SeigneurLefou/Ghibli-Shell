@@ -56,12 +56,14 @@ int	main(int argc, char **argv, char **env)
 	parse_token_btree(&parsed, root);
 
 	print_tree(&parsed, root);
+	write(1, "\n", 1);
 	
 	for (unsigned int i = 0; i < parsed.size; i++)
 	{
 		vec_free(&((t_token *)vec_get(&parsed, i))->data);
 	}
 	vec_free(&parsed);
+
 }
 
 // 'echo a && (echo b && echo c)'
