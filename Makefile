@@ -19,6 +19,7 @@ include src/list/Makefile
 include src/gnl/Makefile
 include src/cmd/Makefile
 include src/vec/Makefile
+include src/vec_to_cmd/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\

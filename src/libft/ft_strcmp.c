@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdnew.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:06:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/19 08:50:25 by lchamard         ###   ########.fr       */
+/*   Created: 2025/10/15 11:04:04 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/03/19 10:36:59 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
+#include "libft.h"
 
-t_cmd	*ft_cmdnew()
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_cmd	*new_cmd;
+	size_t	index;
 
-	new_cmd = ft_calloc(1, sizeof(t_cmd));
-	return (new_cmd);
+	index = 0;
+	while (s1[index] == s2[index] && s1[index] && s2[index])
+		index++;
+	return ((unsigned char)s1[index] - (unsigned char)s2[index]);
 }

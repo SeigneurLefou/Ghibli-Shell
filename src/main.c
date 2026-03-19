@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/30 11:41:55 by lchamard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 
@@ -78,6 +90,7 @@ void free_tokens(t_vec *expr)
 
 int	main(int argc, char **argv, char **env)
 {
+<<<<<<< HEAD
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
@@ -140,6 +153,21 @@ int	main(int argc, char **argv, char **env)
 	write(1, "\n", 1);
 	
 	free_tokens(&parsed);
+=======
+	t_btree_node *root = malloc(sizeof(t_btree_node));
+	int i = 1;
+	t_vec expr;
+	root->expr_start = 0;
+	root->expr_end = argc - 1;
+	write(1, "A\n", 2);
+	vec_init(&expr, sizeof(char *), 1);
+	while (i < argc)
+	{
+		vec_append(&expr, argv[i]);
+		i++;
+	}
+	vec_to_cmd(root, &expr);
+>>>>>>> ea268c4 ([vec to cmd] : function to convert a vec into a cmd)
 }
 
 // 'echo a && (echo b && echo c)'
