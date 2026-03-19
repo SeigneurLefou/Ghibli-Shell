@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 11:07:13 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/19 10:17:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "list.h"
 # include "pipex.h"
 # include "token.h"
+# include "vec_to_cmd.h"
 # include <stdio.h>
 
 #endif

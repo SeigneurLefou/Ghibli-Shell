@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 15:26:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/19 11:30:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,17 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	(void)argc;
-	(void)env;
-	printf("%s\n", argv[0]);
+	t_btree_node *root = malloc(sizeof(t_btree_node));
+	int i = 1;
+	t_vec expr;
+	root->expr_start = 0;
+	root->expr_end = argc - 1;
+	write(1, "A\n", 2);
+	vec_init(&expr, sizeof(char *), 1);
+	while (i < argc)
+	{
+		vec_append(&expr, argv[i]);
+		i++;
+	}
+	vec_to_cmd(root, &expr);
 }
