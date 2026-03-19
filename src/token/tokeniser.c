@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 14:28:22 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/19 13:20:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,25 @@
 
 void append_token(t_vec *command, t_token *token, t_token_type type)
 {
-	t_token new;
-
-	vec_init(&new.data, sizeof(char), 16);
-	token->type = type;
-	if (token->data.size)
+	if (token->type != token_type_void)
+	{
+		token->type = type;
 		vec_append(command, token);
-	else
-		vec_free(&token->data);
-	*token = new;
+	}
+	token->type = token_type_void;
+}
+
+bool push_char(t_token *token, char c)
+{
+	if (token->type == token_type_void)
+	{
+		token->type = token_type_plain;
+		if (!vec_init(&token->data, sizeof(char), 16))
+			return (false);
+	}	
+	if (c)
+		vec_append(&token->data, &c);
+	return (true);
 }
 
 char get_escape(char escaped_char)
@@ -54,7 +64,7 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 	char quote_char = 0;
 	bool in_parenthese = false; 
 	t_token current_token;
-	vec_init(&current_token.data, sizeof(char), 16);
+	current_token.type = token_type_void;
 	while (expr[i])
 	{
 		if (quote_char == '"')
@@ -65,18 +75,18 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				if (is_escape(expr[i], quote_char))
 				{
 					char escaped_char = get_escape(expr[i]);
-					vec_append(&current_token.data, &escaped_char);
+					push_char(&current_token, escaped_char);
 				}
 				else
 				{
-					vec_append(&current_token.data, "\\");
-					vec_append(&current_token.data, &expr[i]);
+					push_char(&current_token, '\\');
+					push_char(&current_token, expr[i]);
 				}
 			}
 			else if (expr[i] == '"')
 				quote_char = 0;
 			else
-				vec_append(&current_token.data, &expr[i]);
+				push_char(&current_token, expr[i]);
 		}
 		else if (quote_char == '\'')
 		{
@@ -86,43 +96,49 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				if (is_escape(expr[i], quote_char))
 				{
 					char escaped_char = get_escape(expr[i]);
-					vec_append(&current_token.data, &escaped_char);
+					push_char(&current_token, escaped_char);
 				}
 				else
 				{
-					vec_append(&current_token.data, "\\");
-					vec_append(&current_token.data, &expr[i]);
+					push_char(&current_token, '\\');
+					push_char(&current_token, expr[i]);
 				}
 			}
 			else if (expr[i] == '\'')
 				quote_char = 0;
 			else
-				vec_append(&current_token.data, &expr[i]);
+				push_char(&current_token, expr[i]);
 		}
 		else
 		{
 			if (expr[i] == '\\' && expr[i + 1])
-				vec_append(&current_token.data, &expr[++i]);
+				push_char(&current_token, expr[++i]);
 			else if (expr[i] == '"')
-				quote_char = '"';
+				{
+					push_char(&current_token, 0);
+					quote_char = '"';
+				}
 			else if (expr[i] == '\'')
+			{
+				push_char(&current_token, 0);
 				quote_char = '\'';
+			}
 			else if (expr[i] == '(')
 			{
 				append_token(command, &current_token, token_type_plain);
-				vec_append(&current_token.data, &expr[i]);
+				push_char(&current_token, '(');
 				append_token(command, &current_token, token_type_scope_delimiter);
 			}
 			else if (expr[i] == ')')
 			{
 				append_token(command, &current_token, token_type_plain);
-				vec_append(&current_token.data, &expr[i]);
+				push_char(&current_token, ')');
 				append_token(command, &current_token, token_type_scope_delimiter);
 			}
 			else if (expr[i] == ';')
 			{
 				append_token(command, &current_token, token_type_plain);
-				vec_append(&current_token.data, &expr[i]);
+				push_char(&current_token, ';');
 				append_token(command, &current_token, token_type_scope_delimiter);
 			}
 			else if (expr[i] == '|')
@@ -131,15 +147,15 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, "|");
-					vec_append(&current_token.data, "|");
+					push_char(&current_token, '|');
+					push_char(&current_token, '|');
 					append_token(command, &current_token, token_type_scope_delimiter);
 				}
 				else
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, "|");
+					push_char(&current_token, '|');
 					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
@@ -149,15 +165,15 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, "&");
-					vec_append(&current_token.data, "&");
+					push_char(&current_token, '&');
+					push_char(&current_token, '&');
 					append_token(command, &current_token, token_type_scope_delimiter);
 				}
 				else
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, "&");
+					push_char(&current_token, '&');
 					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
@@ -167,15 +183,15 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, "<");
-					vec_append(&current_token.data, "<");
+					push_char(&current_token, '<');
+					push_char(&current_token, '<');
 					append_token(command, &current_token, token_type_command_delimiter);
 				}
 				else
 					{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, "<");
+					push_char(&current_token, '<');
 					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
@@ -185,15 +201,15 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, ">");
-					vec_append(&current_token.data, ">");
+					push_char(&current_token, '>');
+					push_char(&current_token, '>');
 					append_token(command, &current_token, token_type_command_delimiter);
 				}
 				else
 				{
 					append_token(command, &current_token, token_type_plain);
 					i ++;
-					vec_append(&current_token.data, ">");
+					push_char(&current_token, '>');
 					append_token(command, &current_token, token_type_command_delimiter);
 				}
 			}
@@ -202,12 +218,12 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				append_token(command, &current_token, token_type_plain);
 			}
 			else
-				vec_append(&current_token.data, &expr[i]);
+				push_char(&current_token, expr[i]);
 		}
 		i++;
 	}
-	current_token.type = token_type_plain;
-	vec_append(command, &current_token);
+	if (current_token.type != token_type_void)
+		vec_append(command, &current_token);
 	if (quote_char != 0)
 		return (tokeniser_error_unterminated_quoted_string);
 	return (tokeniser_error_succes);

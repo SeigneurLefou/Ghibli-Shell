@@ -29,6 +29,30 @@ bool	is_a_delimiter(t_token *token)
 			|| token->data.data[0] == ';'));
 }
 
+bool	is_in_paretheses(t_vec *expr, unsigned int index, unsigned int end)
+{
+	unsigned int	count;
+	t_token			*token;
+
+	token = (t_token *)vec_get(expr, index);
+	if (token->type != token_type_scope_delimiter || token->data.data[0] != '(')
+		return (false);
+	token = (t_token *)vec_get(expr, end);
+	if (token->type != token_type_scope_delimiter || token->data.data[0] != ')')
+		return (false);
+	count = 0;
+	while (index <= end)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == '(')
+			count++;
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			count--;
+		index++;
+	}
+	return (!count);
+}
+
 bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 {
 	unsigned int	index;
@@ -54,9 +78,14 @@ void	parse_token_btree(t_vec *expr, t_btree_node *node)
 {
 	t_btree_node	*btree_a;
 	t_btree_node	*btree_b;
-	unsigned int		expr_stop;
-	t_token				*token;
+	unsigned int	expr_stop;
+	t_token			*token;
 
+	if (is_in_paretheses(expr, node->expr_start, node->expr_stop))
+	{
+		node->expr_start++;
+		node->expr_stop--;
+	}
 	if (!contains_scope_delimiter(expr, node))
 	{
 		node->expr_start = node->expr_start;

@@ -11,6 +11,7 @@ typedef enum e_token_type
 	token_type_scope_delimiter,
 	token_type_command_delimiter,
 	token_type_plain,
+	token_type_void,
 }							t_token_type;
 
 typedef struct s_token

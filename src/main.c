@@ -18,13 +18,14 @@ void print_tree(t_vec *expr, t_btree_node *node)
 		write(1, "(", 1);
 		print_tree(expr, node->left);
 		if (node->operator == operator_and)
-			write(1, " and ", 6);
+			write(1, "and ", 4);
 		if (node->operator == operator_or)
-			write(1, " or ", 5);
+			write(1, "or ", 3);
 		if (node->operator == operator_semicolon)
-			write(1, "; ", 3);
+			write(1, "# ", 2);
 		print_tree(expr, node->right);
 		write(1, ")", 1);
+		free(node);
 	}
 }
 
@@ -62,3 +63,6 @@ int	main(int argc, char **argv, char **env)
 	}
 	vec_free(&parsed);
 }
+
+// 'echo a && (echo b && echo c)'
+// '((echo a && echo b) || echo c; echo u) || (echo u && echo b && echo c)'
