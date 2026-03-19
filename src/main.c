@@ -53,7 +53,8 @@ int	main(int argc, char **argv, char **env)
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
 	root->expr_stop = parsed.size - 1;
-	parse_token_btree(&parsed, root);
+	if (!parse_token_btree(&parsed, root))
+		return 1;
 
 	print_tree(&parsed, root);
 	write(1, "\n", 1);

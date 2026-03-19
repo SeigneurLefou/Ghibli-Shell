@@ -27,9 +27,6 @@ typedef enum e_tokeniser_error
 }					t_tokeniser_error;
 
 t_tokeniser_error	tokenise(char *expr, t_vec *command);
-void				parse_token_btree(t_vec *expr, t_btree_node *node);
-
-t_tokeniser_error	tokenise(char *expr, t_vec *command);
-void				parse_token_btree(t_vec *expr, t_btree_node *node);
+bool				parse_token_btree(t_vec *expr, t_btree_node *node);
 
 # endif

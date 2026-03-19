@@ -1,9 +1,9 @@
 #include "token.h"
 
 /* 0 = error */
-unsigned int	get_matching_parethese(t_vec *expr, unsigned int index)
+int	get_matching_parethese(t_vec *expr, unsigned int index)
 {
-	unsigned int	count;
+	int	count;
 	t_token			*token;
 
 	count = 0;
@@ -30,7 +30,7 @@ bool	is_a_delimiter(t_token *token)
 
 bool	is_in_paretheses(t_vec *expr, unsigned int index, unsigned int end)
 {
-	unsigned int	count;
+	int	count;
 	t_token			*token;
 
 	token = (t_token *)vec_get(expr, index);
@@ -47,7 +47,7 @@ bool	is_in_paretheses(t_vec *expr, unsigned int index, unsigned int end)
 			count++;
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			count--;
-		if (count == 0)
+		if (count <= 0)
 			return (false);
 		index++;
 	}
@@ -76,7 +76,7 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 	return (false);
 }
 
-void	parse_token_btree(t_vec *expr, t_btree_node *node)
+bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 {
 	t_btree_node	*btree_a;
 	t_btree_node	*btree_b;
@@ -95,7 +95,7 @@ void	parse_token_btree(t_vec *expr, t_btree_node *node)
 		node->operator = operator_none;
 		node->left = NULL;
 		node->right = NULL;
-		return ;
+		return (true);
 	}
 	btree_a = malloc(sizeof(t_btree_node));
 	btree_b = malloc(sizeof(t_btree_node));
@@ -108,7 +108,11 @@ void	parse_token_btree(t_vec *expr, t_btree_node *node)
 	{
 		expr_stop = get_matching_parethese(expr, node->expr_stop);
 		if (!expr_stop)
-			printf("Parsing error my bro.");
+		{
+			printf("Parsing error my bro.\n");
+			// TODO: It leaks here bro
+			return (false);
+		}
 		btree_b->expr_stop = node->expr_stop;
 		operator_index = expr_stop - 1;
 	}
@@ -126,8 +130,10 @@ void	parse_token_btree(t_vec *expr, t_btree_node *node)
 	btree_b->expr_start = operator_index + 1;
 	node->left = btree_a;
 	node->right = btree_b;
-	parse_token_btree(expr, node->left);
-	parse_token_btree(expr, node->right);
+	if (!parse_token_btree(expr, node->left))
+		return (false);
+	if (!parse_token_btree(expr, node->right))
+		return (false);
 	token = (t_token *)vec_get(expr, operator_index);
 	if (token->data.data[0] == '&')
 		node->operator= operator_and;
@@ -135,4 +141,5 @@ void	parse_token_btree(t_vec *expr, t_btree_node *node)
 		node->operator= operator_or;
 	else if (token->data.data[0] == ';')
 		node->operator= operator_semicolon;
+	return (true);
 }
