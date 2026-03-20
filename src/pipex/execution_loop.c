@@ -6,20 +6,20 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/19 10:23:44 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:46:06 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	fork_pid(t_pipex *pipex_var, char *cmd_path)
+int	fork_pid(t_pipex *pipex_var)
 {
 	pipex_var->pid[pipex_var->pid_i] = fork();
 	pipex_var->pid_i++;
 	if (pipex_var->pid[pipex_var->pid_i - 1] == -1)
 		return (-1);
 	else if (pipex_var->pid[pipex_var->pid_i - 1] == 0)
-		take_child(pipex_var, cmd_path);
+		take_child(pipex_var);
 	close(pipex_var->fds[0]);
 	close(pipex_var->fds[2]);
 	return (pipex_var->fds[1]);
@@ -37,9 +37,7 @@ int	child_gestion(t_pipex *pipex_var)
 		pipex_var->fds[0] = fake_fdin();
 		return (1);
 	}
-	pipex_var->fds[0] = fork_pid(pipex_var, pipex_var->cmd->name);
-	if (pipex_var->cmd->name)
-		free(pipex_var->cmd->name);
+	pipex_var->fds[0] = fork_pid(pipex_var);
 	if (pipex_var->fds[0] == -1)
 		return (1);
 	if (!pipex_var->cmd->next)

@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/03/30 11:41:55 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/03/20 08:26:29 by lchamard         ###   ########.fr       */
->>>>>>> 30ec9dc ([pipe commande] : change vec commande to a pipe of commande)
+/*   Created: 2026/03/30 14:16:06 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/30 14:16:07 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +165,14 @@ int	main(int argc, char **argv, char **env)
 		vec_append(&expr, argv[i]);
 		i++;
 	}
+<<<<<<< HEAD
 	vec_to_cmd(root, &expr);
 <<<<<<< HEAD
 >>>>>>> ea268c4 ([vec to cmd] : function to convert a vec into a cmd)
 =======
+=======
+	vec_to_cmd(root, &expr, env);
+>>>>>>> 43c816e ([cmd path unset] : Correct the error on the def of the path set)
 	exec_binary_tree(root, env);
 >>>>>>> 30ec9dc ([pipe commande] : change vec commande to a pipe of commande)
 }

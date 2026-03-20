@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42->fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 09:00:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 09:02:17 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/20 16:36:09 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_append(char ***dest, const char *src)
 	*dest = new_array;
 }
 
-void	grab_command(int *i, t_btree_node *node, t_vec *expr)
+void	grab_command(int *i, t_btree_node *node, t_vec *expr, char **env)
 {
 	t_cmd	*new_cmd;
 
@@ -75,6 +75,11 @@ void	grab_command(int *i, t_btree_node *node, t_vec *expr)
 		else
 		{
 			ft_append(&new_cmd->argv, vec_get(expr, *i));
+			if (!(new_cmd->name))
+			{
+				new_cmd->name = vec_get(expr, *i);
+				get_cmd_path(&new_cmd, env);
+			}
 		}
 		(*i)++;
 	}
@@ -83,12 +88,12 @@ void	grab_command(int *i, t_btree_node *node, t_vec *expr)
 	ft_cmdadd_back(&(node->cmds), &new_cmd);
 }
 
-int vec_to_cmd(t_btree_node *node, t_vec *expr)
+int vec_to_cmd(t_btree_node *node, t_vec *expr, char **env)
 {
 	int		i;
 
 	i = node->expr_start;
 	while (i < node->expr_end)
-		grab_command(&i, node, expr);
+		grab_command(&i, node, expr, env);
 	return (0);
 }
