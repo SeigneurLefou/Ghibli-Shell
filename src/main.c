@@ -6,7 +6,11 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/03/30 11:41:55 by lchamard         ###   ########.fr       */
+=======
+/*   Updated: 2026/03/20 08:26:29 by lchamard         ###   ########.fr       */
+>>>>>>> 30ec9dc ([pipe commande] : change vec commande to a pipe of commande)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +163,6 @@ int	main(int argc, char **argv, char **env)
 	t_vec expr;
 	root->expr_start = 0;
 	root->expr_end = argc - 1;
-	write(1, "A\n", 2);
 	vec_init(&expr, sizeof(char *), 1);
 	while (i < argc)
 	{
@@ -167,7 +170,11 @@ int	main(int argc, char **argv, char **env)
 		i++;
 	}
 	vec_to_cmd(root, &expr);
+<<<<<<< HEAD
 >>>>>>> ea268c4 ([vec to cmd] : function to convert a vec into a cmd)
+=======
+	exec_binary_tree(root, env);
+>>>>>>> 30ec9dc ([pipe commande] : change vec commande to a pipe of commande)
 }
 
 // 'echo a && (echo b && echo c)'

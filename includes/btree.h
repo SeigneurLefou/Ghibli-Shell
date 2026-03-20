@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 11:25:56 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:14:07 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ typedef struct s__btree
 	struct s_btree_node	root_node;
 }								t_btree;
 
-int		exec_binary_tree(t_btree *tree, char **env);
-int		exec_pipe(t_cmd cmds, char **env);
+int		exec_binary_tree(t_btree_node *tree, char **env);
+int		exec_pipe(t_cmd *cmds, char **env);
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
 
 #endif

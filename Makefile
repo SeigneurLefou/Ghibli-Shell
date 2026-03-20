@@ -18,6 +18,9 @@ include src/pipex/Makefile
 include src/list/Makefile
 include src/gnl/Makefile
 include src/cmd/Makefile
+include src/libft/Makefile
+include src/btree/Makefile
+include src/list/Makefile
 include src/vec/Makefile
 include src/vec_to_cmd/Makefile
 
