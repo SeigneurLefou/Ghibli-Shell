@@ -3,6 +3,9 @@
 
 # include "btree.h"
 
-int vec_to_cmd(t_btree_node *node, t_vec *expr);
+int 	vec_to_cmd(t_btree_node *node, t_vec *expr);
+void	ft_append(char ***dest, const char *src);
+void	grab_command(int *i, t_btree_node *node, t_vec *expr);
+size_t	ft_array_strlen(char **array_str);
 
 #endif

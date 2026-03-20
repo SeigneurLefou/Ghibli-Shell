@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/19 11:30:26 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/20 08:26:29 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **env)
 	t_vec expr;
 	root->expr_start = 0;
 	root->expr_end = argc - 1;
-	write(1, "A\n", 2);
 	vec_init(&expr, sizeof(char *), 1);
 	while (i < argc)
 	{
@@ -27,4 +26,5 @@ int	main(int argc, char **argv, char **env)
 		i++;
 	}
 	vec_to_cmd(root, &expr);
+	exec_binary_tree(root, env);
 }
