@@ -1,8 +1,8 @@
 #ifndef TOKEN_H
 # define TOKEN_H
 
-# include "vec.h"
 # include "btree.h"
+# include "vec.h"
 # include <stdio.h>
 # include <unistd.h>
 
@@ -24,9 +24,30 @@ typedef enum e_tokeniser_error
 {
 	tokeniser_error_succes,
 	tokeniser_error_unterminated_quoted_string,
-}					t_tokeniser_error;
+}							t_tokeniser_error;
 
-t_tokeniser_error	tokenise(char *expr, t_vec *command);
-bool				parse_token_btree(t_vec *expr, t_btree_node *node);
+typedef enum e_parsing_error_type
+{
+	parsing_error_success,
+	parsing_error_unmatching_parentheses,
+	parsing_error_incorrect_left_operand,
+	parsing_error_incorrect_right_operand,
+	parsing_error_empty_parentheses,
+	parsing_error_unsuported_arithmetic,
+}							t_parsing_error_type;
 
-# endif
+typedef struct s_parsing_checker_result
+{
+	t_parsing_error_type	parsing_error;
+	unsigned int			index1;
+	unsigned int			index2;
+}							t_parsing_checker_result;
+
+t_tokeniser_error			tokenise(char *expr, t_vec *command);
+bool						parse_token_btree(t_vec *expr, t_btree_node *node);
+t_parsing_checker_result	check_matching_parentheses(t_vec *expr);
+t_parsing_checker_result    check_unsuported_arithmetic(t_vec *expr);
+t_parsing_checker_result	check_empty_parentheses(t_vec *expr);
+t_parsing_checker_result	check_missing_operand(t_vec *expr);
+
+#endif

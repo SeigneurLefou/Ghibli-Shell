@@ -38,6 +38,40 @@ int	main(int argc, char **argv, char **env)
 	if (result == tokeniser_error_unterminated_quoted_string)
 		printf("Parser error: Unterminated quoted string.\n");
 
+	t_parsing_checker_result parentheses_checker_result = check_matching_parentheses(&parsed);
+	if (parentheses_checker_result.parsing_error != parsing_error_success)
+		printf("Unmatching parenthesis at token %d!\n", parentheses_checker_result.index1);
+	else
+		printf("Fine !\n");
+
+	t_parsing_checker_result arithmetic_checker_result = check_unsuported_arithmetic(&parsed);
+	if (arithmetic_checker_result.parsing_error != parsing_error_success)
+		printf("Unsuported arithmetic detected between tokens %d and %d!\n", arithmetic_checker_result.index1, arithmetic_checker_result.index2);
+	else
+		printf("Fine !\n");
+		
+	t_parsing_checker_result empty_par_checker_result = check_empty_parentheses(&parsed);
+	if (empty_par_checker_result.parsing_error != parsing_error_success)
+		printf("Empty parentheses at token %d!\n", empty_par_checker_result.index1);
+	else
+		printf("Fine !\n");
+
+	t_parsing_checker_result missing_operand_checker_result = check_missing_operand(&parsed);
+	if (missing_operand_checker_result.parsing_error == parsing_error_incorrect_right_operand)
+		printf("Wrong right operand at token %d needed by operator at token %d!\n", missing_operand_checker_result.index1, missing_operand_checker_result.index2);
+	else if (missing_operand_checker_result.parsing_error == parsing_error_incorrect_left_operand)
+		printf("Wrong left operand at token %d needed by operator at token %d!\n", missing_operand_checker_result.index1, missing_operand_checker_result.index2);
+	else 
+		printf("Fine !\n");
+
+	for (unsigned int i = 0; i < parsed.size; i++)
+	{
+		vec_free(&((t_token *)vec_get(&parsed, i))->data);
+	}
+	vec_free(&parsed);
+	
+	return 0;
+
 	unsigned int i = 0;
 	while (i < parsed.size)
 	{
