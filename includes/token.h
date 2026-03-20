@@ -34,6 +34,8 @@ typedef enum e_parsing_error_type
 	parsing_error_incorrect_right_operand,
 	parsing_error_empty_parentheses,
 	parsing_error_unsuported_arithmetic,
+	parsing_error_no_operator_left_parenthese,
+	parsing_error_no_operator_right_parenthese
 }							t_parsing_error_type;
 
 typedef struct s_parsing_checker_result
@@ -45,9 +47,6 @@ typedef struct s_parsing_checker_result
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);
 bool						parse_token_btree(t_vec *expr, t_btree_node *node);
-t_parsing_checker_result	check_matching_parentheses(t_vec *expr);
-t_parsing_checker_result    check_unsuported_arithmetic(t_vec *expr);
-t_parsing_checker_result	check_empty_parentheses(t_vec *expr);
-t_parsing_checker_result	check_missing_operand(t_vec *expr);
+t_parsing_checker_result    check_syntax(t_vec *expr);
 
 #endif

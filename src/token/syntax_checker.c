@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:43:04 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/20 17:50:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/20 18:30:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_parsing_checker_result	check_matching_parentheses(t_vec *expr)
 	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
 }
 
-unsigned int	check_matching_parentheses_left(t_vec *expr, unsigned int index)
+unsigned int	get_matching_parentheses_left(t_vec *expr, unsigned int index)
 {
 	int		count;
 	t_token	*token;
@@ -79,8 +79,8 @@ t_parsing_checker_result	check_unsuported_arithmetic(t_vec *expr)
 			&& token2->type == token_type_scope_delimiter
 			&& token2->data.data[0] == '(')
 		{
-			matching1 = check_matching_parentheses_left(expr, index);
-			matching2 = check_matching_parentheses_left(expr, index + 1);
+			matching1 = get_matching_parentheses_left(expr, index);
+			matching2 = get_matching_parentheses_left(expr, index + 1);
 			if (matching2 + 1 == matching1)
 				return ((t_parsing_checker_result){parsing_error_unsuported_arithmetic,
 					index, matching1});
@@ -140,3 +140,54 @@ t_parsing_checker_result	check_missing_operand(t_vec *expr)
 	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
 }
 
+t_parsing_checker_result	check_no_operator_parentheses(t_vec *expr)
+{
+	unsigned int	index;
+	t_token			*token;
+
+	index = 1;
+	while (index < expr->size - 1)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_scope_delimiter
+			&& token->data.data[0] == '(')
+		{
+			token = (t_token *)vec_get(expr, index - 1);
+			if (!(token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == '(')))
+				return ((t_parsing_checker_result){parsing_error_no_operator_left_parenthese,
+					index, index + 1});
+		}
+		else if (token->type == token_type_scope_delimiter
+			&& token->data.data[0] == ')')
+		{
+			token = (t_token *)vec_get(expr, index + 1);
+			if (!(token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == ')')))
+				return ((t_parsing_checker_result){parsing_error_no_operator_right_parenthese,
+					index, index - 1});
+		}
+		index++;
+	}
+	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
+}
+
+t_parsing_checker_result    check_syntax(t_vec *expr)
+{
+    t_parsing_checker_result result;
+    
+    result = check_matching_parentheses(expr);
+	if (result.parsing_error != parsing_error_success)
+		return (result);
+    result = check_empty_parentheses(expr);
+	if (result.parsing_error != parsing_error_success)
+		return (result);
+    result = check_missing_operand(expr);
+	if (result.parsing_error != parsing_error_success)
+		return (result);
+    result = check_unsuported_arithmetic(expr);
+	if (result.parsing_error != parsing_error_success)
+		return (result);
+    result = check_no_operator_parentheses(expr);
+	if (result.parsing_error != parsing_error_success)
+		return (result);  
+    return ((t_parsing_checker_result){parsing_error_success, 0, 0});
+}

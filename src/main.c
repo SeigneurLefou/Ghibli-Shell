@@ -29,50 +29,29 @@ void print_tree(t_vec *expr, t_btree_node *node)
 	}
 }
 
+void free_tokens(t_vec *expr)
+{
+	for (unsigned int i = 0; i < expr->size; i++)
+	{
+		vec_free(&((t_token *)vec_get(expr, i))->data);
+	}
+	vec_free(expr);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
-		printf("Parser success\n");
+		printf("Parser success! Nice!\n");
 	if (result == tokeniser_error_unterminated_quoted_string)
-		printf("Parser error: Unterminated quoted string.\n");
-
-	t_parsing_checker_result parentheses_checker_result = check_matching_parentheses(&parsed);
-	if (parentheses_checker_result.parsing_error != parsing_error_success)
-		printf("Unmatching parenthesis at token %d!\n", parentheses_checker_result.index1);
-	else
-		printf("Fine !\n");
-
-	t_parsing_checker_result arithmetic_checker_result = check_unsuported_arithmetic(&parsed);
-	if (arithmetic_checker_result.parsing_error != parsing_error_success)
-		printf("Unsuported arithmetic detected between tokens %d and %d!\n", arithmetic_checker_result.index1, arithmetic_checker_result.index2);
-	else
-		printf("Fine !\n");
-		
-	t_parsing_checker_result empty_par_checker_result = check_empty_parentheses(&parsed);
-	if (empty_par_checker_result.parsing_error != parsing_error_success)
-		printf("Empty parentheses at token %d!\n", empty_par_checker_result.index1);
-	else
-		printf("Fine !\n");
-
-	t_parsing_checker_result missing_operand_checker_result = check_missing_operand(&parsed);
-	if (missing_operand_checker_result.parsing_error == parsing_error_incorrect_right_operand)
-		printf("Wrong right operand at token %d needed by operator at token %d!\n", missing_operand_checker_result.index1, missing_operand_checker_result.index2);
-	else if (missing_operand_checker_result.parsing_error == parsing_error_incorrect_left_operand)
-		printf("Wrong left operand at token %d needed by operator at token %d!\n", missing_operand_checker_result.index1, missing_operand_checker_result.index2);
-	else 
-		printf("Fine !\n");
-
-	for (unsigned int i = 0; i < parsed.size; i++)
 	{
-		vec_free(&((t_token *)vec_get(&parsed, i))->data);
+		free_tokens(&parsed);
+		printf("Parser error: Unterminated quoted string.\n");
+		return (1);	
 	}
-	vec_free(&parsed);
-	
-	return 0;
 
-	unsigned int i = 0;
+	/*unsigned int i = 0;
 	while (i < parsed.size)
 	{
 		t_token cmd = *(t_token *)vec_get(&parsed, i);
@@ -83,7 +62,31 @@ int	main(int argc, char **argv, char **env)
 		write(1, (char *)cmd.data.data, cmd.data.size);
 		write(1, "\n", 1);
 		i++;
+	}*/
+
+	t_parsing_checker_result parser_result = check_syntax(&parsed);
+	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
+		printf("Parser Error: Unmatching parenthesis at token %d!\n", parser_result.index1);
+	else if (parser_result.parsing_error == parsing_error_unsuported_arithmetic)
+		printf("Parser Error: Unsuported arithmetic detected between tokens %d and %d!\n", parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parsing_error_empty_parentheses)
+		printf("Parser Error: Empty parentheses at token %d!\n", parser_result.index1);
+	else if (parser_result.parsing_error == parsing_error_incorrect_right_operand)
+		printf("Parser Error: Wrong right operand at token %d needed by operator at token %d!\n", parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parsing_error_incorrect_left_operand)
+		printf("Parser Error: Wrong left operand at token %d needed by operator at token %d!\n", parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parsing_error_no_operator_left_parenthese)
+		printf("Parser Error: No operator before parenthese at token %d!\n", parser_result.index1);
+	else if (parser_result.parsing_error == parsing_error_no_operator_right_parenthese)
+		printf("Parser Error: No operator after parenthese at token %d!\n", parser_result.index1);
+	else
+		printf("Parser is happy!\n");
+	if (parser_result.parsing_error != parsing_error_success)
+	{
+		free_tokens(&parsed);
+		return (1);
 	}
+	
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
 	root->expr_stop = parsed.size - 1;
@@ -93,12 +96,7 @@ int	main(int argc, char **argv, char **env)
 	print_tree(&parsed, root);
 	write(1, "\n", 1);
 	
-	for (unsigned int i = 0; i < parsed.size; i++)
-	{
-		vec_free(&((t_token *)vec_get(&parsed, i))->data);
-	}
-	vec_free(&parsed);
-
+	free_tokens(&parsed);
 }
 
 // 'echo a && (echo b && echo c)'
