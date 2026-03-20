@@ -28,7 +28,7 @@ bool	is_a_delimiter(t_token *token)
 			|| token->data.data[0] == ';'));
 }
 
-bool	is_in_paretheses(t_vec *expr, unsigned int index, unsigned int end)
+bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 {
 	int	count;
 	t_token			*token;
@@ -83,7 +83,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	unsigned int	expr_stop;
 	t_token			*token;
 
-	if (is_in_paretheses(expr, node->expr_start, node->expr_stop))
+	if (is_in_parentheses(expr, node->expr_start, node->expr_stop))
 	{
 		node->expr_start++;
 		node->expr_stop--;
