@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 08:36:17 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:36:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_btree_node
 	unsigned int				expr_end;
 	t_operator					operator;
 	t_cmd						*cmds;
+	int							wstatus;
+	int							pipe_fdo;
 	struct s_btree_node	*left;
 	struct s_btree_node	*right;
 }								t_btree_node;

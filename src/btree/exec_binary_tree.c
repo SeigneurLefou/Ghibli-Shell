@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/23 11:30:43 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/23 18:07:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,46 +23,44 @@ t_pipex	cmd_to_pipex(t_cmd *cmd, char **env)
 	return (pipex_var);
 }
 
-int	exec_pipe(t_cmd *cmds, char **env)
+int	exec_pipe(t_tree *tree, char **env)
 {
 	int		werror;
 	int		exit_code;
 	t_pipex	pipex_var;
 	t_cmd	*cmd_save;
 
-	/*if (!cmds)
-	{
-		ft_printf(strerror(EINVAL));
-		exit(1);
-	}*/
-	pipex_var = cmd_to_pipex(cmds, env);
+	pipex_var = cmd_to_pipex(tree->cmds, env);
 	execution_loop(&pipex_var);
 	close(pipex_var.fds[0]);
 	werror = wait_all_pid(&pipex_var);
 	exit_code = give_exit_code(werror);
-	exit(exit_code);
+	return (exit_code);
 }
 
 int	exec_binary_tree(t_btree_node *tree, char **env)
 {
-	int	wstatus_left;
-	int	wstatus_right;
-
 	if (!tree->left && !tree->right)
-		wstatus_left = exec_pipe(tree->cmds, env);
+		exec_pipe(tree, env);
 	if (tree->left)
-		wstatus_left = exec_binary_tree(tree->left, env);
-	if (!wstatus_left && tree->operator == operator_and && tree->right)
+	{
+		exec_binary_tree(tree->left, env);
+		tree->wstatus = tree->left->wstatus; 
+	}
+	if (!tree->left->wstatus && tree->operator == operator_and && tree->right)
+	{
 		wstatus_right = exec_binary_tree(tree->right, env);
-	else if (wstatus_left && tree->operator == operator_or && tree->right)
+		tree->wstatus = tree->right->wstatus & tree->wstatus; 
+	}
+	else if (tree->left->wstatus && tree->operator == operator_or && tree->right)
+	{
 		wstatus_right = exec_binary_tree(tree->right, env);
+		tree->wstatus = tree->right->wstatus | tree->wstatus; 
+	}
 	else if (tree->operator == operator_semicolon && tree->right)
+	{
 		wstatus_right = exec_binary_tree(tree->right, env);
-	if (tree->operator == operator_and)
-		return (wstatus_left & wstatus_right);
-	else if (tree->operator == operator_or)
-		return (wstatus_left | wstatus_right);
-	else if (tree->operator == operator_semicolon)
-		return (wstatus_right);
-	return (1);
+		tree->wstatus = tree->right->wstatus;
+	}
+	return (tree->wstatus);
 }
