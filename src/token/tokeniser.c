@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/23 14:27:56 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:11:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *curr
 			return (false);
 		if (!push_char(current_token, expr[*i]))
 			return (false);
-		(*i) ++;
+		//(*i) ++;
 		if (!append_token(command, current_token, token_type_command_delimiter))
 			return (false);
 	}
@@ -106,18 +106,22 @@ bool parse_token_double_quote(char *expr, unsigned int *i, t_token *current_toke
 		if (is_escape(expr[*i], *quote_char))
 		{
 			char escaped_char = get_escape(expr[*i]);
-			push_char(current_token, escaped_char);
+			if (!push_char(current_token, escaped_char))
+				return (false);
 		}
 		else
 		{
-			push_char(current_token, '\\');
-			push_char(current_token, expr[*i]);
+			if (!push_char(current_token, '\\'))
+				return (false);
+			if (!push_char(current_token, expr[*i]))
+				return (false);
 		}
 	}
 	else if (expr[*i] == '"')
 		(*quote_char) = 0;
 	else
-		push_char(current_token, expr[*i]);
+		if (!push_char(current_token, expr[*i]))
+			return (false);
 	return (true);
 }
 
@@ -163,10 +167,10 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 			if (expr[i] == '\\' && expr[i + 1])
 				push_char(&current_token, expr[++i]);
 			else if (expr[i] == '"')
-				{
-					push_char(&current_token, 0);
-					quote_char = '"';
-				}
+			{
+				push_char(&current_token, 0);
+				quote_char = '"';
+			}
 			else if (expr[i] == '\'')
 			{
 				push_char(&current_token, 0);
