@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 17:46:06 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:08:55 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ int	pipe_gestion(t_pipex *pipex_var)
 {
 	int		pipe_error;
 
-	if (pipex_var->cmd->input_file)
+	if (pipex_var->cmd->output_file)
 	{
-		if (!access(pipex_var->cmd->input_file, F_OK)
-			&& access(pipex_var->cmd->input_file, W_OK))
+		if (!access(pipex_var->cmd->output_file, F_OK)
+			&& access(pipex_var->cmd->output_file, W_OK))
 		{
 			if (errno)
 				perror(pipex_var->cmd->name);
 			return (1);
 		}
-		pipex_var->fds[2] = open(pipex_var->cmd->input_file,
+		pipex_var->fds[2] = open(pipex_var->cmd->output_file,
 				O_CREAT | O_WRONLY | pipex_var->cmd->open_mode, 0644);
 		if (pipex_var->fds[2] == -1)
 			return (1);
@@ -80,8 +80,6 @@ int	infile_gestion(t_pipex *pipex_var)
 			pipex_var->fds[0] = here_doc_file(pipex_var->cmd->input_file);
 		else if (pipex_var->cmd->input_file)
 			pipex_var->fds[0] = open(pipex_var->cmd->input_file, O_RDONLY, 0644);
-		else
-			pipex_var->fds[0] = 0;
 		if (errno)
 			perror(pipex_var->cmd->input_file);
 		if (pipex_var->fds[0] == -1)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/30 14:16:06 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:16:07 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/30 14:17:38 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/30 14:18:08 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void free_tokens(t_vec *expr)
 
 int	main(int argc, char **argv, char **env)
 {
-<<<<<<< HEAD
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
@@ -153,7 +152,6 @@ int	main(int argc, char **argv, char **env)
 	write(1, "\n", 1);
 	
 	free_tokens(&parsed);
-=======
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	int i = 1;
 	t_vec expr;
@@ -165,16 +163,9 @@ int	main(int argc, char **argv, char **env)
 		vec_append(&expr, argv[i]);
 		i++;
 	}
-<<<<<<< HEAD
 	vec_to_cmd(root, &expr);
-<<<<<<< HEAD
->>>>>>> ea268c4 ([vec to cmd] : function to convert a vec into a cmd)
-=======
-=======
 	vec_to_cmd(root, &expr, env);
->>>>>>> 43c816e ([cmd path unset] : Correct the error on the def of the path set)
 	exec_binary_tree(root, env);
->>>>>>> 30ec9dc ([pipe commande] : change vec commande to a pipe of commande)
 }
 
 // 'echo a && (echo b && echo c)'

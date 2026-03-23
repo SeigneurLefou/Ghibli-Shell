@@ -6,11 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/03/30 11:41:37 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/03/20 08:36:33 by lchamard         ###   ########.fr       */
->>>>>>> 30ec9dc ([pipe commande] : change vec commande to a pipe of commande)
+/*   Updated: 2026/03/30 14:18:25 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
