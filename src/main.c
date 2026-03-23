@@ -43,11 +43,11 @@ int	main(int argc, char **argv, char **env)
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
-		printf("Parser success! Nice!\n");
+		printf("Tokeniser success! Nice!\n");
 	if (result == tokeniser_error_unterminated_quoted_string)
 	{
 		free_tokens(&parsed);
-		printf("Parser error: Unterminated quoted string.\n");
+		printf("Tokeniser error: Unterminated quoted string.\n");
 		return (1);	
 	}
 

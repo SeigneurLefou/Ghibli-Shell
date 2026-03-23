@@ -6,20 +6,22 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 17:29:03 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:27:56 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
-void append_token(t_vec *command, t_token *token, t_token_type type)
+bool append_token(t_vec *command, t_token *token, t_token_type type)
 {
 	if (token->type != token_type_void)
 	{
 		token->type = type;
-		vec_append(command, token);
+		if (!vec_append(command, token))
+			return (false);
 	}
 	token->type = token_type_void;
+	return (true);
 }
 
 bool push_char(t_token *token, char c)
@@ -31,7 +33,8 @@ bool push_char(t_token *token, char c)
 			return (false);
 	}	
 	if (c)
-		vec_append(&token->data, &c);
+		if (!vec_append(&token->data, &c))
+			return (false);
 	return (true);
 }
 
@@ -57,6 +60,90 @@ char is_escape(char escaped_char, char quote)
 		return (escaped_char == '\\');
 }
 
+bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *current_token)
+{
+	if (expr[(*i) + 1] == expr[*i])
+	{
+		if (!append_token(command, current_token, token_type_plain))
+			return (false);
+		(*i) ++;
+		if (!push_char(current_token, expr[*i]))
+			return (false);
+		if (!push_char(current_token, expr[*i]))
+			return (false);
+		if (!append_token(command, current_token, token_type_scope_delimiter))
+			return (false);
+	}
+	else
+	{
+		if (!append_token(command, current_token, token_type_plain))
+			return (false);
+		if (!push_char(current_token, expr[*i]))
+			return (false);
+		(*i) ++;
+		if (!append_token(command, current_token, token_type_command_delimiter))
+			return (false);
+	}
+	return (true);
+}
+
+bool add_simple_token(char *expr, unsigned int i, t_vec *command, t_token *current_token)
+{
+	if (!append_token(command, current_token, token_type_plain))
+		return (false);
+	if (!push_char(current_token, expr[i]))
+		return (false);
+	if (!append_token(command, current_token, token_type_scope_delimiter))
+		return (false);
+	return (true);
+}
+
+bool parse_token_double_quote(char *expr, unsigned int *i, t_token *current_token, char *quote_char)
+{
+	if (expr[*i] == '\\' && expr[(*i) + 1])
+	{
+		(*i)++;
+		if (is_escape(expr[*i], *quote_char))
+		{
+			char escaped_char = get_escape(expr[*i]);
+			push_char(current_token, escaped_char);
+		}
+		else
+		{
+			push_char(current_token, '\\');
+			push_char(current_token, expr[*i]);
+		}
+	}
+	else if (expr[*i] == '"')
+		(*quote_char) = 0;
+	else
+		push_char(current_token, expr[*i]);
+	return (true);
+}
+
+bool parse_token_simple_quote(char *expr, unsigned int *i, t_token *current_token, char *quote_char)
+{
+	if (expr[*i] == '\\' && expr[(*i) + 1])
+	{
+		(*i)++;
+		if (is_escape(expr[*i], *quote_char))
+		{
+			char escaped_char = get_escape(expr[*i]);
+			push_char(current_token, escaped_char);
+		}
+		else
+		{
+			push_char(current_token, '\\');
+			push_char(current_token, expr[*i]);
+		}
+	}
+	else if (expr[*i] == '\'')
+		quote_char = 0;
+	else
+		push_char(current_token, expr[*i]);
+	return (true);
+}
+
 t_tokeniser_error tokenise(char *expr, t_vec *command)
 {
 	vec_init(command, sizeof(t_token), 4);
@@ -68,47 +155,9 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 	while (expr[i])
 	{
 		if (quote_char == '"')
-		{
-			if (expr[i] == '\\' && expr[i + 1])
-			{
-				i++;
-				if (is_escape(expr[i], quote_char))
-				{
-					char escaped_char = get_escape(expr[i]);
-					push_char(&current_token, escaped_char);
-				}
-				else
-				{
-					push_char(&current_token, '\\');
-					push_char(&current_token, expr[i]);
-				}
-			}
-			else if (expr[i] == '"')
-				quote_char = 0;
-			else
-				push_char(&current_token, expr[i]);
-		}
+			parse_token_double_quote(expr, &i, &current_token, &quote_char);
 		else if (quote_char == '\'')
-		{
-			if (expr[i] == '\\' && expr[i + 1])
-			{
-				i++;
-				if (is_escape(expr[i], quote_char))
-				{
-					char escaped_char = get_escape(expr[i]);
-					push_char(&current_token, escaped_char);
-				}
-				else
-				{
-					push_char(&current_token, '\\');
-					push_char(&current_token, expr[i]);
-				}
-			}
-			else if (expr[i] == '\'')
-				quote_char = 0;
-			else
-				push_char(&current_token, expr[i]);
-		}
+			parse_token_simple_quote(expr, &i, &current_token, &quote_char);
 		else
 		{
 			if (expr[i] == '\\' && expr[i + 1])
@@ -123,100 +172,12 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				push_char(&current_token, 0);
 				quote_char = '\'';
 			}
-			else if (expr[i] == '(')
-			{
-				append_token(command, &current_token, token_type_plain);
-				push_char(&current_token, '(');
-				append_token(command, &current_token, token_type_scope_delimiter);
-			}
-			else if (expr[i] == ')')
-			{
-				append_token(command, &current_token, token_type_plain);
-				push_char(&current_token, ')');
-				append_token(command, &current_token, token_type_scope_delimiter);
-			}
-			else if (expr[i] == ';')
-			{
-				append_token(command, &current_token, token_type_plain);
-				push_char(&current_token, ';');
-				append_token(command, &current_token, token_type_scope_delimiter);
-			}
-			else if (expr[i] == '|')
-			{
-				if (expr[i + 1] == '|')
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '|');
-					push_char(&current_token, '|');
-					append_token(command, &current_token, token_type_scope_delimiter);
-				}
-				else
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '|');
-					append_token(command, &current_token, token_type_command_delimiter);
-				}
-			}
-			else if (expr[i] == '&')
-			{
-				if (expr[i + 1] == '&')
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '&');
-					push_char(&current_token, '&');
-					append_token(command, &current_token, token_type_scope_delimiter);
-				}
-				else
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '&');
-					append_token(command, &current_token, token_type_command_delimiter);
-				}
-			}
-			else if (expr[i] == '<')
-			{
-				if (expr[i + 1] == '<')
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '<');
-					push_char(&current_token, '<');
-					append_token(command, &current_token, token_type_command_delimiter);
-				}
-				else
-					{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '<');
-					append_token(command, &current_token, token_type_command_delimiter);
-				}
-			}
-			else if (expr[i] == '>')
-			{
-				if (expr[i + 1] == '>')
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '>');
-					push_char(&current_token, '>');
-					append_token(command, &current_token, token_type_command_delimiter);
-				}
-				else
-				{
-					append_token(command, &current_token, token_type_plain);
-					i ++;
-					push_char(&current_token, '>');
-					append_token(command, &current_token, token_type_command_delimiter);
-				}
-			}
+			else if (expr[i] == '(' || expr[i] == ')' || expr[i] == ';')
+				add_simple_token(expr, i, command, &current_token);
+			else if (expr[i] == '>' || expr[i] == '<' || expr[i] == '&' || expr[i] == '|')
+				add_double_token(expr, &i, command, &current_token);
 			else if (expr[i] == ' ')
-			{
 				append_token(command, &current_token, token_type_plain);
-			}
 			else
 				push_char(&current_token, expr[i]);
 		}
