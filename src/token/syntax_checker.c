@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:43:04 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/23 13:38:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:45:43 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,17 @@ t_parsing_checker_result	check_missing_operand(t_vec *expr)
 	while (index < expr->size)
 	{
 		token = (t_token *)vec_get(expr, index);
-        if (token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';'))
+        if ((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';') || token->type == token_type_command_delimiter))
         {
             if (index == 0)
                 return ((t_parsing_checker_result){parsing_error_incorrect_left_operand, 0, 1});
             if (index == expr->size - 1)
                 return ((t_parsing_checker_result){parsing_error_incorrect_right_operand, 0, 1});
             token = (t_token *)vec_get(expr, index - 1);
-            if (token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';'))
+            if ((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';') || token->type == token_type_command_delimiter))
                 return ((t_parsing_checker_result){parsing_error_incorrect_left_operand, index - 1, index});
             token = (t_token *)vec_get(expr, index + 1);
-            if (token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';'))
+            if ((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';') || token->type == token_type_command_delimiter))
                 return ((t_parsing_checker_result){parsing_error_incorrect_right_operand, index + 1, index});
         }
         index++;
@@ -153,7 +153,7 @@ t_parsing_checker_result	check_no_operator_parentheses(t_vec *expr)
 			&& token->data.data[0] == '(')
 		{
 			token = (t_token *)vec_get(expr, index - 1);
-			if (!(token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == '(')))
+			if (!((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == '(')) || token->type == token_type_command_delimiter))
 				return ((t_parsing_checker_result){parsing_error_no_operator_left_parenthese,
 					index, index + 1});
 		}
@@ -161,7 +161,7 @@ t_parsing_checker_result	check_no_operator_parentheses(t_vec *expr)
 			&& token->data.data[0] == ')')
 		{
 			token = (t_token *)vec_get(expr, index + 1);
-			if (!(token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == ')')))
+			if (!((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == ')')) || token->type == token_type_command_delimiter))
 				return ((t_parsing_checker_result){parsing_error_no_operator_right_parenthese,
 					index, index - 1});
 		}

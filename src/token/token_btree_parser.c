@@ -21,11 +21,11 @@ int	get_matching_parethese(t_vec *expr, unsigned int index)
 	return (0);
 }
 
-bool	is_a_delimiter(t_token *token)
+bool	is_a_delimiter(t_token *token, bool allow_file_redirection)
 {
-	return (token->type == token_type_scope_delimiter
+	return ((token->type == token_type_scope_delimiter
 		&& (token->data.data[0] == '&' || token->data.data[0] == '|'
-			|| token->data.data[0] == ';'));
+			|| token->data.data[0] == ';')) || ((token->type == token_type_command_delimiter && token->data.data[0] == '>' && token->data.data[0] == '<') && allow_file_redirection));
 }
 
 bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
@@ -69,7 +69,7 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 			parenthese_count++;
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			parenthese_count--;
-		if (is_a_delimiter(token) && !parenthese_count)
+		if (is_a_delimiter(token, false) && !parenthese_count)
 			return (true);
 		index++;
 	}
@@ -109,7 +109,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 		expr_stop = get_matching_parethese(expr, node->expr_stop);
 		if (!expr_stop)
 		{
-			printf("Parsing error my bro.\n");
+			printf("Something has gone very very wrong.\n");
 			// TODO: It leaks here bro
 			return (false);
 		}
@@ -118,7 +118,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	}
 	else
 	{
-		while (token && !is_a_delimiter(token))
+		while (token && !is_a_delimiter(token, false))
 		{
 			expr_stop--;
 			token = (t_token *)vec_get(expr, expr_stop);
@@ -135,11 +135,21 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	if (!parse_token_btree(expr, node->right))
 		return (false);
 	token = (t_token *)vec_get(expr, operator_index);
-	if (token->data.data[0] == '&')
-		node->operator= operator_and;
-	else if (token->data.data[0] == '|')
-		node->operator= operator_or;
-	else if (token->data.data[0] == ';')
-		node->operator= operator_semicolon;
+	if (token->type == token_type_scope_delimiter && token->data.data[0] == '&')
+		node->operator = operator_and;
+	else if (token->type == token_type_scope_delimiter && token->data.data[0] == '|')
+		node->operator = operator_or;
+	else if (token->type == token_type_scope_delimiter && token->data.data[0] == ';')
+		node->operator = operator_semicolon;
+	else if (token->type == token_type_command_delimiter && token->data.data[0] == '|')
+		node->operator = operator_pipe;
+	else if (token->type == token_type_command_delimiter && token->data.data[0] == '<')
+		node->operator = operator_infile;
+	else if (token->type == token_type_command_delimiter && token->data.data[0] == '>')
+		node->operator = operator_outfile;
+	else if (token->type == token_type_command_delimiter && token->data.data[1] == '<')
+		node->operator = operator_heredoc;
+	else if (token->type == token_type_command_delimiter && token->data.data[1] == '>')
+		node->operator = operator_file_append;
 	return (true);
 }

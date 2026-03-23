@@ -22,7 +22,17 @@ void print_tree(t_vec *expr, t_btree_node *node)
 		if (node->operator == operator_or)
 			write(1, "or ", 3);
 		if (node->operator == operator_semicolon)
-			write(1, "# ", 2);
+			write(1, " semicolon ", 12);
+		if (node->operator == operator_pipe)
+			write(1, " pipe ", 7);
+		if (node->operator == operator_infile)
+			write(1, " infile ", 9);
+		if (node->operator == operator_outfile)
+			write(1, " outfile ", 10);
+		if (node->operator == operator_heredoc)
+			write(1, " heredoc  ", 11);
+		if (node->operator == operator_file_append)
+			write(1, " file_append ", 14);
 		print_tree(expr, node->right);
 		write(1, ")", 1);
 		free(node);
@@ -51,7 +61,7 @@ int	main(int argc, char **argv, char **env)
 		return (1);	
 	}
 
-	/*unsigned int i = 0;
+	unsigned int i = 0;
 	while (i < parsed.size)
 	{
 		t_token cmd = *(t_token *)vec_get(&parsed, i);
@@ -62,7 +72,7 @@ int	main(int argc, char **argv, char **env)
 		write(1, (char *)cmd.data.data, cmd.data.size);
 		write(1, "\n", 1);
 		i++;
-	}*/
+	}
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)

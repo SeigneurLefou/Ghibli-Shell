@@ -13,6 +13,11 @@ typedef enum e_operator
 	operator_and,
 	operator_or,
 	operator_semicolon,
+	operator_infile,
+	operator_outfile,
+	operator_file_append,
+	operator_heredoc,
+	operator_pipe,
 	operator_none,
 }								t_operator;
 
