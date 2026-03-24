@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 11:41:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:25:43 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 # include "cmd.h"
 # include "vec.h"
 # include "libft.h"
+# include "files.h"
 
-int 	vec_to_cmd(t_btree_node *node, t_vec *expr, char **env);
+int 	vec_to_cmd(t_btree_node *node, t_vec *expr, t_file files, char **env);
+void	grab_command(t_btree_node *node, t_vec *expr, t_file files, char **env);
 void	ft_append(char ***dest, const char *src);
-void	grab_command(int *i, t_btree_node *node, t_vec *expr, char **env);
 size_t	ft_array_strlen(char **array_str);
 
 #endif

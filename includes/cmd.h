@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 15:45:13 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 18:01:40 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/24 09:30:45 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,14 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include "libft.h"
+# include "files.h"
 
 typedef struct s_cmd
 {
 	char			*path;
 	char			*name;
 	char			**argv;
-	char			*input_file;
-	char			*output_file;
-	bool			is_heredoc;
-	int				open_mode;
+	t_file			files[2];
 	struct s_cmd	*next;
 }				t_cmd;
 

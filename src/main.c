@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2026/03/30 14:17:38 by lchamard          #+#    #+#             */
 /*   Updated: 2026/03/30 14:18:08 by lchamard         ###   ########.fr       */
+=======
+/*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/24 08:57:39 by lchamard         ###   ########.fr       */
+>>>>>>> 76a00ba ([files] : give input and output to the children)
 /*                                                                            */
 /* ************************************************************************** */
 

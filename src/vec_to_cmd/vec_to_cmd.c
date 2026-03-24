@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42->fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 09:00:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/23 09:20:32 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/24 10:40:39 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,54 +46,29 @@ void	ft_append(char ***dest, const char *src)
 	*dest = new_array;
 }
 
-void	grab_command(int *i, t_btree_node *node, t_vec *expr, char **env)
+void	grab_command(t_btree_node *node, t_vec *expr, t_file files[2], char **env)
 {
 	t_cmd	*new_cmd;
-
-	new_cmd = ft_cmdnew();
-	while (*i < node->expr_end && ft_strcmp(vec_get(expr, *i), "|"))
-	{
-		if (!ft_strcmp(vec_get(expr, *i), "<"))
-		{
-			new_cmd->input_file = vec_get(expr, ++(*i));
-		}
-		else if (!ft_strcmp(vec_get(expr, *i), "<<"))
-		{
-			new_cmd->is_heredoc = true;
-			new_cmd->input_file = vec_get(expr, ++(*i));
-		}
-		else if (!ft_strcmp(vec_get(expr, *i), ">"))
-		{
-			new_cmd->output_file = vec_get(expr, ++(*i));
-			new_cmd->open_mode = O_TRUNC;
-		}
-		else if (!ft_strcmp(vec_get(expr, *i), ">>"))
-		{
-			new_cmd->output_file = vec_get(expr, ++(*i));
-			new_cmd->open_mode = O_APPEND;
-		}
-		else
-		{
-			ft_append(&new_cmd->argv, vec_get(expr, *i));
-			if (!(new_cmd->name))
-			{
-				new_cmd->name = vec_get(expr, *i);
-				get_cmd_path(&new_cmd, env);
-			}
-		}
-		(*i)++;
-	}
-	if (*i < node->expr_end && !ft_strcmp(vec_get(expr, *i), "|"))
-		(*i)++;
-	ft_cmdadd_back(&(node->cmds), &new_cmd);
-}
-
-int vec_to_cmd(t_btree_node *node, t_vec *expr, char **env)
-{
 	int		i;
 
 	i = node->expr_start;
+	new_cmd = ft_cmdnew();
 	while (i < node->expr_end)
-		grab_command(&i, node, expr, env);
+	{
+		ft_append(&new_cmd->argv, vec_get(expr, i));
+		if (!(new_cmd->name))
+		{
+			new_cmd->name = vec_get(expr, i);
+			get_cmd_path(&new_cmd, env);
+		}
+		i++;
+	}
+	new_cmd->files = files;
+	ft_cmdadd_back(&(node->cmds), &new_cmd);
+}
+
+int vec_to_cmd(t_btree_node *node, t_vec *expr, t_file files[2], char **env)
+{
+	grab_command(node, expr, files, env);
 	return (0);
 }

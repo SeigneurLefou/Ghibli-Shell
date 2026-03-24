@@ -6,23 +6,21 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/03/30 14:14:07 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/03/23 15:36:15 by lchamard         ###   ########.fr       */
->>>>>>> 6624642 ([outfile gest] : replace infile by outfile for the command)
+/*   Updated: 2026/03/30 14:25:22 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BTREE_H
 # define BTREE_H
 
-# include "cmd.h"
-# include "libft.h"
-# include "pipex.h"
-# include "vec.h"
 # include <stdbool.h>
 # include <stdlib.h>
+# include "vec.h"
+# include "token.h"
+# include "cmd.h"
+# include "pipex.h"
+# include "files.h"
+# include "libft.h"
 
 typedef enum e_operator
 {
@@ -30,7 +28,7 @@ typedef enum e_operator
 	operator_or,
 	operator_semicolon,
 	operator_pipe,
-	operator_none,
+	operator_none
 }								t_operator;
 
 typedef enum e_io_type
@@ -43,8 +41,8 @@ typedef enum e_io_type
 
 typedef struct s_io_file
 {
-	t_io_type type;
-	unsigned int file_name_token_index;
+    t_io_type type;
+    unsigned int file_name_token_index;
 } t_io_file;
 
 typedef struct s_btree_node
@@ -68,6 +66,7 @@ typedef struct s__btree
 
 int		exec_binary_tree(t_btree_node *tree, char **env);
 int		exec_pipe(t_cmd *cmds, char **env);
+int		exec_pipe(t_cmd *cmds, t_file files, char **env);
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
 
 #endif
