@@ -13,19 +13,30 @@ typedef enum e_operator
 	operator_and,
 	operator_or,
 	operator_semicolon,
-	operator_infile,
-	operator_outfile,
-	operator_file_append,
-	operator_heredoc,
 	operator_pipe,
 	operator_none,
 }								t_operator;
+
+typedef enum e_io_type
+{
+	io_type_infile,
+	io_type_outfile,
+	io_type_append_file,
+	io_type_heredoc,
+} t_io_type;
+
+typedef struct s_io_file
+{
+	t_io_type type;
+	unsigned int file_name_token_index;
+} t_io_file;
 
 typedef struct s_btree_node
 {
 	unsigned int				expr_start;
 	unsigned int				expr_stop;
 	t_operator					operator;
+	t_vec						io_files;
 	t_cmd						*cmds;
 	struct s_btree_node	*left;
 	struct s_btree_node	*right;

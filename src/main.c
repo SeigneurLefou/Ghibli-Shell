@@ -25,16 +25,29 @@ void print_tree(t_vec *expr, t_btree_node *node)
 			write(1, " semicolon ", 12);
 		if (node->operator == operator_pipe)
 			write(1, " pipe ", 7);
-		if (node->operator == operator_infile)
-			write(1, " infile ", 9);
-		if (node->operator == operator_outfile)
-			write(1, " outfile ", 10);
-		if (node->operator == operator_heredoc)
-			write(1, " heredoc  ", 11);
-		if (node->operator == operator_file_append)
-			write(1, " file_append ", 14);
 		print_tree(expr, node->right);
 		write(1, ")", 1);
+		write(1, "{", 1);
+		for (unsigned int index = 0; index < node->io_files.size; index++)
+		{
+			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
+			if (file->type == io_type_heredoc)
+			{
+				write(1, "heredoc ", 9);
+				continue;
+			}
+
+			t_token		*name = (t_token *)vec_get(expr, file->file_name_token_index);
+			write(1, name->data.data, name->data.size);
+			if (file->type == io_type_infile)
+				write(1, ": infile, ", 11);
+			if (file->type == io_type_outfile)
+				write(1, ": outfile, ", 12);
+			if (file->type == io_type_append_file)
+				write(1, ": append, ", 11);
+		}
+		write(1, "} ", 2);
+		vec_free(&node->io_files);
 		free(node);
 	}
 }
@@ -74,7 +87,7 @@ int	main(int argc, char **argv, char **env)
 		i++;
 	}
 
-	t_parsing_checker_result parser_result = check_syntax(&parsed);
+	/*t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
 		printf("Parser Error: Unmatching parenthesis at token %d!\n", parser_result.index1);
 	else if (parser_result.parsing_error == parsing_error_unsuported_arithmetic)
@@ -95,7 +108,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		free_tokens(&parsed);
 		return (1);
-	}
+	}*/
 	
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;

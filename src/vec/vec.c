@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/17 12:39:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/24 20:06:16 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,13 @@ bool	vec_clone(t_vec *new, t_vec *old)
 	new->buffering_size = old->buffering_size;
 	new->type_size = old->type_size;
 	return (true);
+}
+
+void	vec_null(t_vec *vec)
+{
+	vec->data = NULL;
+	vec->size = 0;
+	vec->type_size = 0;
+	vec->buffering_size = 0;
+	vec->allocated_size = 0;
 }

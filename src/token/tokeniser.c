@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/23 17:11:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/24 14:42:32 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char is_escape(char escaped_char, char quote)
 		return (escaped_char == '\\');
 }
 
-bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *current_token)
+bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *current_token, t_token_type token_type)
 {
 	if (expr[(*i) + 1] == expr[*i])
 	{
@@ -81,7 +81,7 @@ bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *curr
 		if (!push_char(current_token, expr[*i]))
 			return (false);
 		//(*i) ++;
-		if (!append_token(command, current_token, token_type_command_delimiter))
+		if (!append_token(command, current_token, token_type))
 			return (false);
 	}
 	return (true);
@@ -179,7 +179,9 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 			else if (expr[i] == '(' || expr[i] == ')' || expr[i] == ';')
 				add_simple_token(expr, i, command, &current_token);
 			else if (expr[i] == '>' || expr[i] == '<' || expr[i] == '&' || expr[i] == '|')
-				add_double_token(expr, &i, command, &current_token);
+				add_double_token(expr, &i, command, &current_token, token_type_scope_delimiter);
+			else if (expr[i] == '>' || expr[i] == '<')
+				add_double_token(expr, &i, command, &current_token, token_type_command_delimiter);
 			else if (expr[i] == ' ')
 				append_token(command, &current_token, token_type_plain);
 			else

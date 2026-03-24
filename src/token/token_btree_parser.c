@@ -1,5 +1,12 @@
 #include "token.h"
 
+bool	is_a_delimiter(t_token *token)
+{
+	return (token->type == token_type_scope_delimiter
+		&& (token->data.data[0] == '&' || token->data.data[0] == '|'
+			|| token->data.data[0] == ';'));
+}
+
 /* 0 = error */
 int	get_matching_parethese(t_vec *expr, unsigned int index)
 {
@@ -10,9 +17,16 @@ int	get_matching_parethese(t_vec *expr, unsigned int index)
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
-		if (token->type == token_type_scope_delimiter && token->data.data[0] == '(')
-			count++;
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			break ;
+		index --;
+	}
+	while (index > 0)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			count++;
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == '(')
 			count--;
 		if (count == 0)
 			return (index);
@@ -21,11 +35,20 @@ int	get_matching_parethese(t_vec *expr, unsigned int index)
 	return (0);
 }
 
-bool	is_a_delimiter(t_token *token, bool allow_file_redirection)
+int	get_next_parethese(t_vec *expr, unsigned int index)
 {
-	return ((token->type == token_type_scope_delimiter
-		&& (token->data.data[0] == '&' || token->data.data[0] == '|'
-			|| token->data.data[0] == ';')) || ((token->type == token_type_command_delimiter && token->data.data[0] == '>' && token->data.data[0] == '<') && allow_file_redirection));
+	int	count;
+	t_token			*token;
+
+	count = 0;
+	while (index > 0)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			break ;
+		index --;
+	}
+	return (index);
 }
 
 bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
@@ -36,6 +59,15 @@ bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 	token = (t_token *)vec_get(expr, index);
 	if (token->type != token_type_scope_delimiter || token->data.data[0] != '(')
 		return (false);
+	while (end > 0)
+	{
+		token = (t_token *)vec_get(expr, end);
+		if (is_a_delimiter(token))
+			return (false);
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			break ;
+		end --;
+	}
 	token = (t_token *)vec_get(expr, end);
 	if (token->type != token_type_scope_delimiter || token->data.data[0] != ')')
 		return (false);
@@ -69,12 +101,43 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 			parenthese_count++;
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			parenthese_count--;
-		if (is_a_delimiter(token, false) && !parenthese_count)
+		if (is_a_delimiter(token) && !parenthese_count)
 			return (true);
 		index++;
 	}
 	return (false);
 }
+
+void grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop, unsigned index)
+{
+	t_token			*token;
+	t_io_file		file;
+
+	vec_init(&node->io_files, sizeof(t_io_file), 2);
+	while (index < stop)
+	{
+		// This assumes that the syntax is valid and that the types are checked before by the syntax checker
+		token = (t_token *)vec_get(expr, index);
+		if (token->data.data[0] == '<')
+			file.type = io_type_infile;
+		else if (token->data.data[0] == '>')
+			file.type = io_type_outfile;
+		else if (token->data.data[1] == '>')
+			file.type = io_type_append_file;
+		else if (token->data.data[1] == '<')
+		{
+			file.type = io_type_heredoc;
+			index++;
+			continue;
+		}
+		index++;
+		file.file_name_token_index = index;
+		vec_append(&node->io_files, &file);
+		index++;
+	}
+}
+
+// Parsing goal : ./minishell "((echo a && echo b) > out1>out2|| echo c; echo u) < file || (< in echo u && echo b && echo c) <<"
 
 bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 {
@@ -83,10 +146,13 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	unsigned int	expr_stop;
 	t_token			*token;
 
+	vec_null(&node->io_files);
 	if (is_in_parentheses(expr, node->expr_start, node->expr_stop))
 	{
+		unsigned int old_stop = node->expr_stop;
+		node->expr_stop = get_next_parethese(expr, node->expr_stop) - 1;
 		node->expr_start++;
-		node->expr_stop--;
+		grab_io_files(expr, node, old_stop, node->expr_stop + 2);
 	}
 	if (!contains_scope_delimiter(expr, node))
 	{
@@ -118,7 +184,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	}
 	else
 	{
-		while (token && !is_a_delimiter(token, false))
+		while (token && !is_a_delimiter(token))
 		{
 			expr_stop--;
 			token = (t_token *)vec_get(expr, expr_stop);
@@ -143,13 +209,5 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 		node->operator = operator_semicolon;
 	else if (token->type == token_type_command_delimiter && token->data.data[0] == '|')
 		node->operator = operator_pipe;
-	else if (token->type == token_type_command_delimiter && token->data.data[0] == '<')
-		node->operator = operator_infile;
-	else if (token->type == token_type_command_delimiter && token->data.data[0] == '>')
-		node->operator = operator_outfile;
-	else if (token->type == token_type_command_delimiter && token->data.data[1] == '<')
-		node->operator = operator_heredoc;
-	else if (token->type == token_type_command_delimiter && token->data.data[1] == '>')
-		node->operator = operator_file_append;
 	return (true);
 }
