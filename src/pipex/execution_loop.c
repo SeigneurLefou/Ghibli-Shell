@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/24 11:39:57 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,13 @@ int	infile_gestion(t_pipex *pipex_var)
 {
 	if (pipex_var->cmd->input_file)
 	{
-		if (pipex_var->cmd->is_heredoc)
-			pipex_var->fds[0] = here_doc_file(pipex_var->cmd->input_file);
-		else if (pipex_var->cmd->input_file)
-			pipex_var->fds[0] = open(pipex_var->cmd->input_file, O_RDONLY, 0644);
+		if (pipex_var->cmd->)
+			pipex_var->fds[0] = here_doc_file(pipex_var->cmd->files[0]->name);
+		else if (pipex_var->cmd->files[0]->is_fake)
+		else if (pipex_var->cmd->files[0]->name)
+			pipex_var->fds[0] = open(pipex_var->cmd->input_file->name, O_RDONLY, 0644);
 		if (errno)
-			perror(pipex_var->cmd->input_file);
+			perror(pipex_var->cmd->files[0]);
 		if (pipex_var->fds[0] == -1)
 			return (1);
 	}

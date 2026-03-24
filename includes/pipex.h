@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:07:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 17:46:19 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:26:30 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@
 # include "libft.h"
 # include "gnl.h"
 # include "cmd.h"
+# include "files.h"
 
 typedef struct s_pipex
 {
 	int				fds[3];
-	int				*pid;
-	int				pid_i;
+	int				pid;
+	t_file			files[2];
 	char			**env;
 	struct s_cmd	*cmd;
 }				t_pipex;
@@ -53,5 +54,7 @@ char	*get_env(char **env, char *var);
 int		wait_all_pid(t_pipex *pipex_var);
 int		give_exit_code(int status);
 int		fake_fdin(void);
+void	open_file(char *file_name, int open_mode, int *fd)
+void	open_io_fds(t_btree_node node, t_vec *expr)
 
 #endif
