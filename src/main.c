@@ -11,6 +11,27 @@ void print_tree(t_vec *expr, t_btree_node *node)
 			write(1, token->data.data, token->data.size);
 			write(1, " ", 1);
 		}
+		write(1, "{", 1);
+		for (unsigned int index = 0; index < node->io_files.size; index++)
+		{
+			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
+			if (file->type == io_type_heredoc)
+			{
+				write(1, "heredoc ", 9);
+				continue;
+			}
+
+			t_token		*name = (t_token *)vec_get(expr, file->file_name_token_index);
+			write(1, name->data.data, name->data.size);
+			if (file->type == io_type_infile)
+				write(1, ": infile, ", 11);
+			if (file->type == io_type_outfile)
+				write(1, ": outfile, ", 12);
+			if (file->type == io_type_append_file)
+				write(1, ": append, ", 11);
+		}
+		write(1, "} ", 2);
+		vec_free(&node->io_files);
 		free(node);
 	}
 	else

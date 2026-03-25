@@ -108,6 +108,38 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 	return (false);
 }
 
+void parse_leaf(t_vec *expr, t_btree_node *node)
+{
+	t_token			*token;
+	t_io_file		file;
+	unsigned int index;
+
+	index = node->expr_start;
+	vec_init(&node->io_files, sizeof(t_io_file), 2);
+	while (index < node->expr_stop)
+	{
+		// This assumes that the syntax is valid and that the types are checked before by the syntax checker
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_command_delimiter && token->data.data[0] == '<')
+			file.type = io_type_infile;
+		else if (token->type == token_type_command_delimiter && token->data.data[0] == '>')
+			file.type = io_type_outfile;
+		else if (token->type == token_type_command_delimiter && token->data.data[1] == '>')
+			file.type = io_type_append_file;
+		else if (token->type == token_type_command_delimiter && token->data.data[1] == '<')
+			file.type = io_type_heredoc;
+		else
+		{
+			index++;
+			continue;
+		}
+		index++;
+		file.file_name_token_index = index;
+		vec_append(&node->io_files, &file);
+		index++;
+	}
+}
+
 void grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop, unsigned index)
 {
 	t_token			*token;
@@ -125,11 +157,7 @@ void grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop, unsigned 
 		else if (token->data.data[1] == '>')
 			file.type = io_type_append_file;
 		else if (token->data.data[1] == '<')
-		{
 			file.type = io_type_heredoc;
-			index++;
-			continue;
-		}
 		index++;
 		file.file_name_token_index = index;
 		vec_append(&node->io_files, &file);
@@ -137,7 +165,8 @@ void grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop, unsigned 
 	}
 }
 
-// Parsing goal : ./minishell "((echo a && echo b) > out1>out2|| echo c; echo u) < file || (< in echo u && echo b && echo c) <<"
+// Parsing goal : ./minishell "((echo a && echo b) > out1>out2|| echo c; echo u) < file || (< in echo u && echo b && echo c) << vaaaa"
+// (echo b && echo aaa) << in
 
 bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 {
@@ -161,6 +190,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 		node->operator = operator_none;
 		node->left = NULL;
 		node->right = NULL;
+		parse_leaf(expr, node);
 		return (true);
 	}
 	btree_a = malloc(sizeof(t_btree_node));
