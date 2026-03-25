@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/25 11:25:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/25 13:46:01 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,22 @@ t_pipex	cmd_to_pipex(t_cmd *cmd, char **env)
 
 int	exec_cmd(t_btree_node *tree, t_vec *expr, t_file files, char **env)
 {
-	t_pipex	pipex_var;
+	t_pipex		pipex_var;
+	t_pid_list	pid_list;
+	int			pid;
 
 	vec_to_cmd(tree, expr, files, env)
 	pipex_var = cmd_to_pipex(tree->cmds, env);
-	execution_loop(&pipex_var);
+	pid = execution_loop(&pipex_var);
+	pid_append(pid_list, pid);
 	close(pipex_var.fds[0]);
 	return (exit_code);
 }
 
 int	exec_pipeline(t_tree *tree, t_vec *expr, int files[2], char **env)
 {
-	int	*pid;
-	int *command_pid;
+	t_pid_list	pid;
+	t_pid_list	command_pid;
 	int	fd_out;
 	int	pipe_fd[2]
 
@@ -47,8 +50,12 @@ int	exec_pipeline(t_tree *tree, t_vec *expr, int files[2], char **env)
 		command_pid = exec_pipeline(tree, expr, files, env);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
-	free(command_pid);
-	command_pid = NULL;
+	if (command_pid)
+	{
+		pid_extend(&pid, &command_pid);
+		free(command_pid);
+		command_pid = NULL;
+	}
 	if (tree->operator != operator_pipe && !tree->left->wstatus && tree->operator == operator_and && tree->right)
 		command_pid = exec_pipeline(tree->right, expr, files, env);
 	else if (tree->operator != operator_pipe && tree->left->wstatus && tree->operator == operator_or && tree->right)
@@ -59,6 +66,7 @@ int	exec_pipeline(t_tree *tree, t_vec *expr, int files[2], char **env)
 		command_pid = exec_pipeline(tree->right, expr, files, env);
 	if (command_pid)
 	{
+		pid_extend(&pid, &command_pid);
 		free(command_pid);
 	}
 	return (pid);
