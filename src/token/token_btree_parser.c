@@ -1,13 +1,14 @@
 #include "token.h"
 
-bool	is_a_delimiter(t_token *token)
+bool	is_a_delimiter(t_token *token, bool match_all)
 {
 	return (token->type == token_type_scope_delimiter
-		&& (token->data.data[0] == '&' || token->data.data[0] == '|'
-			|| token->data.data[0] == ';'));
+		&& ((token->data.data[0] == '&' || token->data.data[0] == '|'
+			|| token->data.data[0] == ';') || match_all));
 }
 
 /* 0 = error */
+/* From right to left */
 int	get_matching_parethese(t_vec *expr, unsigned int index)
 {
 	int	count;
@@ -35,6 +36,7 @@ int	get_matching_parethese(t_vec *expr, unsigned int index)
 	return (0);
 }
 
+/* From right to left */
 int	get_next_parethese(t_vec *expr, unsigned int index)
 {
 	int	count;
@@ -51,6 +53,25 @@ int	get_next_parethese(t_vec *expr, unsigned int index)
 	return (index);
 }
 
+/* From right to left */
+int	get_next_delimiter(t_vec *expr, unsigned int index)
+{
+	int	count;
+	t_token			*token;
+
+	count = 0;
+	while (index > 0)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (is_a_delimiter(token, true))
+			break ;
+		index --;
+	}
+	return (index);
+}
+
+
+/* From right to left */
 bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 {
 	int	count;
@@ -62,7 +83,7 @@ bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 	while (end > 0)
 	{
 		token = (t_token *)vec_get(expr, end);
-		if (is_a_delimiter(token))
+		if (is_a_delimiter(token, false))
 			return (false);
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			break ;
@@ -86,6 +107,7 @@ bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 	return (true);
 }
 
+/* From left to right */
 bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 {
 	unsigned int	index;
@@ -101,13 +123,14 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node)
 			parenthese_count++;
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			parenthese_count--;
-		if (is_a_delimiter(token) && !parenthese_count)
+		if (is_a_delimiter(token, false) && !parenthese_count)
 			return (true);
 		index++;
 	}
 	return (false);
 }
 
+/* From left to right */
 void parse_leaf(t_vec *expr, t_btree_node *node)
 {
 	t_token			*token;
@@ -176,13 +199,6 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	t_token			*token;
 
 	vec_null(&node->io_files);
-	if (is_in_parentheses(expr, node->expr_start, node->expr_stop))
-	{
-		unsigned int old_stop = node->expr_stop;
-		node->expr_stop = get_next_parethese(expr, node->expr_stop) - 1;
-		node->expr_start++;
-		grab_io_files(expr, node, old_stop, node->expr_stop + 2);
-	}
 	if (!contains_scope_delimiter(expr, node))
 	{
 		node->expr_start = node->expr_start;
@@ -193,6 +209,19 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 		parse_leaf(expr, node);
 		return (true);
 	}
+	
+	// Not working
+	unsigned int delimiter = get_next_delimiter(expr, node->expr_stop);
+	grab_io_files(expr, node, node->expr_stop, delimiter);
+	node->expr_stop = delimiter;
+	if (is_in_parentheses(expr, node->expr_start, node->expr_stop))
+	{
+		unsigned int old_stop = node->expr_stop;
+		node->expr_stop = get_next_parethese(expr, node->expr_stop) - 1;
+		node->expr_start++;
+		//grab_io_files(expr, node, old_stop, node->expr_stop + 2);
+	}
+
 	btree_a = malloc(sizeof(t_btree_node));
 	btree_b = malloc(sizeof(t_btree_node));
 	// TODO: Handle malloc fail
@@ -214,7 +243,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node)
 	}
 	else
 	{
-		while (token && !is_a_delimiter(token))
+		while (token && !is_a_delimiter(token, false))
 		{
 			expr_stop--;
 			token = (t_token *)vec_get(expr, expr_stop);
