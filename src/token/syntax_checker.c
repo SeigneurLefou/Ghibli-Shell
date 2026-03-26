@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:43:04 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/26 19:43:56 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/26 23:47:20 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ t_parsing_checker_result	check_no_operator_parentheses(t_vec *expr)
 	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
 }
 
-t_parsing_checker_result	check_io_files(t_vec *expr)
+t_parsing_checker_result	check_io_files_after_parentheses(t_vec *expr)
 {
 	unsigned int	index;
 	t_token			*token;
@@ -188,17 +188,38 @@ t_parsing_checker_result	check_io_files(t_vec *expr)
 			{
 				token = (t_token *)vec_get(expr, index);
 				if (!(token->type == token_type_command_delimiter && (token->data.data[0] == '<' || token->data.data[0] == '>')))
-					return ((t_parsing_checker_result){parsing_error_invalide_io_file, index, par_index});
+					return ((t_parsing_checker_result){parsing_error_invalide_io_file_after_parentheses, index, par_index});
 				index ++;
 				token = (t_token *)vec_get(expr, index);
 				if (!token || token->type != token_type_plain)
-					return ((t_parsing_checker_result){parsing_error_invalide_io_file, index, par_index});
+					return ((t_parsing_checker_result){parsing_error_invalide_io_file_after_parentheses, index, par_index});
 				index ++;
 				token = (t_token *)vec_get(expr, index);
 			}
 		}
 		else
 			index++;
+	}
+	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
+}
+
+t_parsing_checker_result	check_io_files(t_vec *expr)
+{
+	unsigned int	index;
+	t_token			*token;
+
+	index = 0;
+	while (index < expr->size)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_command_delimiter && (token->data.data[0] == '<' || token->data.data[0] == '>'))
+		{
+			index ++;
+			token = (t_token *)vec_get(expr, index);
+			if (!token || token->type != token_type_plain)
+				return ((t_parsing_checker_result){parsing_error_invalide_io_file, index, index});
+		}
+		index++;
 	}
 	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
 }
@@ -220,6 +241,9 @@ t_parsing_checker_result    check_syntax(t_vec *expr)
 	if (result.parsing_error != parsing_error_success)
 		return (result);
     result = check_no_operator_parentheses(expr);
+	if (result.parsing_error != parsing_error_success)
+		return (result);
+	result = check_io_files_after_parentheses(expr);
 	if (result.parsing_error != parsing_error_success)
 		return (result);
 	result = check_io_files(expr);

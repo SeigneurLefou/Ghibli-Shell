@@ -117,8 +117,10 @@ int	main(int argc, char **argv, char **env)
 		printf("Parser Error: No operator before parenthese at token %d!\n", parser_result.index1);
 	else if (parser_result.parsing_error == parsing_error_no_operator_right_parenthese)
 		printf("Parser Error: No operator after parenthese at token %d!\n", parser_result.index1);
-	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
+	else if (parser_result.parsing_error == parsing_error_invalide_io_file_after_parentheses)
 		printf("Parser Error: Invalid IO file at %d after parenthese at %d!\n", parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
+		printf("Parser Error: Invalid IO file at %d!\n", parser_result.index1);
 	else
 		printf("Parser is happy!\n");
 	if (parser_result.parsing_error != parsing_error_success)
