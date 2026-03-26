@@ -102,7 +102,7 @@ int	main(int argc, char **argv, char **env)
 		i++;
 	}
 
-	/*t_parsing_checker_result parser_result = check_syntax(&parsed);
+	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
 		printf("Parser Error: Unmatching parenthesis at token %d!\n", parser_result.index1);
 	else if (parser_result.parsing_error == parsing_error_unsuported_arithmetic)
@@ -117,17 +117,20 @@ int	main(int argc, char **argv, char **env)
 		printf("Parser Error: No operator before parenthese at token %d!\n", parser_result.index1);
 	else if (parser_result.parsing_error == parsing_error_no_operator_right_parenthese)
 		printf("Parser Error: No operator after parenthese at token %d!\n", parser_result.index1);
+	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
+		printf("Parser Error: Invalid IO file at %d after parenthese at %d!\n", parser_result.index1, parser_result.index2);
 	else
 		printf("Parser is happy!\n");
 	if (parser_result.parsing_error != parsing_error_success)
 	{
 		free_tokens(&parsed);
 		return (1);
-	}*/
+	}
 	
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
 	root->expr_stop = parsed.size - 1;
+	vec_null(&root->io_files);
 	if (!parse_token_btree(&parsed, root, 0))
 		return 1;
 
