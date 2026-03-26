@@ -138,7 +138,7 @@ void parse_leaf(t_vec *expr, t_btree_node *node)
 	unsigned int index;
 
 	index = node->expr_start;
-	if (!node->io_files.size)
+	if (!node->io_files.data)
 		vec_init(&node->io_files, sizeof(t_io_file), 2);
 	while (index < node->expr_stop)
 	{
@@ -169,7 +169,8 @@ void grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop, unsigned 
 	t_token			*token;
 	t_io_file		file;
 
-	vec_init(&node->io_files, sizeof(t_io_file), 2);
+	if (!node->io_files.data)
+		vec_init(&node->io_files, sizeof(t_io_file), 2);
 	while (index < stop)
 	{
 		// This assumes that the syntax is valid and that the types are checked before by the syntax checker
@@ -199,7 +200,6 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 	unsigned int	expr_stop;
 	t_token			*token;
 
-	vec_null(&node->io_files);
 	unsigned int old_stop = node->expr_stop;
 	if (is_in_parentheses(expr, node->expr_start, node->expr_stop))
 	{
@@ -207,6 +207,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 		node->expr_stop = get_next_parethese(expr, node->expr_stop) - 1;
 		node->expr_start++;
 		grab_io_files(expr, node, old_stop, node->expr_stop + 2);
+		return (parse_token_btree(expr, node, depth + 1));
 	}
 
 	if (!contains_scope_delimiter(expr, node, false))
@@ -254,6 +255,8 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 	}
 	btree_a->expr_stop = operator_index - 1;
 	btree_b->expr_start = operator_index + 1;
+	vec_null(&btree_a->io_files);
+	vec_null(&btree_b->io_files);
 	node->left = btree_a;
 	node->right = btree_b;
 	if (!parse_token_btree(expr, node->left, depth + 1))
