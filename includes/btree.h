@@ -6,7 +6,11 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/03/30 14:41:32 by lchamard         ###   ########.fr       */
+=======
+/*   Updated: 2026/03/26 18:02:48 by lchamard         ###   ########.fr       */
+>>>>>>> 7524d62 ([fix code] : start fix the exec)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +25,7 @@
 # include "pid.h"
 # include "pipex.h"
 # include "libft.h"
+typedef struct s_pipex t_pipex;
 
 typedef enum e_operator
 {
@@ -51,6 +56,7 @@ typedef struct s_btree_node
 	unsigned int		expr_end;
 	t_operator			operator;
 	t_cmd				*cmds;
+	t_io_file			io_files;
 	int					wstatus;
 	t_vec				io_files;
 	int					pipe_fdo;
