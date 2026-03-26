@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:07:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 08:48:33 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/26 17:38:02 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "libft.h"
 # include "gnl.h"
 # include "cmd.h"
+typedef struct s_btree_node t_btree_node;
 
 typedef struct s_pipex
 {
@@ -50,7 +51,7 @@ void	get_cmd_path(t_cmd **cmd, char **env);
 char	*test_all_path(char *path, t_cmd **cmd);
 void	ft_free_path(char **splited_path, int i);
 char	*get_env(char **env, char *var);
-int		wait_all_pid(t_pipex *pipex_var);
+int		wait_all_pid(t_pid_list *pipex_var);
 int		give_exit_code(int status);
 int		fake_fdin(void);
 void	open_file(char *file_name, int open_mode, int *fd);
