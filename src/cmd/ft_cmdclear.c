@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 17:15:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/26 08:14:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,15 @@ void	ft_cmdclear(t_cmd *cmd)
 	int		i;
 
 	tmp = cmd;
-	while (tmp)
+	i = 0;
+	while (tmp->argv[i])
 	{
-		last = tmp;
-		tmp = tmp->next;
-		i = 0;
-		while (last->argv[i])
-		{
-			free(last->argv[i]);
-			i++;
-		}
-		free(last->argv);
-		free(last->path);
-		free(last);
+		free(tmp->argv[i]);
+		i++;
 	}
-	if (tmp)
-		free(tmp);
+	free(tmp->argv);
+	free(tmp->name);
+	free(tmp->path);
+	free(tmp);
 	cmd = NULL;
 }

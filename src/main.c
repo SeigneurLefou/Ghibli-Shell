@@ -5,13 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
 /*   Created: 2026/03/30 14:17:38 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:18:08 by lchamard         ###   ########.fr       */
-=======
-/*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/24 08:57:39 by lchamard         ###   ########.fr       */
->>>>>>> 76a00ba ([files] : give input and output to the children)
+/*   Updated: 2026/03/30 14:47:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +90,7 @@ void free_tokens(t_vec *expr)
 
 int	main(int argc, char **argv, char **env)
 {
+<<<<<<< HEAD
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)

@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/20 17:40:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/26 08:14:32 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,10 @@ void	take_child(t_pipex *pipex_var)
 {
 	dup2(pipex_var->fds[0], 0);
 	close(pipex_var->fds[0]);
-	dup2(pipex_var->fds[2], 1);
-	close(pipex_var->fds[2]);
+	dup2(pipex_var->fds[1], 1);
 	close(pipex_var->fds[1]);
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 		execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
-	free(pipex_var->pid);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);
 }
