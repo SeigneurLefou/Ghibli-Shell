@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 12:51:23 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/25 13:41:36 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/26 09:24:57 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	pid_append(t_pid_list *pid_list, int nb)
 	else
 		pid_list->len++;
 	new_pid_list = malloc(sizeof(int) * pid_list->len);
-	while(i < pid_list->len)
+	while (i < pid_list->len)
 	{
 		new_pid_list[i] = pid_list->pids[i];
 		i++;
@@ -43,13 +43,13 @@ void	pid_expend(t_pid_list *pid_list, t_pid_list *pid_list_to_extend)
 	else
 		pid_list->len += pid_list_to_extend->len;
 	new_pid_list = malloc(sizeof(int) * pid_list->len);
-	while(i < pid_list->len)
+	while (i < pid_list->len)
 	{
 		new_pid_list[i] = pid_list->pids[i];
 		i++;
 	}
 	i = 0;
-	while(i < pid_list_to_extend->len)
+	while (i < pid_list_to_extend->len)
 	{
 		new_pid_list[i] = pid_list_to_extend->pids[i];
 		i++;
