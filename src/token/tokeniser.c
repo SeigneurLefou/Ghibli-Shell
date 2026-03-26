@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 13:48:00 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/26 23:54:31 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ bool parse_token_simple_quote(char *expr, unsigned int *i, t_token *current_toke
 		}
 	}
 	else if (expr[*i] == '\'')
-		quote_char = 0;
+		(*quote_char) = 0;
 	else
 		push_char(current_token, expr[*i]);
 	return (true);
