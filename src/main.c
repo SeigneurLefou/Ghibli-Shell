@@ -15,11 +15,6 @@ void print_tree(t_vec *expr, t_btree_node *node)
 		for (unsigned int index = 0; index < node->io_files.size; index++)
 		{
 			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
-			if (file->type == io_type_heredoc)
-			{
-				write(1, "heredoc ", 9);
-				continue;
-			}
 
 			t_token		*name = (t_token *)vec_get(expr, file->file_name_token_index);
 			write(1, name->data.data, name->data.size);
@@ -29,6 +24,8 @@ void print_tree(t_vec *expr, t_btree_node *node)
 				write(1, ": outfile, ", 12);
 			if (file->type == io_type_append_file)
 				write(1, ": append, ", 11);
+			if (file->type == io_type_heredoc)
+				write(1, ": heredoc, ", 12);
 		}
 		write(1, "} ", 2);
 		vec_free(&node->io_files);
@@ -52,11 +49,6 @@ void print_tree(t_vec *expr, t_btree_node *node)
 		for (unsigned int index = 0; index < node->io_files.size; index++)
 		{
 			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
-			if (file->type == io_type_heredoc)
-			{
-				write(1, "heredoc ", 9);
-				continue;
-			}
 
 			t_token		*name = (t_token *)vec_get(expr, file->file_name_token_index);
 			write(1, name->data.data, name->data.size);
@@ -66,6 +58,8 @@ void print_tree(t_vec *expr, t_btree_node *node)
 				write(1, ": outfile, ", 12);
 			if (file->type == io_type_append_file)
 				write(1, ": append, ", 11);
+			if (file->type == io_type_heredoc)
+				write(1, ": heredoc, ", 12);
 		}
 		write(1, "} ", 2);
 		vec_free(&node->io_files);
@@ -134,7 +128,7 @@ int	main(int argc, char **argv, char **env)
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
 	root->expr_stop = parsed.size - 1;
-	if (!parse_token_btree(&parsed, root))
+	if (!parse_token_btree(&parsed, root, 0))
 		return 1;
 
 	print_tree(&parsed, root);

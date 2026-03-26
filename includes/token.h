@@ -46,7 +46,7 @@ typedef struct s_parsing_checker_result
 }							t_parsing_checker_result;
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);
-bool						parse_token_btree(t_vec *expr, t_btree_node *node);
+bool						parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth);
 t_parsing_checker_result    check_syntax(t_vec *expr);
 
 #endif

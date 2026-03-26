@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/24 14:42:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/26 13:48:00 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *curr
 			return (false);
 		if (!push_char(current_token, expr[*i]))
 			return (false);
-		if (!append_token(command, current_token, token_type_scope_delimiter))
+		if (!append_token(command, current_token, token_type))
 			return (false);
 	}
 	else
@@ -178,7 +178,7 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 			}
 			else if (expr[i] == '(' || expr[i] == ')' || expr[i] == ';')
 				add_simple_token(expr, i, command, &current_token);
-			else if (expr[i] == '>' || expr[i] == '<' || expr[i] == '&' || expr[i] == '|')
+			else if (expr[i] == '&' || expr[i] == '|')
 				add_double_token(expr, &i, command, &current_token, token_type_scope_delimiter);
 			else if (expr[i] == '>' || expr[i] == '<')
 				add_double_token(expr, &i, command, &current_token, token_type_command_delimiter);
