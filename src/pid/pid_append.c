@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 12:51:23 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 09:24:57 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 11:10:56 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	pid_append(t_pid_list *pid_list, int nb)
 	pid_list->pids = new_pid_list;
 }
 
-void	pid_expend(t_pid_list *pid_list, t_pid_list *pid_list_to_extend)
+void	pid_extend(t_pid_list *pid_list, t_pid_list *pid_list_to_extend)
 {
 	int		*new_pid_list;
 	size_t	i;

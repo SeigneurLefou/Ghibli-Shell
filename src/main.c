@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/30 14:48:00 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:48:08 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/30 14:50:10 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/30 14:50:38 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void print_tree(t_vec *expr, t_btree_node *node)
 {
@@ -90,8 +89,6 @@ void free_tokens(t_vec *expr)
 
 int	main(int argc, char **argv, char **env)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
@@ -169,6 +166,7 @@ int	main(int argc, char **argv, char **env)
 	vec_to_cmd(root, &expr, env);
 	exec_binary_tree(root, env);
 }
-
-// 'echo a && (echo b && echo c)'
-// '((echo a && echo b) || echo c; echo u) || (echo u && echo b && echo c)'
+int	main()
+{
+	handle_prompt();
+}

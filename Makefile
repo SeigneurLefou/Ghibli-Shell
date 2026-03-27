@@ -7,7 +7,12 @@ SRC_DIR = src
 OUT_DIRS := $(OUTPUT_DIR)/$(SRC_DIR)
 
 SRC = $(SRC_DIR)/main.c
+<<<<<<< HEAD
 LDFLAGS := #-lreadline
+=======
+
+LDFLAGS := -lreadline
+>>>>>>> 0b33700 ([prompt] : init the prompt line)
 
 INCLUDES = includes
 
@@ -23,6 +28,11 @@ include src/btree/Makefile
 include src/list/Makefile
 include src/vec/Makefile
 include src/vec_to_cmd/Makefile
+<<<<<<< HEAD
+=======
+include src/minishell/Makefile
+include src/pid/Makefile
+>>>>>>> 0b33700 ([prompt] : init the prompt line)
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\
