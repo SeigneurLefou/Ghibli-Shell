@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 14:00:34 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 17:04:17 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "pid.h"
 # include "vec_to_cmd.h"
 # include <stdio.h>
+# include <stdlib.h>
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
