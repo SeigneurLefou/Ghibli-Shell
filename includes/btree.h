@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 18:02:48 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 11:43:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include "pid.h"
 # include "pipex.h"
 # include "libft.h"
-typedef struct s_pipex t_pipex;
+
+typedef struct s_pipex	t_pipex;
 
 typedef enum e_operator
 {
@@ -55,7 +56,7 @@ typedef struct s_btree_node
 	unsigned int		expr_end;
 	t_operator			operator;
 	t_cmd				*cmds;
-	t_io_file			io_files;
+	t_vec				*io_files;
 	int					wstatus;
 	int					pipe_fdo;
 	struct s_btree_node	*left;
@@ -69,11 +70,15 @@ typedef struct s__btree
 }	t_btree;
 
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
-int		exec_cmd(t_btree_node *tree, t_vec *expr, int files[2],
+t_pid_list	exec_cmd(t_btree_node *tree, int files[2],
 			char **env);
-int		exec_pipeline(t_btree_node *tree, t_vec *expr, int files[2],
+t_pid_list	exec_pipeline(t_btree_node *tree, t_vec *expr, int files[2],
+			char **env);
+t_pid_list	exec_right_pipeline(t_btree_node *tree, t_vec *expr, int files[2],
 			char **env);
 int		exec_binary_tree(t_btree_node *tree, t_vec *expr, int files[2],
+			char **env);
+void	exec_right_tree(t_btree_node *tree, t_vec *expr, int files[2],
 			char **env);
 
 #endif

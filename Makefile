@@ -8,7 +8,7 @@ OUT_DIRS := $(OUTPUT_DIR)/$(SRC_DIR)
 
 SRC = $(SRC_DIR)/main.c
 
-LDFLAGS := #-lreadline
+LDFLAGS := -lreadline
 
 INCLUDES = includes
 
@@ -21,6 +21,7 @@ include src/list/Makefile
 include src/vec/Makefile
 include src/vec_to_cmd/Makefile
 include src/minishell/Makefile
+include src/pid/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\

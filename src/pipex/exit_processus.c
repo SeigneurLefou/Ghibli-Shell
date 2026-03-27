@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/25 11:24:21 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 11:28:19 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	give_exit_code(int status)
 
 int	wait_all_pid(t_pid_list *pids)
 {
-	int	i;
-	int	werror;
+	size_t	i;
+	int		werror;
 
 	werror = 0;
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 09:39:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:31:23 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_append(char ***dest, const char *src)
 void	grab_command(t_btree_node *node, t_vec *expr, char **env)
 {
 	t_cmd	*new_cmd;
-	int		i;
+	size_t	i;
 	char	*pointed_expr;
 
 	i = node->expr_start;
@@ -77,6 +77,6 @@ void	grab_command(t_btree_node *node, t_vec *expr, char **env)
 
 int	vec_to_cmd(t_btree_node *node, t_vec *expr, char **env)
 {
-	grab_command(node, expr, files, env);
+	grab_command(node, expr, env);
 	return (0);
 }

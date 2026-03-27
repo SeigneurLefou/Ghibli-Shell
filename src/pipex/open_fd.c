@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 18:02:43 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 10:45:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	open_file(char *file_name, int open_mode, int *fd)
 
 void	open_io_fds(t_btree_node *node, int *fds[2], t_vec *expr)
 {
-	int			i;
+	size_t		i;
 	t_io_file	*io_file;
 
 	i = 0;

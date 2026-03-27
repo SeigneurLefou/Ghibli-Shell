@@ -6,16 +6,13 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:53:16 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 17:03:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:47:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
+int	main()
 {
-	(void)argc;
-	(void)argv;
-	(void)env;
-	readline("ghibli_shell> ");
+	handle_prompt();
 }
