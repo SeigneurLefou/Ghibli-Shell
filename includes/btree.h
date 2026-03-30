@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:50:01 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:53:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_btree_node
 	t_cmd				*cmds;
 	t_vec				*io_files;
 	int					wstatus;
-	t_vec				io_files;
 	int					pipe_fdo;
 	struct s_btree_node	*left;
 	struct s_btree_node	*right;
@@ -65,7 +64,7 @@ typedef struct s__btree
 {
 	t_vec				expr;
 	struct s_btree_node	root_node;
-}								t_btree;
+}	t_btree;
 
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
 t_pid_list	exec_cmd(t_btree_node *tree, int files[2],
