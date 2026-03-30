@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/13 12:43:47 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/24 20:06:16 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,26 @@ bool	vec_truncate(t_vec *vec)
 void	vec_free(t_vec *vec)
 {
 	free(vec->data);
+}
+
+bool	vec_clone(t_vec *new, t_vec *old)
+{
+	new->data = malloc(old->size * old->type_size);
+	if (!new->data)
+		return (false);
+	ft_memcpy(new->data, old->data, old->size * old->type_size);
+	new->allocated_size = old->size;
+	new->size = old->size;
+	new->buffering_size = old->buffering_size;
+	new->type_size = old->type_size;
+	return (true);
+}
+
+void	vec_null(t_vec *vec)
+{
+	vec->data = NULL;
+	vec->size = 0;
+	vec->type_size = 0;
+	vec->buffering_size = 0;
+	vec->allocated_size = 0;
 }

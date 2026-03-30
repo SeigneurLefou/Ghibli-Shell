@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/13 08:40:30 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/26 17:29:56 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ void				*vec_get(t_vec *vec, unsigned int index);
 bool				vec_append(t_vec *vec, void *data);
 bool				vec_truncate(t_vec *vec);
 void				vec_free(t_vec *vec);
+bool				vec_clone(t_vec *new, t_vec *old);
+// Bro, this function is useful. Trust me
+void				vec_null(t_vec *vec);
 
 #endif
