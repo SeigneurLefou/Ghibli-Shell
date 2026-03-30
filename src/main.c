@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:56:20 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:58:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ int	main(int argc, char **argv, char **env)
 	vec_to_cmd(root, &expr, env);
 	exec_binary_tree(root, env);
 }
+
 int	main()
 {
 	handle_prompt();
