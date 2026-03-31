@@ -43,8 +43,8 @@ typedef enum e_parsing_error_type
 typedef struct s_parsing_checker_result
 {
 	t_parsing_error_type	parsing_error;
-	unsigned int			index1;
-	unsigned int			index2;
+	int			index1;
+	int			index2;
 }							t_parsing_checker_result;
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);

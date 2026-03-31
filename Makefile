@@ -11,6 +11,7 @@ LDFLAGS := #-lreadline
 
 INCLUDES = includes
 
+include src/error/Makefile
 include src/minishell/Makefile
 include src/token/Makefile
 include src/libft/Makefile

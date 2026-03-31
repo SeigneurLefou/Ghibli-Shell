@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:43:04 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/26 23:47:20 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:17:12 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,34 @@ t_parsing_checker_result	check_matching_parentheses(t_vec *expr)
 	int		count;
 	t_token	*token;
 	int		index;
+	int 	par_index;
 
 	count = 0;
 	index = 0;
+	par_index = -1; 
 	while (index < expr->size)
 	{
 		token = (t_token *)vec_get(expr, index);
 		if (token->type == token_type_scope_delimiter
 			&& token->data.data[0] == '(')
+		{
+			if (par_index < 0)
+				par_index = index;
 			count++;
+		}
 		if (token->type == token_type_scope_delimiter
 			&& token->data.data[0] == ')')
 			count--;
+		if (!count)
+			par_index = -1;
 		if (count < 0)
 			return ((t_parsing_checker_result){parsing_error_unmatching_parentheses,
-				index, index});
+				index, -1});
 		index++;
 	}
 	if (count)
 		return ((t_parsing_checker_result){parsing_error_unmatching_parentheses,
-			index, index});
+			par_index, index});
 	return ((t_parsing_checker_result){parsing_error_success, 0, 0});
 }
 
@@ -83,7 +91,7 @@ t_parsing_checker_result	check_unsuported_arithmetic(t_vec *expr)
 			matching2 = get_matching_parentheses_left(expr, index + 1);
 			if (matching2 + 1 == matching1)
 				return ((t_parsing_checker_result){parsing_error_unsuported_arithmetic,
-					index, matching1});
+					index, matching1 - 1});
 		}
 		index++;
 	}
@@ -106,7 +114,7 @@ t_parsing_checker_result	check_empty_parentheses(t_vec *expr)
 			if (token->type == token_type_scope_delimiter
 				&& token->data.data[0] == ')')
 				return ((t_parsing_checker_result){parsing_error_empty_parentheses,
-					index, index});
+					index, index + 1});
 		}
 		index++;
 	}
@@ -155,7 +163,7 @@ t_parsing_checker_result	check_no_operator_parentheses(t_vec *expr)
 			token = (t_token *)vec_get(expr, index - 1);
 			if (!((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == '('))))
 				return ((t_parsing_checker_result){parsing_error_no_operator_left_parenthese,
-					index, index + 1});
+					index, index - 1});
 		}
 		else if (token->type == token_type_scope_delimiter
 			&& token->data.data[0] == ')')
@@ -163,7 +171,7 @@ t_parsing_checker_result	check_no_operator_parentheses(t_vec *expr)
 			token = (t_token *)vec_get(expr, index + 1);
 			if (!((token->type == token_type_scope_delimiter && (token->data.data[0] == '&' || token->data.data[0] == '|' || token->data.data[0] == ';' || token->data.data[0] == ')')) || token->type == token_type_command_delimiter))
 				return ((t_parsing_checker_result){parsing_error_no_operator_right_parenthese,
-					index, index - 1});
+					index, index + 1});
 		}
 		index++;
 	}

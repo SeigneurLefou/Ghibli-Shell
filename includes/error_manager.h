@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/31 16:22:07 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/03/31 16:12:55 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/03/31 16:14:00 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef ERROR_H
+# define ERROR_H
 
-# include <stddef.h>
-# include <stdio.h>
-# include "btree.h"
-# include "cmd.h"
-# include "vec.h"
-# include "gnl.h"
-# include "libft.h"
-# include "list.h"
-# include "pipex.h"
-# include "token.h"
-# include "error_manager.h"
+#include "vec.h"
+#include "token.h"
+#include "libft.h"
+
+void show_error(t_vec *expr, char *msg, int index1, int index2);
 
 #endif
