@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:58:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 08:42:09 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void free_tokens(t_vec *expr)
 	vec_free(expr);
 }
 
-int	main(int argc, char **argv, char **env)
+int	main_token(char *line, char *env[])
 {
 	t_vec parsed;
-	t_tokeniser_error result = tokenise(argv[1], &parsed);
+	t_tokeniser_error result = tokenise(line, &parsed);
 	if (result == tokeniser_error_succes)
 		printf("Tokeniser success! Nice!\n");
 	if (result == tokeniser_error_unterminated_quoted_string)
@@ -149,25 +149,16 @@ int	main(int argc, char **argv, char **env)
 
 	print_tree(&parsed, root);
 	write(1, "\n", 1);
-	
-	free_tokens(&parsed);
-	t_btree_node *root = malloc(sizeof(t_btree_node));
-	int i = 1;
-	t_vec expr;
-	root->expr_start = 0;
-	root->expr_end = argc - 1;
-	vec_init(&expr, sizeof(char *), 1);
-	while (i < argc)
-	{
-		vec_append(&expr, argv[i]);
-		i++;
-	}
-	vec_to_cmd(root, &expr);
+
 	vec_to_cmd(root, &expr, env);
 	exec_binary_tree(root, env);
+	
+	free_tokens(&parsed);
 }
 
-int	main()
+int	main(int argc, char **argv, char *env[])
 {
-	handle_prompt();
+	(void)argc;
+	(void)argv;
+	handle_prompt(env);
 }

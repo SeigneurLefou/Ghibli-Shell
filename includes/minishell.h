@@ -6,11 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/03/30 14:52:15 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/03/27 17:04:17 by lchamard         ###   ########.fr       */
->>>>>>> 42626781d0f40a7edbc828fbaf6864cb039954f1
+/*   Updated: 2026/03/31 08:40:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +33,7 @@
 
 char	*set_prompt_line(void);
 void	handle_signal(int sig);
-char	*handle_prompt(void);
+char	*handle_prompt(char *env[])
+int		main_token(char *line, char *env[]);
 
 #endif

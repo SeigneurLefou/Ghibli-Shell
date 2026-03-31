@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 10:08:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 08:40:23 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*set_prompt_line(void)
 	return (prompt);
 }
 
-char	*handle_prompt(void)
+char	*handle_prompt(char *env[])
 {
 	char	*line;
 	char	*res;
@@ -127,6 +127,7 @@ char	*handle_prompt(void)
 		}
 		if (line && *line)
 			add_history(line);
+		main_token(line, env);
 		res = line;
 		free(line);
 	}
