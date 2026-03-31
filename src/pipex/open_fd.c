@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 10:45:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 14:01:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	open_io_fds(t_btree_node *node, int *fds[2], t_vec *expr)
 	t_io_file	*io_file;
 
 	i = 0;
-	while (i < node->io_files->size)
+	while (i < node->io_files.size)
 	{
-		io_file = vec_get(node->io_files, i);
+		io_file = vec_get(&node->io_files, i);
 		if (io_file->type == io_type_infile)
 			open_file(vec_get(expr, io_file->file_name_token_index), O_RDONLY,
 				&(*fds)[0]);

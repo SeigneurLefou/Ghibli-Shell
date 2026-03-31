@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   btree.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/30 14:53:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 13:48:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ typedef struct s_btree_node
 	unsigned int		expr_end;
 	t_operator			operator;
 	t_cmd				*cmds;
-	t_vec				*io_files;
+	t_vec				io_files;
 	int					wstatus;
 	int					pipe_fdo;
 	struct s_btree_node	*left;
 	struct s_btree_node	*right;
 }								t_btree_node;
 
-typedef struct s__btree
+typedef struct s_btree
 {
 	t_vec				expr;
 	struct s_btree_node	root_node;

@@ -3,37 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/31 08:40:50 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 13:46:22 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stddef.h>
-# include <stdio.h>
 # include "btree.h"
 # include "cmd.h"
-# include "vec.h"
 # include "gnl.h"
 # include "libft.h"
 # include "list.h"
+# include "pid.h"
 # include "pipex.h"
 # include "token.h"
-# include "pid.h"
+# include "vec.h"
 # include "vec_to_cmd.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
 char	*set_prompt_line(void);
 void	handle_signal(int sig);
-char	*handle_prompt(char *env[])
+char	*handle_prompt(char *env[]);
 int		main_token(char *line, char *env[]);
 
 #endif

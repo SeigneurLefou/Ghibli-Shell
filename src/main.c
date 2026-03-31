@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/31 08:42:09 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 14:02:11 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void print_tree(t_vec *expr, t_btree_node *node)
 {
 	if (node->operator == operator_none)
 	{
-		for (int i = node->expr_start; i <= node->expr_stop; i++)
+		for (int i = node->expr_start; i <= node->expr_end; i++)
 		{
 			t_token *token = (t_token *)vec_get(expr, i);
 			write(1, token->data.data, token->data.size);
@@ -142,18 +142,16 @@ int	main_token(char *line, char *env[])
 	
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
-	root->expr_stop = parsed.size - 1;
+	root->expr_end = parsed.size - 1;
 	vec_null(&root->io_files);
 	if (!parse_token_btree(&parsed, root, 0))
 		return 1;
 
 	print_tree(&parsed, root);
 	write(1, "\n", 1);
-
-	vec_to_cmd(root, &expr, env);
-	exec_binary_tree(root, env);
 	
 	free_tokens(&parsed);
+	return (0);
 }
 
 int	main(int argc, char **argv, char *env[])
