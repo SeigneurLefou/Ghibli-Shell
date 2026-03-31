@@ -1,2 +1,1 @@
-# Ghibli-Shell
-Minishell but it's ghibli
+# Ghibli Shell

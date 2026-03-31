@@ -1,5 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/31 08:42:09 by lchamard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 void print_tree(t_vec *expr, t_btree_node *node)
 {
@@ -76,10 +87,10 @@ void free_tokens(t_vec *expr)
 	vec_free(expr);
 }
 
-int	main(int argc, char **argv, char **env)
+int	main_token(char *line, char *env[])
 {
 	t_vec parsed;
-	t_tokeniser_error result = tokenise(argv[1], &parsed);
+	t_tokeniser_error result = tokenise(line, &parsed);
 	if (result == tokeniser_error_succes)
 		printf("Tokeniser success! Nice!\n");
 	if (result == tokeniser_error_unterminated_quoted_string)
@@ -138,9 +149,16 @@ int	main(int argc, char **argv, char **env)
 
 	print_tree(&parsed, root);
 	write(1, "\n", 1);
+
+	vec_to_cmd(root, &expr, env);
+	exec_binary_tree(root, env);
 	
 	free_tokens(&parsed);
 }
 
-// 'echo a && (echo b && echo c)'
-// '((echo a && echo b) || echo c; echo u) || (echo u && echo b && echo c)'
+int	main(int argc, char **argv, char *env[])
+{
+	(void)argc;
+	(void)argv;
+	handle_prompt(env);
+}

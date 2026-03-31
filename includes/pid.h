@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   pid.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 09:53:56 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 14:42:42 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/26 09:21:34 by lchamard          #+#    #+#             */
+/*   Updated: 2026/03/27 11:10:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#ifndef PID_H
+# define PID_H
 
-char	*ft_strcpy(char *dest, const char *src)
+# include "stdlib.h"
+
+typedef struct s_pid_list
 {
-	size_t	i;
-	size_t	len_src;
+	int		*pids;
+	size_t	len;
+}				t_pid_list;
 
-	i = 0;
-	len_src = 0;
-	while (src && src[len_src])
-		len_src++;
-	while (i < len_src)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+void	pid_append(t_pid_list *pid_list, int nb);
+void	pid_extend(t_pid_list *pid_list, t_pid_list *pid_list_to_extend);
+
+#endif

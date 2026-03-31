@@ -57,3 +57,4 @@ dkms.conf
 # Vim file
 *.swp
 build/
+minishell
