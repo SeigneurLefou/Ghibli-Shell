@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 13:31:23 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/01 09:41:17 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_append(char ***dest, const char *src)
 	*dest = new_array;
 }
 
-void	grab_command(t_btree_node *node, t_vec *expr, char **env)
+void	grab_command(t_btree_node *node, t_vec expr, char **env)
 {
 	t_cmd	*new_cmd;
 	size_t	i;
@@ -56,7 +56,7 @@ void	grab_command(t_btree_node *node, t_vec *expr, char **env)
 	new_cmd = ft_cmdnew();
 	while (i < node->expr_end)
 	{
-		pointed_expr = vec_get(expr, i);
+		pointed_expr = vec_get(&expr, i);
 		if (ft_strcmp(pointed_expr, ">") && ft_strcmp(pointed_expr, ">>")
 			&& ft_strcmp(pointed_expr, "<")
 			&& ft_strcmp(pointed_expr, "<<"))
@@ -75,7 +75,7 @@ void	grab_command(t_btree_node *node, t_vec *expr, char **env)
 	ft_cmdadd_back(&(node->cmds), &new_cmd);
 }
 
-int	vec_to_cmd(t_btree_node *node, t_vec *expr, char **env)
+int	vec_to_cmd(t_btree_node *node, t_vec expr, char **env)
 {
 	grab_command(node, expr, env);
 	return (0);

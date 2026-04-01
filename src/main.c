@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/31 14:02:11 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/01 11:40:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,10 @@ int	main_token(char *line, char *env[])
 	if (!parse_token_btree(&parsed, root, 0))
 		return 1;
 
-	print_tree(&parsed, root);
+	//print_tree(&parsed, root);
 	write(1, "\n", 1);
+	int files[2] = {0, 1};
+	exec_binary_tree(root, parsed, files, env);
 	
 	free_tokens(&parsed);
 	return (0);

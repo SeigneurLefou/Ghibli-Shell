@@ -56,6 +56,6 @@ int		wait_all_pid(t_pid_list *pids);
 int		give_exit_code(int status);
 int		fake_fdin(void);
 void	open_file(char *file_name, int open_mode, int *fd);
-void	open_io_fds(t_btree_node *node, int *fds[2], t_vec *expr);
+void	open_io_fds(t_btree_node *node, int *fds[2], t_vec expr);
 
 #endif

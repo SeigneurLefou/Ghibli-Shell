@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:21:34 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 11:10:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/31 17:14:47 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PID_H
 
 # include "stdlib.h"
+# include <stdio.h>
 
 typedef struct s_pid_list
 {

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/31 13:48:18 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/01 08:44:22 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include "vec.h"
+# include "vec_to_cmd.h"
 # include "token.h"
 # include "cmd.h"
 # include "pid.h"
@@ -67,15 +68,15 @@ typedef struct s_btree
 }	t_btree;
 
 t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
-t_pid_list	exec_cmd(t_btree_node *tree, int files[2],
+t_pid_list	exec_cmd(t_btree_node *tree, t_vec expr, int files[2],
 			char **env);
-t_pid_list	exec_pipeline(t_btree_node *tree, t_vec *expr, int files[2],
+t_pid_list	exec_pipeline(t_btree_node *tree, t_vec expr, int files[2],
 			char **env);
-t_pid_list	exec_right_pipeline(t_btree_node *tree, t_vec *expr, int files[2],
+t_pid_list	exec_right_pipeline(t_btree_node *tree, t_vec expr, int files[2],
 			char **env);
-int		exec_binary_tree(t_btree_node *tree, t_vec *expr, int files[2],
+int		exec_binary_tree(t_btree_node *tree, t_vec expr, int files[2],
 			char **env);
-void	exec_right_tree(t_btree_node *tree, t_vec *expr, int files[2],
+void	exec_right_tree(t_btree_node *tree, t_vec expr, int files[2],
 			char **env);
 
 #endif
