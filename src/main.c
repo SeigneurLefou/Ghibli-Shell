@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/01 11:40:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:23:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void print_tree(t_vec *expr, t_btree_node *node)
 				write(1, ": heredoc, ", 12);
 		}
 		write(1, "} ", 2);
-		vec_free(&node->io_files);
-		free(node);
 	}
 	else
 	{
@@ -73,8 +71,6 @@ void print_tree(t_vec *expr, t_btree_node *node)
 				write(1, ": heredoc, ", 12);
 		}
 		write(1, "} ", 2);
-		vec_free(&node->io_files);
-		free(node);
 	}
 }
 
@@ -143,6 +139,7 @@ int	main_token(char *line, char *env[])
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
 	root->expr_end = parsed.size - 1;
+	root->cmds = NULL;
 	vec_null(&root->io_files);
 	if (!parse_token_btree(&parsed, root, 0))
 		return 1;
