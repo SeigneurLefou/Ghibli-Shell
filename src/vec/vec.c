@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/01 13:56:16 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/02 08:33:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,5 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	free(vec->data);
 	vec->data = new_data;
 	vec_free(other);
+	return (true);
 }

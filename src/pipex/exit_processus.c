@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 11:28:19 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:36:42 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ int	give_exit_code(int status)
 	return (result);
 }
 
-int	wait_all_pid(t_pid_list *pids)
+int	wait_all_pid(t_vec *pids)
 {
 	size_t	i;
 	int		werror;
 
 	werror = 0;
 	i = 0;
-	while (i < pids->len)
+	while (i < pids->size)
 	{
-		waitpid(pids->pids[i], &werror, 0);
+		waitpid(*(int *)vec_get(pids, i), &werror, 0);
 		i++;
 	}
-	free(pids->pids);
+	vec_free(pids);
 	return (werror);
 }

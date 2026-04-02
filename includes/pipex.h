@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:07:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 11:25:53 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:35:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	get_cmd_path(t_cmd **cmd, char **env);
 char	*test_all_path(char *path, t_cmd **cmd);
 void	ft_free_path(char **splited_path, int i);
 char	*get_env(char **env, char *var);
-int		wait_all_pid(t_pid_list *pids);
+int		wait_all_pid(t_vec *pids);
 int		give_exit_code(int status);
 int		fake_fdin(void);
 void	open_file(char *file_name, int open_mode, int *fd);
