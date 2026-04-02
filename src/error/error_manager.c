@@ -27,19 +27,25 @@ unsigned int underline_error(t_vec *expr, unsigned int token_index, unsigned int
     return (char_index + token->data.size);
 }
 
-void show_error(t_vec *expr, char *msg, int index1, int index2)
+void display_error_message(char *msg)
 {
-    unsigned int index;
-
     write(1, "\x1b[31mGhibliShell error: ", 25);
     write(1, msg, ft_strlen(msg));
     write(1, "\x1b[0m\n", 6);
+}
 
+void show_error(t_vec *expr, char *msg, int index1, int index2)
+{
+    unsigned int index;
+    unsigned int offset;
+
+    display_error_message(msg);
     if (index1 >= (int)expr->size)
         index1 = expr->size - 1;
     if (index2 >= (int)expr->size)
         index2 = expr->size - 1;
     index = 0;
+    offset = 0;
     while (index < expr->size)
     {
         t_token *token = vec_get(expr, index);
@@ -48,8 +54,6 @@ void show_error(t_vec *expr, char *msg, int index1, int index2)
         write(1, " ", 1);
     }
     write(1, "\n", 1);
-    unsigned int offset;
-
     if (index1 <= index2)
     {
         if (index1 >= 0)
