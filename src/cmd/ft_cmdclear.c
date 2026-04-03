@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmdclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/03 11:43:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/03 13:16:33 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ void	ft_cmdclear(t_cmd *cmd)
 
 	tmp = cmd;
 	i = 0;
-	while (tmp->argv[i])
+	while (tmp->argv && tmp->argv[i])
 	{
 		free(tmp->argv[i]);
 		i++;
 	}
-	free(tmp->argv);
+	if (tmp->argv)
+		free(tmp->argv);
 	if (tmp->path)
 		free(tmp->path);
 	if (tmp->path)
