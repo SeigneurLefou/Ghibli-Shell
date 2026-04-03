@@ -1,0 +1,5 @@
+CONFIG_MANAGER_PATH = src/config_manager
+
+SRC += $(CONFIG_MANAGER_PATH)/parser.c \
+
+OUT_DIRS += $(OUTPUT_DIR)/$(CONFIG_MANAGER_PATH)

@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gnl.h                                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/13 09:47:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 15:45:36 by lchamard         ###   ########.fr       */
+/*   Created: 2025/11/07 11:46:47 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/02 19:25:00 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_H
-# define GNL_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
+# include <fcntl.h>
+# include <malloc.h>
 # include <unistd.h>
-# include <stdlib.h>
-# include "libft.h"
+#include "libft.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 200
+#  define BUFFER_SIZE 1
 # endif
 
-char	*while_no_newline(int fd, char *buffer, char *line);
-char	*join_line_with_previous_line(char	*buffer, char *line);
-char	*give_next_line(char *buffer);
+void	safe_free(char **pointer);
+int		contains(char *str, char c);
+char	*gnl_strjoin(char *dst, const char *src, size_t line_size);
+
 char	*get_next_line(int fd);
 
 #endif

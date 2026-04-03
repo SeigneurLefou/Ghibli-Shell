@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   config_manager.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/02 19:17:58 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/02 15:16:54 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/02 19:16:02 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef CONFIG_MANAGER_H
+# define CONFIG_MANAGER_H
 
-# include <stddef.h>
-# include <stdio.h>
-# include "btree.h"
-# include "cmd.h"
-# include "vec.h"
 # include "get_next_line.h"
 # include "libft.h"
-# include "list.h"
-# include "pipex.h"
-# include "token.h"
-# include "error_manager.h"
-# include "config_manager.h"
+
+typedef enum e_config_parser_result
+{
+	t_config_parser_error_equal_not_found,
+	t_config_parser_error_no_key,
+    t_config_parser_error_memory_error,
+	t_config_parser_error_success,
+}	t_config_parser_result;
+
+t_config_parser_result	config_parse_line(int file, char **key, char **value);
 
 #endif

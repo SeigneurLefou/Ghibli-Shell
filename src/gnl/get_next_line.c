@@ -1,97 +1,115 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/05 09:37:41 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 08:54:22 by lchamard         ###   ########.fr       */
+/*   Created: 2025/11/07 10:28:20 by yben-dje          #+#    #+#             */
+/*   Updated: 2025/12/04 19:43:12 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gnl.h"
+#include "get_next_line.h"
 
-char	*join_line_with_previous_line(char	*buffer, char *line)
+int	take_remaining(char **str, int index, char **line)
 {
-	size_t	len;
-	char	*tmp_line;
+	int		remaining_index;
+	char	*remaining;
 
-	len = 0;
-	while (buffer && buffer[len] && buffer[len] != '\n')
-		len++;
-	tmp_line = ft_strnjoin(line, buffer, ft_strlen(line) + len + 1);
-	return (tmp_line);
+	remaining_index = 0;
+	while ((*str)[remaining_index + index])
+		remaining_index++;
+	remaining = malloc(remaining_index + 1);
+	if (!remaining)
+	{
+		safe_free(line);
+		safe_free(str);
+		return (0);
+	}
+	remaining[remaining_index] = 0;
+	remaining_index = 0;
+	while ((*str)[index])
+		remaining[remaining_index++] = (*str)[index++];
+	safe_free(str);
+	*str = remaining;
+	return (1);
 }
 
-char	*give_next_line(char *buffer)
+char	*take_line(char **str)
 {
-	size_t	i;
-	size_t	j;
-	char	*new_buffer;
+	int		size;
+	int		index;
+	char	*line;
 
-	i = 0;
-	while (buffer && buffer[i] && buffer[i] != '\n')
-		i++;
-	new_buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!new_buffer)
-		free(buffer);
-	if (!new_buffer)
+	size = 0;
+	while ((*str)[size] && (*str)[size] != '\n')
+		size++;
+	line = malloc(size + 1 + ((*str)[size] == '\n'));
+	if (!line)
+	{
+		safe_free(str);
 		return (NULL);
-	if (buffer[i])
-		i++;
-	j = 0;
-	while (buffer && buffer[i])
-	{
-		new_buffer[j] = buffer[i];
-		j++;
-		i++;
 	}
-	free(buffer);
-	buffer = NULL;
-	return (new_buffer);
+	line[size + ((*str)[size] == '\n')] = 0;
+	index = -1;
+	while (++index <= size)
+		line[index] = (*str)[index];
+	if (!(*str)[index - 1])
+	{
+		safe_free(str);
+		return (line);
+	}
+	if (!take_remaining(str, index, &line))
+		return (NULL);
+	return (line);
 }
 
-char	*while_no_newline(int fd, char *buffer, char *line)
+int	read_lines(char **stach, int fd, char **buf, char **line)
 {
-	ssize_t		r;
+	int	result;
 
-	while (buffer && !ft_strchr(buffer, '\n'))
+	while (!contains(*stach, '\n') || !*stach || !(*stach)[0])
 	{
-		r = read(fd, buffer, BUFFER_SIZE);
-		if (r < 0)
+		result = read(fd, *buf, BUFFER_SIZE);
+		if (result > 0)
+			(*buf)[result] = 0;
+		if (!result && *stach && (*stach)[0])
+			break ;
+		if (result <= 0)
 		{
-			free(line);
-			return (NULL);
+			safe_free(stach);
+			safe_free(buf);
+			return (0);
 		}
-		if (r == 0)
-			return (line);
-		buffer[r] = 0;
-		line = join_line_with_previous_line(buffer, line);
+		(*stach) = gnl_strjoin(*stach, *buf, result);
+		if (!*stach)
+		{
+			safe_free(buf);
+			safe_free(line);
+			return (0);
+		}
 	}
-	return (line);
+	return (1);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
+	char		*buf;
+	static char	*stach[1024];
 	char		*line;
 
 	if (fd < 0 || fd > 1023)
 		return (NULL);
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
 	line = NULL;
-	if (buffer)
-		line = join_line_with_previous_line(buffer, line);
-	else
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	line = while_no_newline(fd, buffer, line);
-	if (!buffer)
-		return (line);
-	buffer = give_next_line(buffer);
-	if (!buffer[0])
-	{
-		free(buffer);
-		buffer = NULL;
-	}
+	if (!read_lines(stach + fd, fd, &buf, &line))
+		return (NULL);
+	line = take_line(stach + fd);
+	if (stach[fd] && !stach[fd][0])
+		safe_free(stach + fd);
+	free(buf);
 	return (line);
 }

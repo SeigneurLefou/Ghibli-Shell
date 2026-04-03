@@ -77,6 +77,17 @@ void free_tokens(t_vec *expr)
 
 int	main(int argc, char **argv, char **env)
 {
+	char *key;
+	char *value;
+	int file = open("test.config", O_RDONLY);
+	
+	config_parse_line(file, &key, &value);
+	printf("%s: %s", key, value);
+	config_parse_line(file, &key, &value);
+	printf("%s: %s", key, value);
+	config_parse_line(file, &key, &value);
+	printf("%s: %s", key, value);
+
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(argv[1], &parsed);
 	if (result == tokeniser_error_succes)
