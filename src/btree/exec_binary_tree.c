@@ -34,18 +34,18 @@ void	exec_right_pipeline(t_btree_node *tree, int files[2],
 	t_btree	*tree_cpy;
 
 	tree_cpy = tree;
-	tree_cpy->node = tree_cpy->node.left;
+	tree_cpy->node = tree_cpy->node.right;
 	if (tree->node.operator != operator_pipe && !tree->node.wstatus
-		&& tree->operator == operator_and && tree_cpy->node)
-		exec_pipeline(tree->right, files, &command_pid);
-	else if (tree->operator != operator_pipe && tree->node.wstatus
-		&& tree->operator == operator_or && tree_cpy->right)
-		exec_pipeline(tree->right, files, &command_pid);
-	else if (tree->operator != operator_pipe
-		&& tree->node.operator == operator_semicolon && tree_cpy->right)
-		exec_pipeline(tree->right, files, &command_pid);
+		&& tree->node.operator == operator_and && tree_cpy->node)
+		exec_pipeline(tree_cpy, files, &command_pid);
+	else if (tree->node.operator != operator_pipe && tree->node.wstatus
+		&& tree->node.operator == operator_or && tree_cpy->node.)
+		exec_pipeline(tree_cpy, files, &command_pid);
+	else if (tree->node.operator != operator_pipe
+		&& tree->node.operator == operator_semicolon && tree_cpy->node)
+		exec_pipeline(tree_cpy, files, &command_pid);
 	else
-		exec_pipeline(tree->right, files, &command_pid);
+		exec_pipeline(tree_cpy, files, &command_pid);
 	return (command_pid);
 }
 
@@ -65,12 +65,10 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 		exec_cmd(tree, files, &command_pid);
 		return ;
 	}
-	else
-		exec_pipeline(tree, files, &command_pid);
+	else if (tree_cpy->node)
+		exec_pipeline(tree_cpy, files, &command_pid);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
-	tree_cpy = tree;
-	tree_cpy->node = tree_cpy->node.left;
 	if (command_pid.data)
 		vec_extend_free(&pid_list, &command_pid);
 	exec_right_pipeline(tree, files, &command_pid);
@@ -84,12 +82,11 @@ void	exec_right_tree(t_btree *tree, int files[2])
 
 	tree_cpy = tree;
 	tree_cpy->node = tree_cpy->node.right;
-	if (tree->node && tree_cpy->node
-		&& tree->node.operator != operator_pipe
-		&& !tree->node.wstatus && tree->node.operator == operator_and)
+	if (tree_cpy->node && tree->node.operator != operator_pipe
+   && !tree->node.wstatus && tree->node.operator == operator_and)
 	{
 		exec_binary_tree(tree_cpy, files);
-		tree->wstatus &= tree_cpy->node.wstatus;
+		tree->node.wstatus &= tree_cpy->node.wstatus;
 	}
 	else if (tree->node && tree_cpy->node
 		&& tree->node.operator != operator_pipe
@@ -98,8 +95,7 @@ void	exec_right_tree(t_btree *tree, int files[2])
 		exec_binary_tree(tree->right, expr, files, env);
 		tree->node.wstatus |= tree_cpy->node.wstatus;
 	}
-	else if (tree->node && tree_cpy && tree_cpy->node
-		&& tree->node.operator != operator_pipe
+	else if (tree_cpy->node && tree->node.operator != operator_pipe
 		&& tree->node.operator == operator_semicolon)
 	{
 		exec_binary_tree(tree->node.right, expr, files, env);
@@ -121,14 +117,14 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		tree->node.wstatus = give_exit_code(tree->node.wstatus);
 		return (tree->node.wstatus);
 	}
-	if (tree->node.operator == operator_pipe)
+	else if (tree->node.operator == operator_pipe)
 	{
 		pid_list = exec_pipeline(tree, files, &pid_list);
 		tree->node.wstatus = wait_all_pid(&pid_list);
 		tree->node.wstatus = give_exit_code(tree->node.wstatus);
 		return (tree->node.wstatus);
 	}
-	if (tree->node.operator != operator_pipe && tree->node.left)
+	else if (tree->node.left)
 	{
 		tree_cpy->node = tree_cpy->node.left;
 		exec_binary_tree(tree_cpy, files);
