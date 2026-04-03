@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:07:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/02 15:35:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/03 11:11:12 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "cmd.h"
 
 typedef struct s_btree_node	t_btree_node;
+typedef struct s_btree		t_btree;
 
 typedef struct s_pipex
 {
@@ -41,9 +42,7 @@ int		infile_gestion(t_pipex *pipex_var);
 int		here_doc_file(char *limiter);
 int		get_file_while_not_limiter(int fd, char *limiter, char **buffer);
 int		pipe_gestion(t_pipex *pipex_var);
-int		child_gestion(t_pipex *pipex_var);
 int		fork_pid(t_pipex	*pipex_var);
-int		execution_loop(t_pipex *pipex_var);
 int		infile_gestion(t_pipex *pipex_var);
 int		pipe_gestion(t_pipex *pipex_var);
 int		child_gestion(t_pipex *pipex_var);
@@ -56,6 +55,6 @@ int		wait_all_pid(t_vec *pids);
 int		give_exit_code(int status);
 int		fake_fdin(void);
 void	open_file(char *file_name, int open_mode, int *fd);
-void	open_io_fds(t_btree_node *node, int *fds[2], t_vec expr);
+void	open_io_fds(t_btree *tree, int *fds[2]);
 
 #endif

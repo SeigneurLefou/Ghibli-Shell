@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/02 16:03:24 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/03 11:45:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,54 +22,55 @@ size_t	ft_array_strlen(char **array_str)
 	return (len);
 }
 
-void	ft_append(char ***dest, const char *src)
+void	append_str_to_str_array(char **dest, const char *src)
 {
 	size_t	len;
 	char	**new_array;
 	size_t	i;
 
 	i = 0;
-	if (!(*dest))
+	if (!dest)
 	{
-		*dest = ft_calloc(2, sizeof(char *));
-		*dest[0] = (char *)src;
+		dest = ft_calloc(2, sizeof(char *));
+		dest[0] = (char *)src;
 		return ;
 	}
-	len = ft_array_strlen(*dest);
-	new_array = ft_calloc(len + 1, sizeof(char *));
+	len = ft_array_strlen(dest);
+	new_array = ft_calloc(len + 2, sizeof(char *));
 	while (i < len)
 	{
-		new_array[i] = *dest[i];
+		new_array[i] = dest[i];
 		i++;
 	}
 	new_array[i] = (char *)src;
-	*dest = new_array;
+	dest = new_array;
 }
 
 void	vec_to_cmd(t_btree *tree)
 {
 	t_cmd	*new_cmd;
 	size_t	i;
-	char	*pointed_expr;
+	t_token	*pointed_expr;
 
-	i = tree->node->expr_start;
+	i = tree->node.expr_start;
 	new_cmd = ft_cmdnew();
-	while (i < tree->node->expr_end)
+	while (i < tree->node.expr_end)
 	{
-		pointed_expr = vec_get(&tree->expr, i);
-		if (ft_strcmp(pointed_expr, ">") && ft_strcmp(pointed_expr, ">>")
-			&& ft_strcmp(pointed_expr, "<") && ft_strcmp(pointed_expr, "<<"))
+		pointed_expr = (t_token *)vec_get(&tree->expr, i);
+		/*if (pointed_expr && (ft_strcmp(pointed_expr->data, ">") && ft_strcmp(pointed_expr->data, ">>")
+			&& ft_strcmp(pointed_expr, "<") && ft_strcmp(pointed_expr, "<<")))*/
+		if (pointed_expr->type == token_type_plain)
 		{
-			ft_append(&new_cmd->argv, pointed_expr);
+			append_str_to_str_array(new_cmd->argv, pointed_expr->data.data);
 			if (!(new_cmd->name))
 			{
-				new_cmd->name = pointed_expr;
-				get_cmd_path(&new_cmd, env);
+				new_cmd->name = pointed_expr->data.data;
+				get_cmd_path(&new_cmd, tree->env);
 			}
 		}
 		else
 			i++;
 		i++;
 	}
-	ft_cmdadd_back(&(tree->node->cmds), &new_cmd);
+	ft_cmdadd_back(&(tree->node.cmds), &new_cmd);
 }

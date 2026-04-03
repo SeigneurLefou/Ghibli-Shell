@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 10:46:09 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/03 11:43:28 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ void	ft_cmdclear(t_cmd *cmd)
 		i++;
 	}
 	free(tmp->argv);
-	free(tmp->name);
-	free(tmp->path);
+	if (tmp->path)
+		free(tmp->path);
+	if (tmp->path)
+		free(tmp->path);
 	free(tmp);
 	cmd = NULL;
 }
