@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/03 11:45:49 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:00:37 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ size_t	ft_array_strlen(char **array_str)
 	size_t	len;
 
 	len = 0;
-	while (array_str[len])
+	while (array_str && array_str[len])
 		len++;
 	return (len);
 }
 
-void	append_str_to_str_array(char **dest, const char *src)
+void	append_str_to_str_array(char ***dest, const char *src)
 {
 	size_t	len;
 	char	**new_array;
@@ -31,19 +31,34 @@ void	append_str_to_str_array(char **dest, const char *src)
 	i = 0;
 	if (!dest)
 	{
-		dest = ft_calloc(2, sizeof(char *));
-		dest[0] = (char *)src;
+		*dest = ft_calloc(2, sizeof(char *));
+		(*dest)[0] = (char *)src;
 		return ;
 	}
-	len = ft_array_strlen(dest);
+	len = ft_array_strlen(*dest);
 	new_array = ft_calloc(len + 2, sizeof(char *));
 	while (i < len)
 	{
-		new_array[i] = dest[i];
+		new_array[i] = (*dest)[i];
 		i++;
 	}
 	new_array[i] = (char *)src;
-	dest = new_array;
+	*dest = new_array;
+}
+
+char	*vec_extract_str(t_vec vec)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = ft_calloc(vec.size + 1, sizeof(char));
+	while (i < vec.size)
+	{
+		str[i] = *(char *)vec_get(&vec, i);
+		i++;
+	}
+	return (str);
 }
 
 void	vec_to_cmd(t_btree *tree)
@@ -54,22 +69,20 @@ void	vec_to_cmd(t_btree *tree)
 
 	i = tree->node.expr_start;
 	new_cmd = ft_cmdnew();
-	while (i < tree->node.expr_end)
+	while (i <= tree->node.expr_end)
 	{
 		pointed_expr = (t_token *)vec_get(&tree->expr, i);
 		/*if (pointed_expr && (ft_strcmp(pointed_expr->data, ">") && ft_strcmp(pointed_expr->data, ">>")
 			&& ft_strcmp(pointed_expr, "<") && ft_strcmp(pointed_expr, "<<")))*/
 		if (pointed_expr->type == token_type_plain)
 		{
-			append_str_to_str_array(new_cmd->argv, pointed_expr->data.data);
+			append_str_to_str_array(&new_cmd->argv, vec_extract_str(pointed_expr->data)); // <- first error
 			if (!(new_cmd->name))
 			{
-				new_cmd->name = pointed_expr->data.data;
+				new_cmd->name = vec_extract_str(pointed_expr->data);
 				get_cmd_path(&new_cmd, tree->env);
 			}
 		}
-		else
-			i++;
 		i++;
 	}
 	ft_cmdadd_back(&(tree->node.cmds), &new_cmd);

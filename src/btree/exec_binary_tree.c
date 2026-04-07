@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/03 11:13:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:56:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	pipex_var.fds[1] = files[1];
 	fork_pid(&pipex_var);
 	vec_append(pid_list, &pipex_var.pid);
-	if (pipex_var.fds[0])
+	if (pipex_var.fds[0] != 0 && pipex_var.fds[0] != 1)
 		close(pipex_var.fds[0]);
 }
 
