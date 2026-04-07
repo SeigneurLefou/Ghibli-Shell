@@ -59,12 +59,12 @@ void show_error(t_vec *expr, char *msg, int index1, int index2)
         if (index1 >= 0)
             offset = underline_error(expr, index1, 0, '^');
         if (index2 >= 0 && index1 != index2)
-            underline_error(expr, index2, offset, '-');
+            underline_error(expr, index2, offset, '~');
     }
     else
     {
         if (index2 >= 0)
-            offset = underline_error(expr, index2, 0, '-');
+            offset = underline_error(expr, index2, 0, '~');
         if (index1 >= 0 )
             underline_error(expr, index1, offset, '^');
     }
