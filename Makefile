@@ -12,6 +12,9 @@ LDFLAGS := -lreadline
 
 INCLUDES = includes
 
+include src/config_manager/Makefile
+include src/error/Makefile
+include src/minishell/Makefile
 include src/token/Makefile
 include src/pipex/Makefile
 include src/list/Makefile
@@ -21,7 +24,6 @@ include src/libft/Makefile
 include src/btree/Makefile
 include src/vec/Makefile
 include src/vec_to_cmd/Makefile
-include src/minishell/Makefile
 include src/pid/Makefile
 
 BUILD_FRAME1 = \

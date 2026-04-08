@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:07:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 15:25:27 by yben-dje         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2026/04/08 17:09:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef PIPEX_H
 # define PIPEX_H
@@ -24,7 +25,7 @@
 # include <stdio.h>
 # include "btree.h"
 # include "libft.h"
-# include "gnl.h"
+# include "get_next_line.h"
 # include "cmd.h"
 
 typedef struct s_btree_node	t_btree_node;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 12:31:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/08 17:50:58 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,17 @@ void free_tokens(t_vec *expr)
 
 int	main_token(char *line, char *env[])
 {
+	/*char *key;
+	char *value;
+	int file = open("test.config", O_RDONLY);
+	
+	config_parse_line(file, &key, &value);
+	printf("%s: %s", key, value);
+	config_parse_line(file, &key, &value);
+	printf("%s: %s", key, value);
+	config_parse_line(file, &key, &value);
+	printf("%s: %s", key, value);*/
+
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(line, &parsed);
 	if (result == tokeniser_error_succes)
@@ -92,7 +103,7 @@ int	main_token(char *line, char *env[])
 	if (result == tokeniser_error_unterminated_quoted_string)
 	{
 		free_tokens(&parsed);
-		printf("Tokeniser error: Unterminated quoted string.\n");
+		display_error_message("Unterminated quoted string.");
 		return (1);	
 	}
 
@@ -111,23 +122,25 @@ int	main_token(char *line, char *env[])
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
-		printf("Parser Error: Unmatching parenthesis at token %d!\n", parser_result.index1);
+		show_error(&parsed, "Parser Error: Unmatching parenthesis!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_unsuported_arithmetic)
-		printf("Parser Error: Unsuported arithmetic detected between tokens %d and %d!\n", parser_result.index1, parser_result.index2);
+		show_error(&parsed, "Parser Error: Unsuported arithmetic detected!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_empty_parentheses)
-		printf("Parser Error: Empty parentheses at token %d!\n", parser_result.index1);
+		show_error(&parsed, "Parser Error: Empty parentheses!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_incorrect_right_operand)
-		printf("Parser Error: Wrong right operand at token %d needed by operator at token %d!\n", parser_result.index1, parser_result.index2);
+		show_error(&parsed, "Parser Error: Wrong right operand needed by operator!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_incorrect_left_operand)
-		printf("Parser Error: Wrong left operand at token %d needed by operator at token %d!\n", parser_result.index1, parser_result.index2);
+		show_error(&parsed, "Parser Error: Wrong left operand needed by operator!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_no_operator_left_parenthese)
-		printf("Parser Error: No operator before parenthese at token %d!\n", parser_result.index1);
+		show_error(&parsed, "Parser Error: No operator before parenthese!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_no_operator_right_parenthese)
-		printf("Parser Error: No operator after parenthese at token %d!\n", parser_result.index1);
+		show_error(&parsed, "Parser Error: No operator after parenthese!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_invalide_io_file_after_parentheses)
-		printf("Parser Error: Invalid IO file at %d after parenthese at %d!\n", parser_result.index1, parser_result.index2);
+		show_error(&parsed, "Parser Error: Invalid IO file after parenthese!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
-		printf("Parser Error: Invalid IO file at %d!\n", parser_result.index1);
+		show_error(&parsed, "Parser Error: Invalid IO file!", parser_result.index1, -1);
+	else if (parser_result.parsing_error == parsing_error_unsuported_operator)
+		show_error(&parsed, "Parser Error: Unsuported operator!", parser_result.index1, -1);
 	else
 		printf("Parser is happy!\n");
 	if (parser_result.parsing_error != parsing_error_success)

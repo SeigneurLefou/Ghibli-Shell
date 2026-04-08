@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/31 13:46:22 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/08 17:09:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "btree.h"
 # include "cmd.h"
-# include "gnl.h"
+# include "get_next_line.h"
 # include "libft.h"
 # include "list.h"
 # include "pid.h"
@@ -29,6 +29,8 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include "error_manager.h"
+# include "config_manager.h"
 
 char	*set_prompt_line(void);
 void	handle_signal(int sig);
