@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 17:10:22 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/08 17:50:58 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	main_token(char *line, char *env[])
 	else if (parser_result.parsing_error == parsing_error_empty_parentheses)
 		show_error(&parsed, "Parser Error: Empty parentheses!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_incorrect_right_operand)
-		show_error(&parsed, "Parser Error: Wrong right operand by operator!", parser_result.index1, parser_result.index2);
+		show_error(&parsed, "Parser Error: Wrong right operand needed by operator!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_incorrect_left_operand)
 		show_error(&parsed, "Parser Error: Wrong left operand needed by operator!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_no_operator_left_parenthese)
@@ -139,6 +139,8 @@ int	main_token(char *line, char *env[])
 		show_error(&parsed, "Parser Error: Invalid IO file after parenthese!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
 		show_error(&parsed, "Parser Error: Invalid IO file!", parser_result.index1, -1);
+	else if (parser_result.parsing_error == parsing_error_unsuported_operator)
+		show_error(&parsed, "Parser Error: Unsuported operator!", parser_result.index1, -1);
 	else
 		printf("Parser is happy!\n");
 	if (parser_result.parsing_error != parsing_error_success)
