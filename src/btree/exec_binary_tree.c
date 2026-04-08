@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_binary_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 08:32:05 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:39:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	int		fd_out;
 	int		pipe_fd[2];
 	t_btree	*tree_cpy;
-
+	
+	pipe(pipe_fd);
 	tree_cpy = tree;
 	tree_cpy->node = *tree_cpy->node.left;
 	fd_out = files[1];
@@ -107,11 +108,11 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 
 	tree_cpy = tree;
 	vec_init(&pid_list, sizeof(int), 5);
-	open_io_fds(tree, &files);
+	open_io_fds(tree, files);
 	if (!tree->node.left && !tree->node.right)
 	{
 		exec_cmd(tree, files, &pid_list);
-		waitpid(*(int *)vec_get(&pid_list, 0), &tree->node.wstatus, 1);
+		waitpid(*(int *)vec_get(&pid_list, 0), &tree->node.wstatus, 0);
 		tree->node.wstatus = give_exit_code(tree->node.wstatus);
 		return (tree->node.wstatus);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:07:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/03 11:11:12 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:25:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ int		wait_all_pid(t_vec *pids);
 int		give_exit_code(int status);
 int		fake_fdin(void);
 void	open_file(char *file_name, int open_mode, int *fd);
-void	open_io_fds(t_btree *tree, int *fds[2]);
+void	open_io_fds(t_btree *tree, int *fds);
 
 #endif
