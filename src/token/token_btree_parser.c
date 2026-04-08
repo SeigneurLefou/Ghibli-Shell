@@ -39,10 +39,8 @@ int	get_matching_parethese(t_vec *expr, unsigned int index)
 /* From right to left */
 int	get_next_parethese(t_vec *expr, unsigned int index)
 {
-	int	count;
 	t_token			*token;
 
-	count = 0;
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
@@ -56,10 +54,8 @@ int	get_next_parethese(t_vec *expr, unsigned int index)
 /* From right to left */
 int	get_next_delimiter(t_vec *expr, unsigned int index)
 {
-	int	count;
 	t_token			*token;
 
-	count = 0;
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
@@ -144,9 +140,9 @@ void parse_leaf(t_vec *expr, t_btree_node *node)
 	{
 		// This assumes that the syntax is valid and that the types are checked before by the syntax checker
 		token = (t_token *)vec_get(expr, index);
-		if (token->type == token_type_command_delimiter && token->data.data[0] == '<')
+		if (token->type == token_type_command_delimiter && token->data.data[0] == '<' && token->data.size == 1)
 			file.type = io_type_infile;
-		else if (token->type == token_type_command_delimiter && token->data.data[0] == '>')
+		else if (token->type == token_type_command_delimiter && token->data.data[0] == '>' && token->data.size == 1)
 			file.type = io_type_outfile;
 		else if (token->type == token_type_command_delimiter && token->data.data[1] == '>')
 			file.type = io_type_append_file;

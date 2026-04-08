@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/07 09:04:44 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:31:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void print_tree(t_vec *expr, t_btree_node *node)
 {
 	if (node->operator == operator_none)
 	{
-		for (int i = node->expr_start; i <= node->expr_end; i++)
+		for (unsigned int i = node->expr_start; i <= node->expr_end; i++)
 		{
 			t_token *token = (t_token *)vec_get(expr, i);
 			write(1, token->data.data, token->data.size);

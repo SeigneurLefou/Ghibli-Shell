@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 23:54:31 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:32:11 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 	vec_init(command, sizeof(t_token), 4);
 	unsigned int i = 0;
 	char quote_char = 0;
-	bool in_parenthese = false; 
 	t_token current_token;
 	current_token.type = token_type_void;
 	while (expr[i])
