@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/24 20:06:16 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/08 09:51:07 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,42 @@ void	vec_null(t_vec *vec)
 	vec->type_size = 0;
 	vec->buffering_size = 0;
 	vec->allocated_size = 0;
+}
+
+bool	vec_expand_and_free(t_vec *vec, t_vec *other)
+{
+	char			*new_data;
+	unsigned int	alloc_size;
+
+	if (vec->type_size != other->type_size)
+		return (false);
+	alloc_size = (vec->size + other->size + vec->buffering_size)
+		* vec->type_size;
+	new_data = malloc(alloc_size);
+	if (!new_data)
+		return (false);
+	ft_memcpy(new_data, vec->data, vec->size * vec->type_size);
+	vec->allocated_size = vec->size + other->size + vec->buffering_size;
+	ft_memcpy(new_data + vec->size * vec->type_size, other->data, other->size
+		* other->type_size);
+	vec->size += other->size;
+	free(vec->data);
+	vec->data = new_data;
+	vec_free(other);
+	return (true);
+}
+
+char	*vec_extract_str(t_vec vec)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = ft_calloc(vec.size + 1, sizeof(char));
+	while (i < vec.size)
+	{
+		str[i] = *(char *)vec_get(&vec, i);
+		i++;
+	}
+	return (str);
 }

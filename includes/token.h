@@ -6,6 +6,8 @@
 # include <stdio.h>
 # include <unistd.h>
 
+typedef struct s_btree_node	t_btree_node;
+
 typedef enum e_token_type
 {
 	token_type_scope_delimiter,
@@ -48,7 +50,8 @@ typedef struct s_parsing_checker_result
 }							t_parsing_checker_result;
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);
-bool						parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth);
-t_parsing_checker_result    check_syntax(t_vec *expr);
+bool						parse_token_btree(t_vec *expr, t_btree_node *node,
+								unsigned int depth);
+t_parsing_checker_result	check_syntax(t_vec *expr);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:43:04 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/31 19:17:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:28:30 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_parsing_checker_result	check_matching_parentheses(t_vec *expr)
 {
 	int		count;
 	t_token	*token;
-	int		index;
+	unsigned int		index;
 	int 	par_index;
 
 	count = 0;

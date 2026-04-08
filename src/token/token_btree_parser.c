@@ -39,10 +39,8 @@ int	get_matching_parethese(t_vec *expr, unsigned int index)
 /* From right to left */
 int	get_next_parethese(t_vec *expr, unsigned int index)
 {
-	int	count;
 	t_token			*token;
 
-	count = 0;
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
@@ -56,10 +54,8 @@ int	get_next_parethese(t_vec *expr, unsigned int index)
 /* From right to left */
 int	get_next_delimiter(t_vec *expr, unsigned int index)
 {
-	int	count;
 	t_token			*token;
 
-	count = 0;
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
@@ -116,7 +112,7 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node, bool match_all)
 
 	// TODO: Maybe remove the parenthese counter? IDK if it's usefull.
 	index = node->expr_start;
-	while (index <= node->expr_stop)
+	while (index <= node->expr_end)
 	{
 		token = (t_token *)vec_get(expr, index);
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == '(')
@@ -140,13 +136,13 @@ void parse_leaf(t_vec *expr, t_btree_node *node)
 	index = node->expr_start;
 	if (!node->io_files.data)
 		vec_init(&node->io_files, sizeof(t_io_file), 2);
-	while (index < node->expr_stop)
+	while (index < node->expr_end)
 	{
 		// This assumes that the syntax is valid and that the types are checked before by the syntax checker
 		token = (t_token *)vec_get(expr, index);
-		if (token->type == token_type_command_delimiter && token->data.data[0] == '<')
+		if (token->type == token_type_command_delimiter && token->data.data[0] == '<' && token->data.size == 1)
 			file.type = io_type_infile;
-		else if (token->type == token_type_command_delimiter && token->data.data[0] == '>')
+		else if (token->type == token_type_command_delimiter && token->data.data[0] == '>' && token->data.size == 1)
 			file.type = io_type_outfile;
 		else if (token->type == token_type_command_delimiter && token->data.data[1] == '>')
 			file.type = io_type_append_file;
@@ -197,23 +193,23 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 {
 	t_btree_node	*btree_a;
 	t_btree_node	*btree_b;
-	unsigned int	expr_stop;
+	unsigned int	expr_end;
 	t_token			*token;
 
-	unsigned int old_stop = node->expr_stop;
-	if (is_in_parentheses(expr, node->expr_start, node->expr_stop))
+	unsigned int old_stop = node->expr_end;
+	if (is_in_parentheses(expr, node->expr_start, node->expr_end))
 	{
-		old_stop = node->expr_stop;
-		node->expr_stop = get_next_parethese(expr, node->expr_stop) - 1;
+		old_stop = node->expr_end;
+		node->expr_end = get_next_parethese(expr, node->expr_end) - 1;
 		node->expr_start++;
-		grab_io_files(expr, node, old_stop, node->expr_stop + 2);
+		grab_io_files(expr, node, old_stop, node->expr_end + 2);
 		return (parse_token_btree(expr, node, depth + 1));
 	}
 
 	if (!contains_scope_delimiter(expr, node, false))
 	{
 		node->expr_start = node->expr_start;
-		node->expr_stop = node->expr_stop;
+		node->expr_end = node->expr_end;
 		node->operator = operator_none;
 		node->left = NULL;
 		node->right = NULL;
@@ -224,36 +220,36 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 	btree_a = malloc(sizeof(t_btree_node));
 	btree_b = malloc(sizeof(t_btree_node));
 	// TODO: Handle malloc fail
-	expr_stop = node->expr_stop;
+	expr_end = node->expr_end;
 	btree_a->expr_start = node->expr_start;
-	unsigned int next_delimiter = get_next_delimiter(expr, expr_stop);
+	unsigned int next_delimiter = get_next_delimiter(expr, expr_end);
 	token = (t_token *)vec_get(expr, next_delimiter);
 
 	unsigned int operator_index;
 	if (token->data.data[0] == ')')
 	{
-		expr_stop = get_matching_parethese(expr, node->expr_stop);
-		if (!expr_stop)
+		expr_end = get_matching_parethese(expr, node->expr_end);
+		if (!expr_end)
 		{
 			printf("Something has gone very very wrong.\n");
 			// TODO: It leaks here bro
 			return (false);
 		}
-		btree_b->expr_stop = node->expr_stop;
-		operator_index = expr_stop - 1;
+		btree_b->expr_end = node->expr_end;
+		operator_index = expr_end - 1;
 	}
 	else
 	{
-		token = (t_token *)vec_get(expr, expr_stop);
+		token = (t_token *)vec_get(expr, expr_end);
 		while (token && !is_a_delimiter(token, false))
 		{
-			expr_stop--;
-			token = (t_token *)vec_get(expr, expr_stop);
+			expr_end--;
+			token = (t_token *)vec_get(expr, expr_end);
 		}
-		operator_index = expr_stop;
-		btree_b->expr_stop = node->expr_stop;
+		operator_index = expr_end;
+		btree_b->expr_end = node->expr_end;
 	}
-	btree_a->expr_stop = operator_index - 1;
+	btree_a->expr_end = operator_index - 1;
 	btree_b->expr_start = operator_index + 1;
 	vec_null(&btree_a->io_files);
 	vec_null(&btree_b->io_files);

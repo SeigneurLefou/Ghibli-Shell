@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 11:16:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/17 15:47:03 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/03/19 10:39:29 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char				*ft_strchr(const char *s, int c);
 char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strrchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strnstr(const char *big, const char *little,
 						size_t len);
 char				*ft_strjoin(char *s1, char *s2);

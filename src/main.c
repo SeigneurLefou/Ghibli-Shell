@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
+/*   Updated: 2026/04/08 16:54:58 by yben-dje         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void print_tree(t_vec *expr, t_btree_node *node)
 {
 	if (node->operator == operator_none)
 	{
-		for (int i = node->expr_start; i <= node->expr_stop; i++)
+		for (unsigned int i = node->expr_start; i <= node->expr_end; i++)
 		{
 			t_token *token = (t_token *)vec_get(expr, i);
 			write(1, token->data.data, token->data.size);
@@ -27,8 +39,6 @@ void print_tree(t_vec *expr, t_btree_node *node)
 				write(1, ": heredoc, ", 12);
 		}
 		write(1, "} ", 2);
-		vec_free(&node->io_files);
-		free(node);
 	}
 	else
 	{
@@ -61,8 +71,6 @@ void print_tree(t_vec *expr, t_btree_node *node)
 				write(1, ": heredoc, ", 12);
 		}
 		write(1, "} ", 2);
-		vec_free(&node->io_files);
-		free(node);
 	}
 }
 
@@ -75,9 +83,9 @@ void free_tokens(t_vec *expr)
 	vec_free(expr);
 }
 
-int	main(int argc, char **argv, char **env)
+int	main_token(char *line, char *env[])
 {
-	char *key;
+	/*char *key;
 	char *value;
 	int file = open("test.config", O_RDONLY);
 	
@@ -86,10 +94,10 @@ int	main(int argc, char **argv, char **env)
 	config_parse_line(file, &key, &value);
 	printf("%s: %s", key, value);
 	config_parse_line(file, &key, &value);
-	printf("%s: %s", key, value);
+	printf("%s: %s", key, value);*/
 
 	t_vec parsed;
-	t_tokeniser_error result = tokenise(argv[1], &parsed);
+	t_tokeniser_error result = tokenise(line, &parsed);
 	if (result == tokeniser_error_succes)
 		printf("Tokeniser success! Nice!\n");
 	if (result == tokeniser_error_unterminated_quoted_string)
@@ -141,16 +149,29 @@ int	main(int argc, char **argv, char **env)
 	
 	t_btree_node *root = malloc(sizeof(t_btree_node));
 	root->expr_start = 0;
-	root->expr_stop = parsed.size - 1;
+	root->expr_end = parsed.size - 1;
+	root->cmds = NULL;
 	vec_null(&root->io_files);
 	if (!parse_token_btree(&parsed, root, 0))
 		return 1;
 
-	print_tree(&parsed, root);
+	//print_tree(&parsed, root);
 	write(1, "\n", 1);
+	int files[2] = {0, 1};
+	t_btree	*tree;
+	tree = malloc(sizeof(t_btree));
+	tree->node = *root;
+	tree->expr = parsed;
+	tree->env = env;
+	exec_binary_tree(tree, files);
 	
 	free_tokens(&parsed);
+	return (0);
 }
 
-// 'echo a && (echo b && echo c)'
-// '((echo a && echo b) || echo c; echo u) || (echo u && echo b && echo c)'
+int	main(int argc, char **argv, char *env[])
+{
+	(void)argc;
+	(void)argv;
+	handle_prompt(env);
+}

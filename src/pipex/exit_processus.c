@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/02/24 14:36:29 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:36:42 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ int	give_exit_code(int status)
 	return (result);
 }
 
-int	wait_all_pid(t_pipex *pipex_var)
+int	wait_all_pid(t_vec *pids)
 {
-	int	i;
-	int	werror;
+	size_t	i;
+	int		werror;
 
 	werror = 0;
 	i = 0;
-	while (i < pipex_var->pid_i)
+	while (i < pids->size)
 	{
-		waitpid(pipex_var->pid[i], &werror, 0);
+		waitpid(*(int *)vec_get(pids, i), &werror, 0);
 		i++;
 	}
-	free(pipex_var->pid);
+	vec_free(pids);
 	return (werror);
 }

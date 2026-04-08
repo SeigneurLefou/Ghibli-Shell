@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 09:53:56 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 14:42:42 by lchamard         ###   ########.fr       */
+/*   Created: 2025/10/15 11:04:04 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/03/19 10:36:59 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-char	*ft_strcpy(char *dest, const char *src)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	size_t	i;
-	size_t	len_src;
+	size_t	index;
 
-	i = 0;
-	len_src = 0;
-	while (src && src[len_src])
-		len_src++;
-	while (i < len_src)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	index = 0;
+	while (s1[index] == s2[index] && s1[index] && s2[index])
+		index++;
+	return ((unsigned char)s1[index] - (unsigned char)s2[index]);
 }
