@@ -41,7 +41,7 @@ ifndef DEBUG
 endif
 
 	@/bin/echo -e "\e[33m\e[2KLittle Totoro is linking your binary. Please wait...\e[0m"
-	$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $@
+	@$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $@
 	@/bin/echo -e "\e[92m\e[?25hDone!\e[0m"
 
 $(OUT_DIRS):
