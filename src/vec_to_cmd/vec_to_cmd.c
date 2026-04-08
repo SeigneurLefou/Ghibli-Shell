@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/07 13:00:37 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/08 09:50:48 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,6 @@ void	append_str_to_str_array(char ***dest, const char *src)
 	*dest = new_array;
 }
 
-char	*vec_extract_str(t_vec vec)
-{
-	size_t	i;
-	char	*str;
-
-	i = 0;
-	str = ft_calloc(vec.size + 1, sizeof(char));
-	while (i < vec.size)
-	{
-		str[i] = *(char *)vec_get(&vec, i);
-		i++;
-	}
-	return (str);
-}
 
 void	vec_to_cmd(t_btree *tree)
 {

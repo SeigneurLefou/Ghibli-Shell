@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/07 10:08:49 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/08 09:51:07 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,19 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	vec->data = new_data;
 	vec_free(other);
 	return (true);
+}
+
+char	*vec_extract_str(t_vec vec)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = ft_calloc(vec.size + 1, sizeof(char));
+	while (i < vec.size)
+	{
+		str[i] = *(char *)vec_get(&vec, i);
+		i++;
+	}
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:43 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/07 12:50:06 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/08 09:52:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_btree	t_btree;
 
 void	vec_to_cmd(t_btree *tree);
 void	append_str_to_str_array(char ***dest, const char *src);
-char	*vec_extract_str(t_vec vec);
 size_t	ft_array_strlen(char **array_str);
 
 #endif
