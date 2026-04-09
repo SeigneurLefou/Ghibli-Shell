@@ -35,12 +35,12 @@ typedef enum e_parsing_error_type
 	parsing_error_incorrect_left_operand,
 	parsing_error_incorrect_right_operand,
 	parsing_error_empty_parentheses,
-	parsing_error_unsuported_arithmetic,
+	parsing_error_unsupported_arithmetic,
 	parsing_error_no_operator_left_parenthese,
 	parsing_error_no_operator_right_parenthese,
 	parsing_error_invalide_io_file_after_parentheses,
 	parsing_error_invalide_io_file,
-	parsing_error_unsuported_operator,
+	parsing_error_unsupported_operator,
 }							t_parsing_error_type;
 
 typedef struct s_parsing_checker_result
