@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 17:09:53 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/09 15:44:33 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@
 # include <stdlib.h>
 # include "error_manager.h"
 # include "config_manager.h"
+# include "file_runner.h"
 
 char	*set_prompt_line(void);
 void	handle_signal(int sig);
 char	*handle_prompt(char *env[]);
-int		main_token(char *line, char *env[]);
+bool	main_token(char *line, char *env[]);
 
 #endif
