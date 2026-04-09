@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 09:34:30 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/09 13:21:32 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,9 @@ void	vec_to_cmd(t_btree *tree)
 	while (i <= tree->node.expr_end)
 	{
 		pointed_expr = (t_token *)vec_get(&tree->expr, i);
-		/*if (pointed_expr && (ft_strcmp(pointed_expr->data, ">") && ft_strcmp(pointed_expr->data, ">>")
-			&& ft_strcmp(pointed_expr, "<") && ft_strcmp(pointed_expr, "<<")))*/
 		if (pointed_expr->type == token_type_plain)
 		{
-			append_str_to_str_array(&new_cmd->argv, vec_extract_str(pointed_expr->data)); // <- first error
+			append_str_to_str_array(&new_cmd->argv, vec_extract_str(pointed_expr->data));
 			if (!(new_cmd->name))
 			{
 				new_cmd->name = vec_extract_str(pointed_expr->data);
@@ -73,5 +71,5 @@ void	vec_to_cmd(t_btree *tree)
 			i++;
 		i++;
 	}
-	ft_cmdadd_back(&(tree->node.cmds), &new_cmd);
+	tree->node.cmds = new_cmd;
 }
