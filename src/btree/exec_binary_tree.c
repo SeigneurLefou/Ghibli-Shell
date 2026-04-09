@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 15:02:51 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:07:56 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	}
 	if (!files[0])
 		files[0] = fake_fdin();
-	if (tree->node.right)
-		exec_right_tree(tree, files);
+	exec_right_tree(tree, files);
 	return (tree->node.wstatus);
 }
