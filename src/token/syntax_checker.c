@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:43:04 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/08 17:54:38 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/09 14:00:52 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_parsing_checker_result	check_unsuported_arithmetic(t_vec *expr)
 			matching1 = get_matching_parentheses_left(expr, index);
 			matching2 = get_matching_parentheses_left(expr, index + 1);
 			if (matching2 + 1 == matching1)
-				return ((t_parsing_checker_result){parsing_error_unsuported_arithmetic,
+				return ((t_parsing_checker_result){parsing_error_unsupported_arithmetic,
 					index, matching1 - 1});
 		}
 		index++;
@@ -242,7 +242,7 @@ t_parsing_checker_result check_unsuported_operators(t_vec *expr)
 	{
 		token = (t_token *)vec_get(expr, index);
 		if (token->type == token_type_scope_delimiter && (token->data.size == 1 && (token->data.data[0] == '&' || token->data.data[0] == ';')))
-			return ((t_parsing_checker_result){parsing_error_unsuported_operator, index, index});
+			return ((t_parsing_checker_result){parsing_error_unsupported_operator, index, index});
 		index++;
 	}
 	return ((t_parsing_checker_result){parsing_error_success, 0, 0});

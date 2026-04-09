@@ -6,7 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/04/09 14:49:23 by lchamard         ###   ########.fr       */
+=======
+/*   Updated: 2026/04/09 13:33:44 by yben-dje         ###   ########.fr       */
+>>>>>>> f21a1e4b8cc1b38a33070e52ee30753aefdcb617
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +127,8 @@ int	main_token(char *line, char *env[])
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
 		show_error(&parsed, "Parser Error: Unmatching parenthesis!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_unsuported_arithmetic)
-		show_error(&parsed, "Parser Error: Unsuported arithmetic detected!", parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parsing_error_unsupported_arithmetic)
+		show_error(&parsed, "Parser Error: Unsupported arithmetic detected!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_empty_parentheses)
 		show_error(&parsed, "Parser Error: Empty parentheses!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_incorrect_right_operand)
@@ -139,8 +143,8 @@ int	main_token(char *line, char *env[])
 		show_error(&parsed, "Parser Error: Invalid IO file after parenthese!", parser_result.index1, parser_result.index2);
 	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
 		show_error(&parsed, "Parser Error: Invalid IO file!", parser_result.index1, -1);
-	else if (parser_result.parsing_error == parsing_error_unsuported_operator)
-		show_error(&parsed, "Parser Error: Unsuported operator!", parser_result.index1, -1);
+	else if (parser_result.parsing_error == parsing_error_unsupported_operator)
+		show_error(&parsed, "Parser Error: Unsupported operator!", parser_result.index1, -1);
 	else
 		printf("Parser is happy!\n");
 	if (parser_result.parsing_error != parsing_error_success)

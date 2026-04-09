@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 10:48:00 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/09 15:02:51 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	
 	tree_cpy = tree;
 	tree_cpy->node = *tree_cpy->node.left;
+	vec_init(&command_pid, 1, 5);
 	if (!tree->node.left && !tree->node.right)
 	{
 		exec_cmd(tree, files, &command_pid);
