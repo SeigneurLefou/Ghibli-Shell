@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 09:50:19 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/09 13:52:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,16 @@ void	get_cmd_path(t_cmd **cmd, char **env)
 
 void	take_child(t_pipex *pipex_var)
 {
-	dup2(pipex_var->fds[0], 0);
 	if (pipex_var->fds[0] != 0)
+	{
+		dup2(pipex_var->fds[0], 0);
 		close(pipex_var->fds[0]);
-	dup2(pipex_var->fds[1], 1);
+	}
 	if (pipex_var->fds[1] != 1)
+	{
+		dup2(pipex_var->fds[1], 1);
 		close(pipex_var->fds[1]);
+	}
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 		execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
 	ft_cmdclear(pipex_var->cmd);

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 12:56:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/09 13:27:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	handle_signal(int sig)
 {
 	write(1, "^C\n", 3);
+	(void)sig;
 	return ;
 }
 

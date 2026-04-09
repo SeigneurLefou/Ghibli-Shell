@@ -262,11 +262,11 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 	token = (t_token *)vec_get(expr, operator_index);
 	if (token->type == token_type_scope_delimiter && token->data.data[0] == '&')
 		node->operator = operator_and;
-	else if (token->type == token_type_scope_delimiter && token->data.data[0] == '|')
+	else if (token->type == token_type_scope_delimiter && token->data.data[0] == '|' && token->data.size == 2)
 		node->operator = operator_or;
 	else if (token->type == token_type_scope_delimiter && token->data.data[0] == ';')
 		node->operator = operator_semicolon;
-	else if (token->type == token_type_command_delimiter && token->data.data[0] == '|')
+	else if (token->type == token_type_scope_delimiter && token->data.data[0] == '|')
 		node->operator = operator_pipe;
 	return (true);
 }
