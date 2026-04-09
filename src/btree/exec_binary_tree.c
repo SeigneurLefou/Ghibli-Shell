@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 15:39:03 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/09 10:48:00 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,20 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	int		pipe_fd[2];
 	t_btree	*tree_cpy;
 	
-	pipe(pipe_fd);
 	tree_cpy = tree;
 	tree_cpy->node = *tree_cpy->node.left;
-	fd_out = files[1];
-	files[1] = pipe_fd[1];
 	if (!tree->node.left && !tree->node.right)
 	{
 		exec_cmd(tree, files, &command_pid);
 		return ;
 	}
 	else
+	{
+		pipe(pipe_fd);
+		fd_out = files[1];
+		files[1] = pipe_fd[1];
 		exec_pipeline(tree_cpy, files, &command_pid);
+	}
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
 	if (command_pid.data)
@@ -82,7 +84,7 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = tree;
 	tree_cpy->node = *tree_cpy->node.right;
 	if (tree->node.operator != operator_pipe
-   && !tree->node.wstatus && tree->node.operator == operator_and)
+		&& !tree->node.wstatus && tree->node.operator == operator_and)
 	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node.wstatus &= tree_cpy->node.wstatus;
@@ -131,6 +133,7 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	}
 	if (!files[0])
 		files[0] = fake_fdin();
-	exec_right_tree(tree, files);
+	if (tree->node.right)
+		exec_right_tree(tree, files);
 	return (tree->node.wstatus);
 }

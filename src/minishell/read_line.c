@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 17:08:29 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/09 11:36:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	handle_signal(int sig)
 {
-	(void)sig;
+	write(1, "^C\n", 3);
+	rl_new
 	return ;
 }
 
@@ -122,6 +123,7 @@ char	*handle_prompt(char *env[])
 		line = readline(prompt_line);
 		if (!line)
 		{
+			printf("exit\n");
 			rl_clear_history();
 			exit(0);
 		}
@@ -129,6 +131,12 @@ char	*handle_prompt(char *env[])
 		{
 			add_history(line);
 			main_token(line, env);
+		}
+		if (!ft_strcmp(line, "exit"))
+		{
+			printf("exit\n");
+			rl_clear_history();
+			exit(0);
 		}
 		res = line;
 		free(line);

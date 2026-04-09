@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 09:50:48 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/09 09:34:30 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	vec_to_cmd(t_btree *tree)
 				get_cmd_path(&new_cmd, tree->env);
 			}
 		}
+		else
+			i++;
 		i++;
 	}
 	ft_cmdadd_back(&(tree->node.cmds), &new_cmd);

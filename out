@@ -1,0 +1,7 @@
+build
+includes
+Makefile
+minishell
+out
+README.md
+src
