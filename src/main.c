@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 16:00:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:37:06 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,31 +83,18 @@ void free_tokens(t_vec *expr)
 	vec_free(expr);
 }
 
-int	main_token(char *line, char *env[])
+bool	main_token(char *line, char *env[])
 {
-	/*char *key;
-	char *value;
-	int file = open("test.config", O_RDONLY);
-	
-	config_parse_line(file, &key, &value);
-	printf("%s: %s", key, value);
-	config_parse_line(file, &key, &value);
-	printf("%s: %s", key, value);
-	config_parse_line(file, &key, &value);
-	printf("%s: %s", key, value);*/
-
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(line, &parsed);
-	if (result == tokeniser_error_succes)
-		printf("Tokeniser success! Nice!\n");
 	if (result == tokeniser_error_unterminated_quoted_string)
 	{
 		free_tokens(&parsed);
 		display_error_message("Unterminated quoted string.");
-		return (1);	
+		return (false);	
 	}
 
-	unsigned int i = 0;
+	/*unsigned int i = 0;
 	while (i < parsed.size)
 	{
 		t_token cmd = *(t_token *)vec_get(&parsed, i);
@@ -116,9 +103,9 @@ int	main_token(char *line, char *env[])
 		else
 			write(1, "Delimiter: ", 12);
 		write(1, (char *)cmd.data.data, cmd.data.size);
-		write(1, "\n", 1);
+		write(1, "<-\n", 3);
 		i++;
-	}
+	}*/
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
@@ -141,12 +128,10 @@ int	main_token(char *line, char *env[])
 		show_error(&parsed, "Parser Error: Invalid IO file!", parser_result.index1, -1);
 	else if (parser_result.parsing_error == parsing_error_unsupported_operator)
 		show_error(&parsed, "Parser Error: Unsupported operator!", parser_result.index1, -1);
-	else
-		printf("Parser is happy!\n");
 	if (parser_result.parsing_error != parsing_error_success)
 	{
 		free_tokens(&parsed);
-		return (1);
+		return (false);
 	}
 	
 	t_btree_node *root = malloc(2* sizeof(t_btree_node));
@@ -155,10 +140,9 @@ int	main_token(char *line, char *env[])
 	root->cmds = NULL;
 	vec_null(&root->io_files);
 	if (!parse_token_btree(&parsed, root, 0))
-		return 1;
+		return (false);
 
 	//print_tree(&parsed, root);
-	write(1, "\n", 1);
 	int files[2] = {0, 1};
 	t_btree	*tree;
 	tree = malloc(sizeof(t_btree));
@@ -166,14 +150,18 @@ int	main_token(char *line, char *env[])
 	tree->expr = parsed;
 	tree->env = env;
 	exec_binary_tree(tree, files);
-	
+
 	free_tokens(&parsed);
-	return (0);
+	return (true);
 }
 
 int	main(int argc, char **argv, char *env[])
 {
-	(void)argc;
-	(void)argv;
-	handle_prompt(env);
+	if (argc == 1)
+		handle_prompt(env);
+	else if (argc == 2)
+		execute_file(argv[1], env);
+	else {
+		display_error_message("Too many arguments!");
+	}
 }
