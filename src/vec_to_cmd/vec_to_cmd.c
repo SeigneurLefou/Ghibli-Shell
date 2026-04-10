@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 13:21:32 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/10 09:54:56 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	vec_to_cmd(t_btree *tree)
 	size_t	i;
 	t_token	*pointed_expr;
 
-	i = tree->node.expr_start;
+	i = tree->node->expr_start;
 	new_cmd = ft_cmdnew();
-	while (i <= tree->node.expr_end)
+	while (i <= tree->node->expr_end)
 	{
 		pointed_expr = (t_token *)vec_get(&tree->expr, i);
 		if (pointed_expr->type == token_type_plain)
@@ -71,5 +71,5 @@ void	vec_to_cmd(t_btree *tree)
 			i++;
 		i++;
 	}
-	tree->node.cmds = new_cmd;
+	tree->node->cmds = new_cmd;
 }

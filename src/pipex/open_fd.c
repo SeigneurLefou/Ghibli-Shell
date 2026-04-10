@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 17:08:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/10 10:59:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ void	open_io_fds(t_btree	*tree, int *fds)
 	char		*file_name;
 
 	i = 0;
-	while (tree->node.io_files.data && i < tree->node.io_files.size)
+	printf("tree node : %p\n", tree->node);
+	while (tree->node->io_files.data && i < tree->node->io_files.size)
 	{
-		io_file = vec_get(&tree->node.io_files, i);
+		io_file = vec_get(&tree->node->io_files, i);
 		file_name = vec_extract_str(*(t_vec *)vec_get(&tree->expr, io_file->file_name_token_index));
 		if (io_file->type == io_type_infile)
 			open_file(file_name, O_RDONLY, &(fds)[0]);

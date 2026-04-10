@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/02 17:06:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/10 09:33:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_btree_node
 typedef struct s_btree
 {
 	t_vec				expr;
-	struct s_btree_node	node;
+	struct s_btree_node	*node;
 	char				**env;
 }	t_btree;
 

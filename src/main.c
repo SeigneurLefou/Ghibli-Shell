@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 16:37:06 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/10 09:34:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ bool	main_token(char *line, char *env[])
 	int files[2] = {0, 1};
 	t_btree	*tree;
 	tree = malloc(sizeof(t_btree));
-	tree->node = *root;
+	tree->node = root;
 	tree->expr = parsed;
 	tree->env = env;
 	exec_binary_tree(tree, files);

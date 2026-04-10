@@ -1,10 +1,16 @@
 CC := cc
 SHELL := /bin/bash
 
+ifdef SANIT
+	DEBUG=1
+endif
 ifdef DEBUG
 	CFLAGS += -g -Wall -Wextra
 else
 	CFLAGS := -Wall -Wextra -Werror
+endif
+ifdef SANIT
+	CFLAGS += -fsanitize=address -MMD -MP
 endif
 
 FILE_COUNT := $(words $(SRC))
