@@ -1,0 +1,8 @@
+build
+hello.gsh
+includes
+Makefile
+minishell
+out
+README.md
+src
