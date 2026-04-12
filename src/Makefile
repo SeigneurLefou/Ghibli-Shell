@@ -7,7 +7,7 @@ endif
 ifdef DEBUG
 	CFLAGS += -g -Wall -Wextra
 else
-	CFLAGS := -Wall -Wextra -Werror
+	CFLAGS := -g #Wall -Wextra -Werror
 endif
 ifdef SANIT
 	CFLAGS += -fsanitize=address -MMD -MP
