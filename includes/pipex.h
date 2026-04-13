@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2026/04/08 17:09:21 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/10 18:12:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "cmd.h"
+# include "builtin.h"
 
 typedef struct s_btree_node	t_btree_node;
 typedef struct s_btree		t_btree;

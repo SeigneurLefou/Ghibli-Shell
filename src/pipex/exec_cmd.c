@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 13:52:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/10 18:37:01 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,12 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
-		execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
+	{
+		if (!ft_strncmp(pipex_var->cmd->path, "echo", 4))
+			builtin_echo(pipex_var->cmd->argv);
+		else
+			execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
+	}
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);
 }
