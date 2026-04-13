@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/10 18:08:32 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 11:32:48 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	exec_right_pipeline(t_btree *tree, int files[2],
 {
 	t_btree	*tree_cpy;
 
-	tree_cpy = tree;
+	tree_cpy = malloc(sizeof(t_btree));
+	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
 	open_io_fds(tree_cpy, files);
 	if (tree->node->operator != operator_pipe && !tree->node->wstatus
@@ -55,7 +56,8 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	int		pipe_fd[2];
 	t_btree	*tree_cpy;
 	
-	tree_cpy = tree;
+	tree_cpy = malloc(sizeof(t_btree));
+	cpy_btree(tree_cpy, tree);
 	vec_init(&command_pid, 1, 5);
 	if (!tree->node->left && !tree->node->right)
 	{
@@ -81,26 +83,23 @@ void	exec_right_tree(t_btree *tree, int files[2])
 {
 	t_btree	*tree_cpy;
 
-	tree_cpy = tree;
+	tree_cpy = malloc(sizeof(t_btree));
+	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (tree->node->operator != operator_pipe
-		&& !tree->node->wstatus && tree->node->operator == operator_and)
+	dprintf(2, "left wstatus : %d\n", tree->node->wstatus);
+	if (!tree->node->wstatus && tree->node->operator == operator_and)
 	{
 		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus &= tree_cpy->node->wstatus;
-	}
-	else if (tree->node->operator != operator_pipe
-		&& tree->node->wstatus && tree->node->operator == operator_or)
-	{
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus |= tree_cpy->node->wstatus;
-	}
-	else if (tree->node->operator != operator_pipe
-		&& tree->node->operator == operator_semicolon)
-	{
-		exec_binary_tree(tree_cpy, files);
+		dprintf(2, "right wstatus : %d\n", tree_cpy->node->wstatus);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
+	else if (tree->node->wstatus && tree->node->operator == operator_or)
+	{
+		exec_binary_tree(tree_cpy, files);
+		dprintf(2, "right wstatus : %d\n", tree_cpy->node->wstatus);
+		tree->node->wstatus = tree_cpy->node->wstatus;
+	}
+	dprintf(2, "node wstatus : %d\n", tree->node->wstatus);
 }
 
 int	exec_binary_tree(t_btree *tree, int files[2])
@@ -108,7 +107,8 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	t_vec	pid_list;
 	t_btree	*tree_cpy;
 
-	tree_cpy = tree;
+	tree_cpy = malloc(sizeof(t_btree));
+	cpy_btree(tree_cpy, tree);
 	vec_init(&pid_list, sizeof(int), 5);
 	open_io_fds(tree, files);
 	if (!tree->node->left && !tree->node->right)

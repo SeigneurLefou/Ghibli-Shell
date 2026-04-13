@@ -26,7 +26,6 @@ void	open_io_fds(t_btree	*tree, int *fds)
 	char		*file_name;
 
 	i = 0;
-	printf("tree node : %p\n", tree->node);
 	while (tree->node->io_files.data && i < tree->node->io_files.size)
 	{
 		io_file = vec_get(&tree->node->io_files, i);

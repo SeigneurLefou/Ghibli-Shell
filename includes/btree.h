@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/10 09:33:46 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 09:04:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_btree_node
 	t_cmd				*cmds;
 	t_vec				io_files;
 	int					wstatus;
-	int					pipe_fdo;
 	struct s_btree_node	*left;
 	struct s_btree_node	*right;
 }								t_btree_node;
@@ -74,5 +73,7 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
 void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);
 int		exec_binary_tree(t_btree *tree, int files[2]);
 void	exec_right_tree(t_btree *tree, int files[2]);
+int		cpy_btree_node(t_btree_node *new, t_btree_node *old);
+int		cpy_btree(t_btree *new, t_btree *old);
 
 #endif
