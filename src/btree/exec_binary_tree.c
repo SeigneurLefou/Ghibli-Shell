@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 11:32:48 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 14:37:05 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	{
 		exec_binary_tree(tree_cpy, files);
 		dprintf(2, "right wstatus : %d\n", tree_cpy->node->wstatus);
-		tree->node->wstatus = tree_cpy->node->wstatus;
+		tree->node->wstatus
+			= tree_cpy->node->wstatus;
 	}
 	dprintf(2, "node wstatus : %d\n", tree->node->wstatus);
 }

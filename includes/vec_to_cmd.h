@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:43 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 09:52:26 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 14:39:06 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include "token.h"
 # include "btree.h"
+# include "builtin.h"
 # include "cmd.h"
 # include "vec.h"
 # include "libft.h"
