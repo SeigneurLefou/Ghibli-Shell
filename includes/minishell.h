@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 15:44:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/13 14:41:20 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "btree.h"
+# include "builtin.h"
 # include "cmd.h"
 # include "get_next_line.h"
 # include "libft.h"

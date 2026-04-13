@@ -1,5 +1,5 @@
-BUILTIN_PATH = src/builtin
+BUILTIN_PATH = src/builtin/
 
-SRC += 
+SRC += $(BUILTIN_PATH)expand.c
 
 OUT_DIRS += $(OUTPUT_DIR)/$(BUILTIN_PATH)
