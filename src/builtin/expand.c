@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 15:01:24 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 16:15:35 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*expand_variable(char *raw_line, char *pre_line, size_t *i)
 {
 	char	*var_name;
 	char	*var_content;
-	char	*new_line;
 	size_t	k;
 
 	(*i)++;

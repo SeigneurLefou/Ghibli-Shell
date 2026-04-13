@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 14:37:05 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 16:41:16 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	pipex_var.env = tree->env;
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
+	dprintf(2, "dup2 fd0 : %d\n", files[0]);
 	pipex_var.fds[1] = files[1];
+	dprintf(2, "dup2 fd1 : %d\n", files[1]);
 	fork_pid(&pipex_var);
 	vec_append(pid_list, &pipex_var.pid);
 	if (pipex_var.fds[0] != 0 && pipex_var.fds[0] != 1)
+		close(pipex_var.fds[0]);
+	if (pipex_var.fds[1] != 0 && pipex_var.fds[1] != 1)
 		close(pipex_var.fds[0]);
 }
 
@@ -67,11 +71,17 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	tree_cpy->node = tree_cpy->node->left;
 	pipe(pipe_fd);
 	fd_out = files[1];
+	dprintf(2, "pipe left fdout : %d\n", fd_out);
 	files[1] = pipe_fd[1];
+	dprintf(2, "pipe left fd1 : %d\n", files[1]);
 	open_io_fds(tree_cpy, files);
+	dprintf(2, "left file fd0 : %d\n", files[0]);
+	dprintf(2, "left file fd1 : %d\n", files[1]);
 	exec_pipeline(tree_cpy, files, &command_pid);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
+	dprintf(2, "right fd0 : %d\n", files[0]);
+	dprintf(2, "right fd1 : %d\n", files[1]);
 	if (command_pid.data)
 		vec_expand_and_free(pid_list, &command_pid);
 	exec_right_pipeline(tree, files, &command_pid);
