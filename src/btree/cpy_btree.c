@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 15:19:29 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 09:09:12 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:52:52 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	cpy_btree_node(t_btree_node *new, t_btree_node *old)
 	new->operator = old->operator;
 	new->cmds = old->cmds;
 	new->wstatus = old->wstatus;
+	new->io_files = old->io_files;
 	if (old->left)
 	{
 		new->left = malloc(sizeof(t_btree_node));

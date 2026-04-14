@@ -43,7 +43,8 @@ char	*set_prompt_line(void)
 	prompt = expand_line(&line[17]);
 	free(line);
 	free(path);
-	close(fd);
+	if (fd > 2)
+		close(fd);
 	return (prompt);
 }
 

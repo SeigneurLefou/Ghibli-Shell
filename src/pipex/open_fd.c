@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/14 11:16:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:46:54 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ void	open_io_fds(t_btree	*tree, int *fds)
 	char		*file_name;
 
 	i = 0;
-	dprintf(2, "Je suis LAAAA\nsize : %d\n", tree->node->io_files.size);
 	while (i < tree->node->io_files.size)
 	{
 		io_file = vec_get(&tree->node->io_files, i);
 		file_name = vec_to_cstring(*(t_vec *)vec_get(&tree->expr, io_file->file_name_token_index));
-		dprintf(2, "io files : [%s]\n", file_name);
 		if (io_file->type == io_type_infile)
 			open_file(file_name, O_RDONLY, &(fds)[0]);
 		else if (io_file->type == io_type_heredoc)

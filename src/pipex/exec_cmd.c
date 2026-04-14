@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 11:00:02 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:40:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ char	*get_env(char **env, char *var)
 
 	i = 0;
 	len_var_name = ft_strlen(var);
-	while (env[i]
-		&& ft_strncmp(env[i], var, len_var_name))
+	while (env[i] && ft_strncmp(env[i], var, len_var_name))
 		i++;
 	if (!env[i])
 		return (NULL);
