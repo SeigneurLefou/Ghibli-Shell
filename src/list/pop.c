@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pop.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:40:15 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/01/14 14:44:43 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:40:40 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*list_pop_front(t_list *list)
 {
-	t_cell	*cell;
+	t_list_cell	*cell;
 	void	*value;
 
 	cell = list->first_cell;
@@ -33,7 +33,7 @@ void	*list_pop_front(t_list *list)
 
 void	*list_pop_back(t_list *list)
 {
-	t_cell	*cell;
+	t_list_cell	*cell;
 	void	*value;
 
 	cell = list->last_cell;
@@ -50,7 +50,7 @@ void	*list_pop_back(t_list *list)
 	return (value);
 }
 
-static void	*drop_cell(t_list *list, t_cell *cell)
+static void	*drop_cell(t_list *list, t_list_cell *cell)
 {
 	void	*value;
 
@@ -71,7 +71,7 @@ static void	*drop_cell(t_list *list, t_cell *cell)
 void	*list_pop_at_index(t_list *list, t_u32 index)
 {
 	t_u32	i;
-	t_cell	*cell;
+	t_list_cell	*cell;
 	void	*value;
 
 	if (!list->first_cell)
