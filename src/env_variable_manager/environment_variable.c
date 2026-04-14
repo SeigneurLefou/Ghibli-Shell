@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 12:19:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:09:47 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ t_env_variables_manager	env_variables_manager_new(void)
 	return (env_variable_manager);
 }
 
-bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_manager,
-		char *key, char *value)
+static char *env_variables_manager_create_line(char *key, char *value)
 {
 	char			*line;
 	unsigned int	key_size;
@@ -37,26 +36,33 @@ bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_ma
 	value_size = ft_strlen(value);
 	line = malloc(key_size + value_size + 2);
 	if (!line)
-		return (false);
+		return (NULL);
 	ft_memcpy(line, key, key_size);
 	ft_memcpy(line + key_size + 1, key, value_size);
 	line[key_size] = '=';
 	line[key_size + value_size + 1] = 0;
+	return (line);
+} 
+
+bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_manager,
+		char *key, char *value)
+{
+	char * line = env_variables_manager_create_line(key, value);
 	list_push_back(&env_variable_manager->variables, &line);
-    return (true);
+	return (true);
 }
 
 char	**env_variables_manager_get_env_compatible_variables_char_star_star(t_env_variables_manager *env_variable_manager)
 {
 	char			**env;
+	t_iterator		it;
+	unsigned int	index;
 
 	env = malloc(env_variable_manager->variables.size + 1);
 	if (!env)
 		return (NULL);
 	env[env_variable_manager->variables.size] = NULL;
-	t_iterator it;
 	iterator_new(&env_variable_manager->variables, 0);
-	unsigned int index;
 	index = 0;
 	while (index < env_variable_manager->variables.size)
 	{
@@ -70,18 +76,65 @@ char	*env_variable_manager_get_single(t_env_variables_manager *env_variable_mana
 		char *key)
 {
 	unsigned int	index;
-	char			**element;
+	char			*element;
+	t_iterator		it;
 
-	t_iterator it;
+	iterator_new(&env_variable_manager->variables, 0);
+	index = 0;
+	while (index < env_variable_manager->variables.size)
+	{
+		element = iterator_next(&it);
+		if (ft_strcmp(key, element) && (element)[ft_strlen(key)] == '=')
+			return (element + ft_strlen(key) + 1);
+	}
+	return (NULL);
+}
+
+bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
+		char *key, char *value)
+{
+	unsigned int	index;
+	char			*element;
+	t_iterator		it;
+
+	iterator_new(&env_variable_manager->variables, 0);
+	index = 0;
+	while (index < env_variable_manager->variables.size)
+	{
+		element = iterator_next(&it);
+		if (ft_strcmp(key, element) && (element)[ft_strlen(key)] == '=')
+		{
+			t_list_cell * cell = list_get_cell_at_index(&env_variable_manager->variables, index);
+			cell->value = env_variables_manager_create_line(key, value);
+			if (!cell->value)
+				return (false);
+			return (true);
+		}
+	}
+	if (!env_variables_manager_add_variable(env_variable_manager, key, value))
+		return (false);
+	return (true);
+}
+
+bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manager,
+		char *key)
+{
+	unsigned int	index;
+	char			**element;
+	t_iterator		it;
+
 	iterator_new(&env_variable_manager->variables, 0);
 	index = 0;
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
 		if (ft_strcmp(key, *element) && (*element)[ft_strlen(key)] == '=')
-			return (*element + ft_strlen(key) + 1);
+		{
+			list_pop_at_free(&env_variable_manager->variables, index, free);
+			return (true);
+		}
 	}
-    return (NULL);
+	return (false);
 }
 
 void	env_variables_manager_free(t_env_variables_manager *env_variable_manager)
