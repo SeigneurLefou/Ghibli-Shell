@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 00:08:27 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/01/15 14:35:37 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:40:40 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	list_map(t_list *list, bool (*func)(void **))
 {
 	unsigned int	i;
-	t_cell			*cell;
+	t_list_cell			*cell;
 
 	i = 0;
 	while (i < list->size)

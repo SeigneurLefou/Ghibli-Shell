@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 13:29:39 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/01/05 13:44:50 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:40:40 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*list_get_at_index(t_list *list, t_u32 index)
 {
-	t_cell	*cell;
+	t_list_cell	*cell;
 
 	cell = list_get_cell_at_index(list, index);
 	if (cell)
@@ -22,10 +22,10 @@ void	*list_get_at_index(t_list *list, t_u32 index)
 	return (NULL);
 }
 
-t_cell	*list_get_cell_at_index(t_list *list, t_u32 index)
+t_list_cell	*list_get_cell_at_index(t_list *list, t_u32 index)
 {
-	t_u32	i;
-	t_cell	*cell;
+	t_u32		i;
+	t_list_cell	*cell;
 
 	if (!list->first_cell)
 		return (NULL);
