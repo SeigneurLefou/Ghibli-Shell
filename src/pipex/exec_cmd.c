@@ -98,12 +98,12 @@ void	get_cmd_path(t_cmd **cmd, char **env)
 
 void	take_child(t_pipex *pipex_var)
 {
-	if (pipex_var->fds[0] != 0)
+	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
 		close(pipex_var->fds[0]);
 	}
-	if (pipex_var->fds[1] != 1)
+	if (pipex_var->fds[1] > 2)
 	{
 		dup2(pipex_var->fds[1], 1);
 		close(pipex_var->fds[1]);

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/14 08:51:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 10:48:31 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
 	fork_pid(&pipex_var);
-	dprintf(2, "%d\n", pipex_var.pid);
 	vec_append(pid_list, &pipex_var.pid);
 	if (pipex_var.fds[0] != 0 && pipex_var.fds[0] != 1)
 		close(pipex_var.fds[0]);
@@ -62,21 +61,24 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	vec_init(&command_pid, 1, 5);
+	open_io_fds(tree_cpy, files);
 	if (!tree->node->left && !tree->node->right)
 	{
+		dprintf(2, "fd out : %d\n", files[1]);
 		exec_cmd(tree, files, &command_pid);
 		return ;
 	}
 	tree_cpy->node = tree_cpy->node->left;
+	open_io_fds(tree_cpy, files);
 	pipe(pipe_fd);
 	fd_out = files[1];
 	files[1] = pipe_fd[1];
-	open_io_fds(tree_cpy, files);
+	dprintf(2, "fd out : %d\n", files[1]);
 	exec_pipeline(tree_cpy, files, &command_pid);
-	files[0] = pipe_fd[0];
-	files[1] = fd_out;
 	if (command_pid.data)
 		vec_expand_and_free(pid_list, &command_pid);
+	files[0] = pipe_fd[0];
+	files[1] = fd_out;
 	exec_right_pipeline(tree, files, &command_pid);
 	if (command_pid.data)
 		vec_expand_and_free(pid_list, &command_pid);
@@ -97,8 +99,7 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	else if (tree->node->wstatus && tree->node->operator == operator_or)
 	{
 		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus
-			= tree_cpy->node->wstatus;
+		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/13 16:46:17 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:15:35 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	ft_memcpy(new_data + vec->size * vec->type_size, other->data, other->size
 		* other->type_size);
 	vec->size += other->size;
-	free(vec->data);
 	vec->data = new_data;
 	vec_free(other);
 	return (true);

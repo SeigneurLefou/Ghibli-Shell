@@ -45,6 +45,7 @@ bool execute_file(char *filename, char *env[])
 		}
 		free(line);
 	}
-	close(fd);
+	if (fd > 2)
+		close(fd);
 	return (true);
 }
