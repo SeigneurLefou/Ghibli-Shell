@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_to_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 15:05:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 16:51:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	vec_to_cmd(t_btree *tree)
 		pointed_expr = (t_token *)vec_get(&tree->expr, i);
 		if (pointed_expr->type == token_type_plain)
 		{
-			actual_argv = expand_line(vec_extract_str(pointed_expr->data));
+			actual_argv = expand_line(vec_to_cstring(pointed_expr->data));
 			append_str_to_str_array(&new_cmd->argv, actual_argv);
 			if (!(new_cmd->name))
 			{

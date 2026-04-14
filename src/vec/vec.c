@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/08 09:51:07 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/13 16:46:17 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,17 +116,14 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	return (true);
 }
 
-char	*vec_extract_str(t_vec vec)
+char	*vec_to_cstring(t_vec vec)
 {
-	size_t	i;
 	char	*str;
 
-	i = 0;
-	str = ft_calloc(vec.size + 1, sizeof(char));
-	while (i < vec.size)
-	{
-		str[i] = *(char *)vec_get(&vec, i);
-		i++;
-	}
+	str = malloc((vec.size + 1) * sizeof(char));
+	if (!str)
+		return (str);
+	ft_memcpy(str, vec.data, vec.size * sizeof(char));
+	str[vec.size] = 0;
 	return (str);
 }
