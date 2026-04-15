@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/09 16:04:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:17:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ int	wait_all_pid(t_vec *pids)
 
 	werror = 0;
 	i = 0;
+	dprintf(2, "Et moi iciiiiiiiiiiiiii\nsize : %d\n", pids->size);
 	while (i < pids->size)
 	{
 		waitpid(*(int *)vec_get(pids, i), &werror, 0);
+		dprintf(2, "pid : %d\n", *(int *)vec_get(pids, i));
 		i++;
 	}
 	vec_free(pids);

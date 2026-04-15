@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2026/04/10 18:12:03 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 13:52:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ int		infile_gestion(t_pipex *pipex_var);
 int		here_doc_file(char *limiter);
 int		get_file_while_not_limiter(int fd, char *limiter, char **buffer);
 int		pipe_gestion(t_pipex *pipex_var);
-int		fork_pid(t_pipex	*pipex_var);
+int		fork_pid(t_pipex *pipex_var, t_vec *builtins);
 int		infile_gestion(t_pipex *pipex_var);
 int		pipe_gestion(t_pipex *pipex_var);
 int		child_gestion(t_pipex *pipex_var);
-void	take_child(t_pipex *pipex_var);
+void	take_child(t_pipex *pipex_var, t_vec *builtins);
 void	get_cmd_path(t_cmd **cmd, char **env);
 char	*test_all_path(char *path, t_cmd **cmd);
 void	ft_free_path(char **splited_path, int i);

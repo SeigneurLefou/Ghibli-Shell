@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/08 09:51:07 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 10:49:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ bool	vec_append(t_vec *vec, void *data)
 		if (!new_data)
 			return (false);
 		ft_memcpy(new_data, vec->data, vec->allocated_size * vec->type_size);
-		vec->allocated_size += vec->buffering_size;
 		free(vec->data);
 		vec->data = new_data;
 	}
 	ft_memcpy(vec->data + vec->size * vec->type_size, data, vec->type_size);
+	dprintf(2, "pid cast : %d\n", *(int *)(char *)data);
 	vec->size++;
 	return (true);
 }
@@ -110,23 +110,19 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	ft_memcpy(new_data + vec->size * vec->type_size, other->data, other->size
 		* other->type_size);
 	vec->size += other->size;
-	free(vec->data);
 	vec->data = new_data;
 	vec_free(other);
 	return (true);
 }
 
-char	*vec_extract_str(t_vec vec)
+char	*vec_to_cstring(t_vec vec)
 {
-	size_t	i;
 	char	*str;
 
-	i = 0;
-	str = ft_calloc(vec.size + 1, sizeof(char));
-	while (i < vec.size)
-	{
-		str[i] = *(char *)vec_get(&vec, i);
-		i++;
-	}
+	str = malloc((vec.size + 1) * sizeof(char));
+	if (!str)
+		return (str);
+	ft_memcpy(str, vec.data, vec.size * sizeof(char));
+	str[vec.size] = 0;
 	return (str);
 }

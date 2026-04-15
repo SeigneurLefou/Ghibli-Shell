@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/10 18:37:01 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 13:53:45 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ char	*get_env(char **env, char *var)
 
 	i = 0;
 	len_var_name = ft_strlen(var);
-	while (env[i]
-		&& ft_strncmp(env[i], var, len_var_name))
+	while (env[i] && ft_strncmp(env[i], var, len_var_name))
 		i++;
 	if (!env[i])
 		return (NULL);
@@ -96,25 +95,26 @@ void	get_cmd_path(t_cmd **cmd, char **env)
 	(*cmd)->path = cmd_path;
 }
 
-void	take_child(t_pipex *pipex_var)
+void	take_child(t_pipex *pipex_var, t_vec *builtins)
 {
-	if (pipex_var->fds[0] != 0)
+	bool	is_builtin;
+	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
 		close(pipex_var->fds[0]);
 	}
-	if (pipex_var->fds[1] != 1)
+	if (pipex_var->fds[1] > 2)
 	{
 		dup2(pipex_var->fds[1], 1);
 		close(pipex_var->fds[1]);
 	}
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
-		if (!ft_strncmp(pipex_var->cmd->path, "echo", 4))
-			builtin_echo(pipex_var->cmd->argv);
-		else
+		is_builtin = exec_builtin(pipex_var->cmd, builtins);
+		if (!is_builtin)
 			execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
 	}
+	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);
 }
