@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 16:27:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:31:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,3 @@ char	*expand_line(char *raw_line)
 	return (new_line);
 }
 
-int bla_fn(int argc, char **argv)
-{
-	if (argc > 0)
-	{
-		dprintf(2, "JE SUIS LA FONCTION %s\n", argv[0]);
-	}
-	return (EXIT_SUCCESS);
-}

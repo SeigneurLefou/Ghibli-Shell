@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 17:17:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:16:30 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	t_pipex	pipex_var;
 
 	vec_to_cmd(tree);
+	pipex_var.pid = 0;
+	tree->node->wstatus = 0;
 	pipex_var.env = tree->env;
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
@@ -25,9 +27,9 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 		tree->node->wstatus = exec_builtin(pipex_var.cmd);
 	else
 		fork_pid(&pipex_var);
-	dprintf(2, "====== PRE ======\n");
+
 	vec_append(pid_list, &pipex_var.pid);
-	dprintf(2, "pid %d\ntrue pid %d\nsize %d\n", *(int *)vec_get(pid_list, 0), pipex_var.pid, pid_list->size);
+
 	if (pipex_var.fds[0] > 2)
 		close(pipex_var.fds[0]);
 	if (pipex_var.fds[1] > 2)
@@ -69,9 +71,9 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	open_io_fds(tree_cpy, files);
 	if (!tree->node->left && !tree->node->right)
 	{
-		// dprintf(2, "fd out : %d\n", files[1]);
+
 		exec_cmd(tree, files, &command_pid);
-		// dprintf(2, "after exec cmd pid %d\nsize %d\n", *(int *)vec_get(&command_pid, 0), command_pid.size);
+
 		vec_expand_and_free(pid_list, &command_pid);
 		return ;
 	}
@@ -80,7 +82,7 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	pipe(pipe_fd);
 	fd_out = files[1];
 	files[1] = pipe_fd[1];
-	// dprintf(2, "fd out : %d\n", files[1]);
+
 	exec_pipeline(tree_cpy, files, &command_pid);
 	if (command_pid.data)
 		vec_expand_and_free(pid_list, &command_pid);
