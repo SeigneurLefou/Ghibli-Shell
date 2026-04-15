@@ -30,8 +30,7 @@ void	echo_print(char **parts)
 		index2 = 0;
 		while (parts[index][index2])
 		{
-			
-			if (parts[index2 + 1] && parts[index][index2] == '\\')
+			if (parts[index][index2 + 1] && parts[index][index2] == '\\')
 				c = parse_escape(parts[index][++index2]);
 			else
 				c = parts[index][index2];
@@ -48,7 +47,6 @@ int	builtin_echo(int argc, char **argv)
 {
 	bool	newline;
 
-	printf("Hello from echo ! \n");
 	newline = true;
 	if (argc >= 2)
 	{
@@ -64,5 +62,5 @@ int	builtin_echo(int argc, char **argv)
 		echo_print(argv);
 	if (newline)
 		write(1, "\n", 1);
-    exit(0);
+	return (0);
 }
