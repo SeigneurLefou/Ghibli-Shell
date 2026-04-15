@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/15 10:49:49 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 18:54:36 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ bool	vec_append(t_vec *vec, void *data)
 		if (!new_data)
 			return (false);
 		ft_memcpy(new_data, vec->data, vec->allocated_size * vec->type_size);
+		vec->allocated_size += vec->buffering_size;
 		free(vec->data);
 		vec->data = new_data;
 	}
 	ft_memcpy(vec->data + vec->size * vec->type_size, data, vec->type_size);
-	dprintf(2, "pid cast : %d\n", *(int *)(char *)data);
 	vec->size++;
 	return (true);
 }
@@ -121,7 +121,7 @@ char	*vec_to_cstring(t_vec vec)
 
 	str = malloc((vec.size + 1) * sizeof(char));
 	if (!str)
-		return (str);
+		return (NULL);
 	ft_memcpy(str, vec.data, vec.size * sizeof(char));
 	str[vec.size] = 0;
 	return (str);

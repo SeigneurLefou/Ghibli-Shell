@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/08 12:32:11 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 18:28:31 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,18 +133,22 @@ bool parse_token_simple_quote(char *expr, unsigned int *i, t_token *current_toke
 		if (is_escape(expr[*i], *quote_char))
 		{
 			char escaped_char = get_escape(expr[*i]);
-			push_char(current_token, escaped_char);
+			if (!push_char(current_token, escaped_char))
+				return (false);
 		}
 		else
 		{
-			push_char(current_token, '\\');
-			push_char(current_token, expr[*i]);
+			if (!push_char(current_token, '\\'))
+				return (false);
+			if (!push_char(current_token, expr[*i]))
+				return (false);
 		}
 	}
 	else if (expr[*i] == '\'')
 		(*quote_char) = 0;
 	else
-		push_char(current_token, expr[*i]);
+		if (!push_char(current_token, expr[*i]))
+			return (false);
 	return (true);
 }
 
