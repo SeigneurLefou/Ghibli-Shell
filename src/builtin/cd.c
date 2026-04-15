@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_loop.c                                   :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 16:46:31 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/15 14:55:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-int	fork_pid(t_pipex *pipex_var)
+int builtin_cd(int argc, char **argv)
 {
-	pipex_var->pid = fork();
-	if (pipex_var->pid == -1)
-		return (1);
-	else if (pipex_var->pid == 0)
-		take_child(pipex_var);
-	return (0);
+    if (argc != 2)
+    {
+        write(2, "CD needs one argument <path>.", 30);
+        exit(1);
+    }
+    if (!chdir(argv[1]))
+        perror("CD");
+    exit(0);
 }

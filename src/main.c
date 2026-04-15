@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 11:05:53 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:46:05 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,6 @@ bool	main_token(char *line, char *env[])
 	tree->node = root;
 	tree->expr = parsed;
 	tree->env = env;
-	tree->builtin_list = malloc(sizeof(t_vec));
-	vec_init(tree->builtin_list, sizeof(t_function_node), 10);
-	init_builtin(tree->builtin_list, "bla", bla_fn);
 	exec_binary_tree(tree, files);
 
 	free_tokens(&parsed);

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 13:53:45 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:48:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,8 @@ void	get_cmd_path(t_cmd **cmd, char **env)
 	(*cmd)->path = cmd_path;
 }
 
-void	take_child(t_pipex *pipex_var, t_vec *builtins)
+void	take_child(t_pipex *pipex_var)
 {
-	bool	is_builtin;
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
@@ -108,10 +107,11 @@ void	take_child(t_pipex *pipex_var, t_vec *builtins)
 		dup2(pipex_var->fds[1], 1);
 		close(pipex_var->fds[1]);
 	}
-	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
+	if (pipex_var->fds[0] != -1)
 	{
-		is_builtin = exec_builtin(pipex_var->cmd, builtins);
-		if (!is_builtin)
+		if (is_command_built_in(pipex_var->cmd->name))
+			exec_builtin(pipex_var->cmd);
+		else if (pipex_var->cmd->path)
 			execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
 	}
 	perror(pipex_var->cmd->name);
