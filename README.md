@@ -5,11 +5,11 @@
 You like **Ghibli**? You like **Bash**? If this is the case for you (I hope), this project is made for you! This project is a partial remake of bash bringing Ghibli magic to your terminal ✨.
 
 ## Roadmap
-- [ ] exec buitin before path binary
-- [ ] fix io fds in exec pipexline
-- [ ] fix waitpid in exec pipexline
-- [ ] add history command file
-- [ ] handle the mallocs in the parser
+- [ ] Execute built-ins before searching the binaries in the PATH
+- [ ] Fix the io FDs in exec pipexline
+- [ ] Fix waitpid in exec pipexline
+- [ ] Add a command history file
+- [ ] Handle the mallocs in the parser (and everywhere) 😅
 
 ### Module names (Warning spoil)
 We gived the name of Ghibli's characters to the project's modules.
