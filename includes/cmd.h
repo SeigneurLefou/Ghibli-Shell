@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 15:45:13 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/26 09:21:21 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 09:37:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_cmd
 	char			*path;
 	char			*name;
 	char			**argv;
+	int				argc;
 	struct s_cmd	*next;
 }			t_cmd;
 

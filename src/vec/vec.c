@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 17:37:03 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 10:49:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ bool	vec_append(t_vec *vec, void *data)
 		vec->data = new_data;
 	}
 	ft_memcpy(vec->data + vec->size * vec->type_size, data, vec->type_size);
+	dprintf(2, "pid cast : %d\n", *(int *)(char *)data);
 	vec->size++;
 	return (true);
 }

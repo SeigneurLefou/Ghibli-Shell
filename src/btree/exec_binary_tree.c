@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/14 17:44:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 11:03:41 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
-	fork_pid(&pipex_var);
-	// dprintf(2, "====== PRE ======\n");
+	fork_pid(&pipex_var, tree->builtin_list);
+	dprintf(2, "====== PRE ======\n");
 	vec_append(pid_list, &pipex_var.pid);
-	// dprintf(2, "pid %d\ntrue pid %d\nsize %d\n", *(int *)vec_get(pid_list, 0), pipex_var.pid, pid_list->size);
+	dprintf(2, "pid %d\ntrue pid %d\nsize %d\n", *(int *)vec_get(pid_list, 0), pipex_var.pid, pid_list->size);
 	if (pipex_var.fds[0] > 2)
 		close(pipex_var.fds[0]);
 	if (pipex_var.fds[1] > 2)

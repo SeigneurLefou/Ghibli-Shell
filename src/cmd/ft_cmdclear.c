@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/03 13:16:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 11:19:01 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	ft_cmdclear(t_cmd *cmd)
 	}
 	if (tmp->argv)
 		free(tmp->argv);
-	if (tmp->path)
-		free(tmp->path);
 	if (tmp->path)
 		free(tmp->path);
 	free(tmp);
