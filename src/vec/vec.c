@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/15 18:37:08 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/15 18:54:36 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ bool	vec_append(t_vec *vec, void *data)
 		if (!new_data)
 			return (false);
 		ft_memcpy(new_data, vec->data, vec->allocated_size * vec->type_size);
+		vec->allocated_size += vec->buffering_size;
 		free(vec->data);
 		vec->data = new_data;
 	}
