@@ -5,7 +5,7 @@
 You like **Ghibli**? You like **Bash**? If this is the case for you (I hope), this project is made for you! This project is a partial remake of bash bringing Ghibli magic to your terminal ✨.
 
 ## Roadmap
-- [ ] Execute built-ins before searching the binaries in the PATH
+- [X] Execute built-ins before searching the binaries in the PATH
 - [ ] Fix the io FDs in exec pipexline
 - [ ] Fix waitpid in exec pipexline
 - [ ] Add a command history file
