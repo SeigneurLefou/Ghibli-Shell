@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 16:58:27 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/16 17:01:51 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,6 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	{
 
 		exec_cmd(tree, files, &command_pid);
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-		// dprintf(2, "after exec cmd pid %d\nsize %d\n", *(pid_t *)vec_get(&command_pid, 0), command_pid.size);
->>>>>>> a2316b8 ([exec pipeline] locate the error on the code for waitpid)
-=======
-		// dprintf(2, "after exec cmd pid %d\nsize %d\n", *(pid_t *)vec_get(&command_pid, 0), command_pid.size);
->>>>>>> a2316b8829122167e9731e978d064da6efc3ff2b
 		vec_expand_and_free(pid_list, &command_pid);
 		dprintf(2, "}\nafter expand cmd pid size %d\n", (*pid_list).size);
 		return ;

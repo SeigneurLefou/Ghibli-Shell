@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/04/16 16:56:15 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/04/16 16:41:05 by lchamard         ###   ########.fr       */
->>>>>>> a2316b8829122167e9731e978d064da6efc3ff2b
+/*   Updated: 2026/04/16 17:01:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +108,7 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
-	{
-		is_builtin = exec_builtin(pipex_var->cmd, builtins);
-		if (!is_builtin)
-			execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
-	}
+		execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);
