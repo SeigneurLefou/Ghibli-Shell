@@ -6,19 +6,21 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 19:08:36 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/16 19:08:47 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 20:45:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
 #ifdef DEBUG
-void	assert(bool checks[], unsigned int checks_count, char *message)
+
+void	assert(int *checks, char *message)
 {
 	unsigned int	index;
+    int *no_problem_my_bro;
 
 	index = 0;
-	while (index < checks_count)
+	while (checks[index] != 42)
 	{
 		if (!checks[index])
 		{
@@ -28,18 +30,19 @@ void	assert(bool checks[], unsigned int checks_count, char *message)
             ft_putnbr_fd(index + 1, 2);
 			write(2,
 					"\nIf you're in an evaluation, I'm very "
-					"sorry but it'll probably stop here.\x1B[0m\n",
-					79);
-			exit(1);
+					"sorry but it'll probably stop here.\n"
+                    "Manual segfault incoming, please wait...\x1B[0m\n",
+					120);
+            no_problem_my_bro = (int *)0X0;
+			checks[index] = 0[no_problem_my_bro];
 		}
         index++;
 	}
 }
 #else
-void	assert(bool checks[], unsigned int checks_count, char *message)
+void	assert(int *checks, char *message)
 {
     (void)checks;
-    (void)checks_count;
     (void)message;
 }
 #endif
