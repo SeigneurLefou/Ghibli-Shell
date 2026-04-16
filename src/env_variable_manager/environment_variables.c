@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/16 13:55:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 18:28:20 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,18 @@ t_env_variables_manager	env_variables_manager_new(void)
 	return (env_variable_manager);
 }
 
-static char *env_variables_manager_create_line(char *key, char *value)
+bool	env_variables_manager_add_raw_line(t_env_variables_manager *env_variable_manager,
+		char *line)
+{
+	char	*new;
+
+	new = ft_strdup(line);
+	if (!line)
+		return (NULL);
+	list_push_back(&env_variable_manager->variables, new);
+}
+
+static char	*env_variables_manager_create_line(char *key, char *value)
 {
 	char			*line;
 	unsigned int	key_size;
@@ -36,12 +47,14 @@ static char *env_variables_manager_create_line(char *key, char *value)
 	line[key_size] = '=';
 	line[key_size + value_size + 1] = 0;
 	return (line);
-} 
+}
 
 bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_manager,
 		char *key, char *value)
 {
-	char * line = env_variables_manager_create_line(key, value);
+	char	*line;
+
+	line = env_variables_manager_create_line(key, value);
 	list_push_back(&env_variable_manager->variables, &line);
 	return (true);
 }
@@ -90,6 +103,7 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 	unsigned int	index;
 	char			*element;
 	t_iterator		it;
+	t_list_cell		*cell;
 
 	iterator_new(&env_variable_manager->variables, 0);
 	index = 0;
@@ -98,7 +112,8 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 		element = iterator_next(&it);
 		if (ft_strcmp(key, element) && (element)[ft_strlen(key)] == '=')
 		{
-			t_list_cell * cell = list_get_cell_at_index(&env_variable_manager->variables, index);
+			cell = list_get_cell_at_index(&env_variable_manager->variables,
+					index);
 			cell->value = env_variables_manager_create_line(key, value);
 			if (!cell->value)
 				return (false);
