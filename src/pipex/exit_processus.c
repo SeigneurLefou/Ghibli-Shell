@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 16:59:06 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/16 17:47:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	wait_all_pid(t_vec *pids)
 	i = 0;
 	while (i < pids->size)
 	{
-		dprintf(2, "pid wait %d\n", *(pid_t *)vec_get(pids, i));
 		waitpid(*(pid_t *)vec_get(pids, i), &werror, 0);
 		i++;
 	}
