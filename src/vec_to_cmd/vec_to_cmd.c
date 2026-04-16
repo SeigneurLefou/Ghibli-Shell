@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 11:27:12 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/16 08:54:45 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void	vec_to_cmd(t_btree *tree)
 			{
 				new_cmd->argc = 0;
 				new_cmd->name = actual_argv;
-				if (!is_builtin(actual_argv, tree->builtin_list))
+				//if (!is_builtin(actual_argv, tree->builtin_list))
 					get_cmd_path(&new_cmd, tree->env);
-				else
-					new_cmd->path = NULL;
+				/*else
+					new_cmd->path = NULL;*/
 			}
 			new_cmd->argc++;
 		}
