@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 19:31:44 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 00:58:30 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*str_append_char(char *str, char c)
 		new_str[i] = str[i];
 		i++;
 	}
+	free(str);
 	new_str[i] = c;
 	return (new_str);
 }
@@ -69,6 +70,7 @@ char	*expand_line(char *raw_line)
 			i++;
 		}
 	}
+	free(raw_line);
 	return (new_line);
 }
 

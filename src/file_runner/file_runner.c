@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/09 17:52:57 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 00:50:06 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ bool execute_file(char *filename, char *env[])
 	{
 		line = get_next_line(fd);
 		if (!line)
-			return (false);
+			{
+				if (fd > 2)
+					close(fd);
+				return (false);
+			}
 		if (line)
 		{
 			trimmed = ft_strtrim(line, "\r\n \t");
@@ -40,8 +44,11 @@ bool execute_file(char *filename, char *env[])
 			{
 				free(trimmed);
 				free(line);
+				if (fd > 2)
+					close(fd);
 				return (false);
 			}
+			free(trimmed);
 		}
 		free(line);
 	}

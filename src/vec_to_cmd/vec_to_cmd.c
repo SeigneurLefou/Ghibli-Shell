@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 16:53:36 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 00:56:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	append_str_to_str_array(char ***dest, const char *src)
 		i++;
 	}
 	new_array[i] = (char *)src;
+	free(*dest);
 	*dest = new_array;
 }
 

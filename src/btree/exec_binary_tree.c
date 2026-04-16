@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 19:16:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 00:43:13 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,9 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		exec_cmd(tree, files, &pid_list);
 		waitpid(*(int *)vec_get(&pid_list, 0), &tree->node->wstatus, 0);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		free(tree_cpy->node);
+		vec_free(&pid_list);
+		free(tree_cpy);
 		return (tree->node->wstatus);
 	}
 	else if (tree->node->operator == operator_pipe)
@@ -133,6 +136,9 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		exec_pipeline(tree, files, &pid_list);
 		tree->node->wstatus = wait_all_pid(&pid_list);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		free(tree_cpy->node);
+		vec_free(&pid_list);
+		free(tree_cpy);
 		return (tree->node->wstatus);
 	}
 	else if (tree->node->left)
@@ -144,5 +150,8 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	if (files[0])
 		files[0] = fake_fdin();
 	exec_right_tree(tree, files);
+	free(tree_cpy->node);
+	vec_free(&pid_list);
+	free(tree_cpy);
 	return (tree->node->wstatus);
 }
