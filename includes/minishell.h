@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 10:26:02 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/16 14:02:40 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include "btree.h"
 # include "builtin.h"
 # include "cmd.h"
+# include "config_manager.h"
+# include "environment_variables.h"
+# include "error_manager.h"
+# include "file_runner.h"
 # include "get_next_line.h"
 # include "libft.h"
 # include "list.h"
@@ -30,13 +34,16 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "error_manager.h"
-# include "config_manager.h"
-# include "file_runner.h"
 
-char	*set_prompt_line(void);
-void	handle_signal(int sig);
-char	*handle_prompt(char *env[]);
-bool	main_token(char *line, char *env[]);
+typedef struct s_minishell
+{
+	t_env_variables_manager	env_variables_manager;
+}							t_minishell;
+
+char						*set_prompt_line(void);
+void						handle_signal(int sig);
+char						*handle_prompt(char *env[]);
+bool						main_token(char *line, char *env[]);
+void						minishell_init(t_minishell *minishell);
 
 #endif

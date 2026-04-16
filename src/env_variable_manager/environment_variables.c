@@ -1,22 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment_variable.c                             :+:      :+:    :+:   */
+/*   environment_variables.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 16:09:47 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 13:55:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "list.h"
-
-typedef struct s_env_variables_manager
-{
-	t_list				variables;
-}						t_env_variables_manager;
+#include "environment_variables.h"
 
 t_env_variables_manager	env_variables_manager_new(void)
 {

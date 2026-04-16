@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 17:58:58 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 14:04:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,11 +157,18 @@ bool	main_token(char *line, char *env[])
 
 int	main(int argc, char **argv, char *env[])
 {
+	t_minishell	minishell;
+
 	if (argc == 1)
+	{
+		minishell_init(&minishell);
 		handle_prompt(env);
-	else if (argc == 2)
-		execute_file(argv[1], env);
-	else {
-		display_error_message("Too many arguments!");
 	}
+	else if (argc == 2)
+	{
+		minishell_init(&minishell);
+		execute_file(argv[1], env);
+	}
+	else
+		display_error_message("Too many arguments!");
 }
