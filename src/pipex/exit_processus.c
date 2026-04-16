@@ -6,7 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:53:49 by lchamard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/04/15 19:05:21 by yben-dje         ###   ########.fr       */
+=======
+/*   Updated: 2026/04/16 13:44:39 by lchamard         ###   ########.fr       */
+>>>>>>> b5af3f8 ([pipeline] fix the pipeline command but not the waitpid)
 /*                                                                            */
 /* ************************************************************************** */
 

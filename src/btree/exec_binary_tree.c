@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 19:16:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 16:51:12 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 		tree->node->wstatus = exec_builtin(pipex_var.cmd);
 	else
 		fork_pid(&pipex_var);
-
+	dprintf(2, "====== PRE ======\n");
 	vec_append(pid_list, &pipex_var.pid);
 
 	if (pipex_var.fds[0] > 2)
