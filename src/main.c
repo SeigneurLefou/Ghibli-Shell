@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 14:04:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 21:20:38 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,11 +162,13 @@ int	main(int argc, char **argv, char *env[])
 	if (argc == 1)
 	{
 		minishell_init(&minishell);
+		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
 		handle_prompt(env);
 	}
 	else if (argc == 2)
 	{
 		minishell_init(&minishell);
+		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
 		execute_file(argv[1], env);
 	}
 	else
