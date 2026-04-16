@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2026/04/15 11:01:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:46:56 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "cmd.h"
+# include "builtin.h"
 
 typedef struct s_btree_node	t_btree_node;
 typedef struct s_btree		t_btree;
@@ -39,15 +40,15 @@ typedef struct s_pipex
 	struct s_cmd	*cmd;
 }				t_pipex;
 
-int		infile_gestion(t_pipex *pipex_var);
+int		infile_gestion(t_pipex *pipex_var); // TODO: Remove the non existing functions
 int		here_doc_file(char *limiter);
 int		get_file_while_not_limiter(int fd, char *limiter, char **buffer);
 int		pipe_gestion(t_pipex *pipex_var);
-int		fork_pid(t_pipex *pipex_var, t_vec *builtins);
+int		fork_pid(t_pipex *pipex_var);
 int		infile_gestion(t_pipex *pipex_var);
 int		pipe_gestion(t_pipex *pipex_var);
 int		child_gestion(t_pipex *pipex_var);
-void	take_child(t_pipex *pipex_var, t_vec *builtins);
+void	take_child(t_pipex *pipex_var);
 void	get_cmd_path(t_cmd **cmd, char **env);
 char	*test_all_path(char *path, t_cmd **cmd);
 void	ft_free_path(char **splited_path, int i);

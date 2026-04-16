@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 11:03:53 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:45:07 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ typedef struct s_btree
 	t_vec				expr;
 	struct s_btree_node	*node;
 	char				**env;
-	t_vec				*builtin_list;
 }	t_btree;
 
-t_pipex	cmd_to_pipex(t_cmd *cmd, char **env);
+t_pipex	cmd_to_pipex(t_cmd *cmd, char **env); // TODO: not defined
 void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list);
 void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
 void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);

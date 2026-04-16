@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 11:29:10 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:07:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,8 @@ void	get_cmd_path(t_cmd **cmd, char **env)
 	(*cmd)->path = cmd_path;
 }
 
-void	take_child(t_pipex *pipex_var, t_vec *builtins)
+void	take_child(t_pipex *pipex_var)
 {
-	bool	is_builtin;
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
@@ -110,9 +109,7 @@ void	take_child(t_pipex *pipex_var, t_vec *builtins)
 	}
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
-		is_builtin = exec_builtin(pipex_var->cmd, builtins);
-		if (!is_builtin)
-			execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
+		execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
 	}
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);

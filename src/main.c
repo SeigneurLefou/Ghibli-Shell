@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 11:05:53 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:58:58 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ bool	main_token(char *line, char *env[])
 		return (false);	
 	}
 
-	/*unsigned int i = 0;
+	unsigned int i = 0;
 	while (i < parsed.size)
 	{
 		t_token cmd = *(t_token *)vec_get(&parsed, i);
@@ -105,7 +105,7 @@ bool	main_token(char *line, char *env[])
 		write(1, (char *)cmd.data.data, cmd.data.size);
 		write(1, "<-\n", 3);
 		i++;
-	}*/
+	}
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
@@ -149,9 +149,6 @@ bool	main_token(char *line, char *env[])
 	tree->node = root;
 	tree->expr = parsed;
 	tree->env = env;
-	tree->builtin_list = malloc(sizeof(t_vec));
-	vec_init(tree->builtin_list, sizeof(t_function_node), 10);
-	init_builtin(tree->builtin_list, "bla", bla_fn);
 	exec_binary_tree(tree, files);
 
 	free_tokens(&parsed);

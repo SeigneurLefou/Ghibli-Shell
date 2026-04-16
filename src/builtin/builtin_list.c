@@ -3,67 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 11:26:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:32:05 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-bool	exec_builtin(t_cmd *cmds, t_vec *builtin_list)
+bool is_command_built_in(char *name)
 {
-	t_function_node	fn_node;
-	t_vec			*cpy_builtin_list;
-	size_t			i;
-
-	cpy_builtin_list = builtin_list;
-	i = 0;
-	while (i < builtin_list->size)
+	const char *builtins[] = {"echo", "cd", NULL};
+	unsigned int index;
+	
+	index = 0;
+	while (builtins[index])
 	{
-		fn_node = *(t_function_node *)vec_get(cpy_builtin_list, i); 
-		if (!ft_strcmp(cmds->name, fn_node.name))
-		{
-			fn_node.fn(cmds->argc, cmds->argv);
+		if (!ft_strcmp(name, builtins[index]))
 			return (true);
-		}
-		i++;
+		index++;
 	}
 	return (false);
 }
 
-bool	is_builtin(char *cmds, t_vec *builtin_list)
+bool	exec_builtin(t_cmd *cmds)
 {
-	t_function_node	fn_node;
-	t_vec			*cpy_builtin_list;
-	size_t			i;
-
-	cpy_builtin_list = builtin_list;
-	i = 0;
-	while (i < builtin_list->size)
-	{
-		fn_node = *(t_function_node *)vec_get(cpy_builtin_list, i); 
-		if (!ft_strcmp(cmds, fn_node.name))
-			return (true);
-		i++;
-	}
+	if (!ft_strcmp(cmds->name, "echo"))
+		builtin_echo(cmds->argc, cmds->argv);
+	if (!ft_strcmp(cmds->name, "cd"))
+		builtin_cd(cmds->argc, cmds->argv);
 	return (false);
 }
-
-bool	init_builtin(t_vec *fn_vec, char *name_fn, t_builtin_function fn)
-{
-	t_function_node	fn_node;
-
-	fn_node.name = name_fn;
-	fn_node.fn = fn;
-	vec_append(fn_vec, &fn_node);
-	return (true);
-}
-
-/*
-bool	init_all_builtin(t_vec *fn_vec)
-{
-	init_builin
-}
-*/
