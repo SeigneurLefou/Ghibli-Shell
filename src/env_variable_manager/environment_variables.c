@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/17 18:49:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 19:05:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*env_variables_manager_create_line(char *key, char *value)
 	if (!line)
 		return (NULL);
 	ft_memcpy(line, key, key_size);
-	ft_memcpy(line + key_size + 1, key, value_size);
+	ft_memcpy(line + key_size + 1, value, value_size);
 	line[key_size] = '=';
 	line[key_size + value_size + 1] = 0;
 	return (line);
@@ -117,6 +117,7 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 		{
 			cell = list_get_cell_at_index(&env_variable_manager->variables,
 					index);
+			free(cell->value);
 			cell->value = env_variables_manager_create_line(key, value);
 			if (!cell->value)
 				return (false);
