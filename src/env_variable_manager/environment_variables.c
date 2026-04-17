@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/17 13:31:40 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 18:49:12 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	*env_variable_manager_get_single(t_env_variables_manager *env_variable_mana
 		element = iterator_next(&it);
 		if (!ft_strncmp(key, element, ft_strlen(key)) && element[ft_strlen(key)] == '=')
 			return (element + ft_strlen(key) + 1);
+		index++;
 	}
 	return (NULL);
 }
@@ -121,6 +122,7 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 				return (false);
 			return (true);
 		}
+		index++;
 	}
 	if (!env_variables_manager_add_variable(env_variable_manager, key, value))
 		return (false);
@@ -144,6 +146,7 @@ bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manage
 			list_pop_at_free(&env_variable_manager->variables, index, free);
 			return (true);
 		}
+		index++;
 	}
 	return (false);
 }
