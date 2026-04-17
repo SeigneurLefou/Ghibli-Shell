@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.,fr>          +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.,fr>          +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
 /*   Updated: 2026/04/16 20:06:27 by yben-dje         ###   ########.fr       */

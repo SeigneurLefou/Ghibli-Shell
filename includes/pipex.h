@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2026/04/15 16:46:56 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
+/*   Updated: 2026/04/16 16:58:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PIPEX_H
 # define PIPEX_H
