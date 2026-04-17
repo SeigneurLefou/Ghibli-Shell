@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_loop.c                                   :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 16:58:59 by lchamard         ###   ########.fr       */
+/*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/16 13:22:38 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "builtin.h"
 
-int	fork_pid(t_pipex *pipex_var)
+int	builtin_pwd(int argc, char **argv)
 {
-	pipex_var->pid = fork();
-	if (pipex_var->pid == -1)
+	char	path_buffer[PATH_MAX];
+
+	if (argc != 1)
+	{
+		write(2, "Pwd needs no argument.\n", 24);
 		return (1);
-	else if (pipex_var->pid == 0)
-		take_child(pipex_var);
+	}
+	if (!getcwd(path_buffer, PATH_MAX))
+		perror("Pwd");
+	printf("%s\n", path_buffer);
 	return (0);
 }

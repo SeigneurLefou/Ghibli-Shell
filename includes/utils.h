@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_loop.c                                   :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 16:58:59 by lchamard         ###   ########.fr       */
+/*   Created: 2026/04/16 19:07:29 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/16 20:18:02 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-int	fork_pid(t_pipex *pipex_var)
-{
-	pipex_var->pid = fork();
-	if (pipex_var->pid == -1)
-		return (1);
-	else if (pipex_var->pid == 0)
-		take_child(pipex_var);
-	return (0);
-}
+# include <stdbool.h>
+# include <unistd.h>
+# include "libft.h"
+# include <stdlib.h>
+
+typedef int* t_as;
+
+void	assert(int *checks, char *message);
+
+#endif

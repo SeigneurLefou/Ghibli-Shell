@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 18:28:31 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 02:02:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char is_escape(char escaped_char, char quote)
 	if (quote == '"')
 		return (escaped_char == '\\' || escaped_char == '"');
 	else
-		return (escaped_char == '\\');
+		return (false);
 }
 
 bool add_double_token(char *expr, unsigned int *i, t_vec *command, t_token *current_token, t_token_type token_type)
@@ -127,24 +127,7 @@ bool parse_token_double_quote(char *expr, unsigned int *i, t_token *current_toke
 
 bool parse_token_simple_quote(char *expr, unsigned int *i, t_token *current_token, char *quote_char)
 {
-	if (expr[*i] == '\\' && expr[(*i) + 1])
-	{
-		(*i)++;
-		if (is_escape(expr[*i], *quote_char))
-		{
-			char escaped_char = get_escape(expr[*i]);
-			if (!push_char(current_token, escaped_char))
-				return (false);
-		}
-		else
-		{
-			if (!push_char(current_token, '\\'))
-				return (false);
-			if (!push_char(current_token, expr[*i]))
-				return (false);
-		}
-	}
-	else if (expr[*i] == '\'')
+	if (expr[*i] == '\'')
 		(*quote_char) = 0;
 	else
 		if (!push_char(current_token, expr[*i]))

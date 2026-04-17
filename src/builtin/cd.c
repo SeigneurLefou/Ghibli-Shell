@@ -6,13 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/15 17:08:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 13:23:32 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "builtin.h"
 
 int builtin_cd(int argc, char **argv)
 {
