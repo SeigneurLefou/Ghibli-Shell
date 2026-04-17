@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 19:16:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/16 17:41:36 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 		tree->node->wstatus = exec_builtin(pipex_var.cmd);
 	else
 		fork_pid(&pipex_var);
-
 	vec_append(pid_list, &pipex_var.pid);
-
 	if (pipex_var.fds[0] > 2)
 		close(pipex_var.fds[0]);
 	if (pipex_var.fds[1] > 2)
@@ -67,13 +65,12 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
-	vec_init(&command_pid, 1, 5);
+	vec_init(&command_pid, sizeof(pid_t), 5);
 	open_io_fds(tree_cpy, files);
 	if (!tree->node->left && !tree->node->right)
 	{
 
 		exec_cmd(tree, files, &command_pid);
-
 		vec_expand_and_free(pid_list, &command_pid);
 		return ;
 	}
@@ -119,12 +116,12 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
-	vec_init(&pid_list, sizeof(int), 5);
+	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, files);
 	if (!tree->node->left && !tree->node->right)
 	{
 		exec_cmd(tree, files, &pid_list);
-		waitpid(*(int *)vec_get(&pid_list, 0), &tree->node->wstatus, 0);
+		waitpid(*(pid_t *)vec_get(&pid_list, 0), &tree->node->wstatus, 0);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
 		return (tree->node->wstatus);
 	}
