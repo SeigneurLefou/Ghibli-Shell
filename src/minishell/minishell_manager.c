@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_runner.h                                      :+:      :+:    :+:   */
+/*   minishell_manager.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 15:35:12 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/17 10:18:21 by lchamard         ###   ########.fr       */
+/*   Created: 2026/04/16 13:57:17 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/16 14:02:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_RUNNER_H
-# define FILE_RUNNER_H
+#include "minishell.h"
 
-# include <stdlib.h>
-# include <stdbool.h>
-# include <fcntl.h>
-# include "minishell.h"
-# include "libft.h"
-# include "getopt.h"
-# include "error_manager.h"
-
-typedef struct s_minishell	t_minishell;
-
-bool	main_token(char *line, t_minishell *minishell);
-bool	execute_file(char *filename, t_minishell *minishell);
-
-#endif
+void minishell_init(t_minishell *minishell)
+{
+    minishell->env_variables_manager = env_variables_manager_new();
+}

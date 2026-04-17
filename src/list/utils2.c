@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:44:20 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/13 08:40:09 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:35:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,16 @@ static bool	push_back_and_check(t_list *new, void *result,
 	return (true);
 }
 
-int	list_map_duplicate(t_list *list, t_list **out, void *(*func)(void *),
+int	list_map_duplicate(t_list *list, t_list *out, void *(*func)(void *),
 		void (*free_func)(void *))
 {
 	unsigned int	i;
 	void			*value;
 	void			*result;
-	t_list			*new;
+	t_list			new;
 	bool			encountered_nulls;
 
 	new = list_new();
-	if (!new)
-		return (0);
 	i = 0;
 	encountered_nulls = false;
 	while (i < list->size)
@@ -54,7 +52,7 @@ int	list_map_duplicate(t_list *list, t_list **out, void *(*func)(void *),
 		result = func(value);
 		if (!result)
 			encountered_nulls = true;
-		if (!push_back_and_check(new, result, free_func))
+		if (!push_back_and_check(&new, result, free_func))
 			return (0);
 		i++;
 	}

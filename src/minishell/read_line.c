@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/13 14:43:12 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 13:10:33 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ void	handle_signal(int sig)
 	return ;
 }
 
-char	*set_prompt_line(void)
+char	*set_prompt_line(t_minishell *minishell)
 {
 	char	*prompt;
 	char	*line;
 	int		fd;
 	char	*path;
 
-	path = ft_strdup(getenv("HOME"));
+	path = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
+			"HOME"));
 	path = ft_strjoin(path, "/.ghiblirc");
 	fd = open(path, O_RDONLY | O_CREAT, 0644);
 	if (fd < 0)
@@ -40,7 +41,7 @@ char	*set_prompt_line(void)
 		free(line);
 		line = get_next_line(fd);
 	}
-	prompt = expand_line(&line[17]);
+	prompt = expand_line(minishell, &line[17]);
 	free(line);
 	free(path);
 	if (fd > 2)
@@ -48,7 +49,7 @@ char	*set_prompt_line(void)
 	return (prompt);
 }
 
-char	*handle_prompt(char *env[])
+char	*handle_prompt(t_minishell *minishell)
 {
 	char	*line;
 	char	*res;
@@ -58,7 +59,7 @@ char	*handle_prompt(char *env[])
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
-		prompt_line = set_prompt_line();
+		prompt_line = set_prompt_line(minishell);
 		if (!prompt_line)
 			prompt_line = "$> ";
 		line = readline(prompt_line);
@@ -71,7 +72,7 @@ char	*handle_prompt(char *env[])
 		if (line && *line)
 		{
 			add_history(line);
-			main_token(line, env);
+			main_token(line, minishell);
 		}
 		if (!ft_strcmp(line, "exit"))
 		{

@@ -6,14 +6,14 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/09 17:52:57 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 10:17:08 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "file_runner.h"
 
 
-bool execute_file(char *filename, char *env[])
+bool execute_file(char *filename, t_minishell *minishell)
 {
 	unsigned int index;
 	char *line;
@@ -36,7 +36,7 @@ bool execute_file(char *filename, char *env[])
 		if (line)
 		{
 			trimmed = ft_strtrim(line, "\r\n \t");
-			if (!trimmed || !main_token(trimmed, env))
+			if (!trimmed || !main_token(trimmed, minishell))
 			{
 				free(trimmed);
 				free(line);

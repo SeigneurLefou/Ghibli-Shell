@@ -22,8 +22,10 @@
 # include "pid.h"
 # include "pipex.h"
 # include "libft.h"
+# include "minishell.h"
 
 typedef struct s_pipex	t_pipex;
+typedef struct s_minishell	t_minishell;
 
 typedef enum e_operator
 {
@@ -64,10 +66,9 @@ typedef struct s_btree
 {
 	t_vec				expr;
 	struct s_btree_node	*node;
-	char				**env;
+	t_minishell			*minishell;
 }	t_btree;
 
-t_pipex	cmd_to_pipex(t_cmd *cmd, char **env); // TODO: not defined
 void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list);
 void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
 void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);

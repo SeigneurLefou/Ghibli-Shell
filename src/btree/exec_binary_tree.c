@@ -19,7 +19,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	vec_to_cmd(tree);
 	pipex_var.pid = 0;
 	tree->node->wstatus = 0;
-	pipex_var.env = tree->env;
+	pipex_var.minishell = tree->minishell;
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];

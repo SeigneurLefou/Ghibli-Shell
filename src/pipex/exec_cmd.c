@@ -68,7 +68,7 @@ char	*test_all_path(char *path, t_cmd **cmd)
 	return (cmd_path);
 }
 
-void	get_cmd_path(t_cmd **cmd, char **env)
+void	get_cmd_path(t_cmd **cmd, t_minishell *minishell)
 {
 	char	*path;
 	char	*cmd_path;
@@ -90,13 +90,16 @@ void	get_cmd_path(t_cmd **cmd, char **env)
 	}
 	free(cmd_path);
 	cmd_path = NULL;
-	path = get_env(env, "PATH");
+	path =ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
+			"PATH"));
 	cmd_path = test_all_path(path, cmd);
 	(*cmd)->path = cmd_path;
 }
 
 void	take_child(t_pipex *pipex_var)
 {
+	char	**env;
+
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
@@ -108,7 +111,10 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
-		execve(pipex_var->cmd->path, pipex_var->cmd->argv, pipex_var->env);
+	{
+		env = env_variables_manager_get_env_compatible_variables_char_star_star(&pipex_var->minishell->env_variables_manager);
+		execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
+	}
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);

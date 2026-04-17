@@ -3,56 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 12:51:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/03/13 08:40:03 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:59:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 
-t_list	*list_new(void)
+t_list	list_new(void)
 {
-	t_list	*new;
+	t_list	new;
 
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (NULL);
-	new->first_cell = NULL;
-	new->last_cell = NULL;
-	new->size = 0;
+	new.first_cell = NULL;
+	new.last_cell = NULL;
+	new.size = 0;
 	return (new);
 }
 
-t_list	*list_from_null_term_array(void **array, void (*free_func)(void *))
+bool	list_from_null_term_array(t_list *list, void **array, void (*free_func)(void *))
 {
 	t_u32	i;
-	t_list	*new;
+	t_list	new;
 
 	new = list_new();
-	if (!new)
-		return (NULL);
 	i = 0;
 	while (array[i])
 	{
-		if (!list_push_back(new, array[i]))
+		if (!list_push_back(&new, array[i]))
 		{
-			list_clear(new, free_func);
-			free(new);
-			return (NULL);
+			list_clear(&new, free_func);
+			return (false);
 		}
 		i++;
 	}
-	return (new);
+	*list = new;
+	return (true);
 }
 
 bool	list_push_back(t_list *list, void *value)
 {
-	t_cell	*last;
-	t_cell	*new;
+	t_list_cell	*last;
+	t_list_cell	*new;
 
-	new = malloc(sizeof(t_cell));
+	new = malloc(sizeof(t_list_cell));
 	if (new)
 	{
 		new->next = NULL;
@@ -77,10 +72,10 @@ bool	list_push_back(t_list *list, void *value)
 
 bool	list_push_front(t_list *list, void *value)
 {
-	t_cell	*new;
-	t_cell	*previous;
+	t_list_cell	*new;
+	t_list_cell	*previous;
 
-	new = malloc(sizeof(t_cell));
+	new = malloc(sizeof(t_list_cell));
 	if (new)
 	{
 		new->value = value;

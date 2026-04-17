@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 19:31:44 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 13:04:59 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*str_append_char(char *str, char c)
 	return (new_str);
 }
 
-char	*expand_variable(char *raw_line, char *pre_line, size_t *i)
+char	*expand_variable(char *raw_line, char *pre_line, size_t *i, t_minishell *minishell)
 {
 	char	*var_name;
 	char	*var_content;
@@ -42,7 +42,8 @@ char	*expand_variable(char *raw_line, char *pre_line, size_t *i)
 		var_name = str_append_char(var_name, raw_line[*i]);
 		(*i)++;
 	}
-	var_content = getenv(var_name);
+	var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
+			var_name));
 	free(var_name);
 	while (var_content && var_content[k])
 	{
@@ -52,7 +53,7 @@ char	*expand_variable(char *raw_line, char *pre_line, size_t *i)
 	return (pre_line);
 }
 
-char	*expand_line(char *raw_line)
+char	*expand_line(t_minishell *minishell, char *raw_line)
 {
 	char	*new_line;
 	size_t	i;
@@ -62,7 +63,7 @@ char	*expand_line(char *raw_line)
 	while (raw_line && raw_line[i] && raw_line[i] != '\"')
 	{
 		if (raw_line[i] == '$')
-			new_line = expand_variable(raw_line, new_line, &i);
+			new_line = expand_variable(raw_line, new_line, &i, minishell);
 		else
 		{
 			new_line = str_append_char(new_line, raw_line[i]);

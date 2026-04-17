@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 00:08:27 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/01/15 14:35:37 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:21:26 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	list_map(t_list *list, bool (*func)(void **))
 {
 	unsigned int	i;
-	t_cell			*cell;
+	t_list_cell			*cell;
 
 	i = 0;
 	while (i < list->size)
@@ -28,17 +28,14 @@ bool	list_map(t_list *list, bool (*func)(void **))
 	return (true);
 }
 
-t_list	*list_complete_duplicate(t_list *list, void *(duplicate_func)(void *),
+bool list_complete_duplicate(t_list *list, t_list *new, void *(duplicate_func)(void *),
 		void (*free_func)(void *))
 {
-	t_list	*new;
 	t_u32	i;
 	void	*value;
 	bool	result;
 
-	new = list_new();
-	if (!new)
-		return (NULL);
+	*new = list_new();
 	i = 0;
 	while (i++ < list->size)
 	{
@@ -50,10 +47,10 @@ t_list	*list_complete_duplicate(t_list *list, void *(duplicate_func)(void *),
 			if (!result && free_func)
 				free_func(value);
 			list_clear_and_free(new, free_func);
-			return (NULL);
+			return (false);
 		}
 	}
-	return (new);
+	return (true);
 }
 
 void	list_pop_front_free(t_list *list, void (*free_func)(void *))
