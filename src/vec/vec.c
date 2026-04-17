@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.,fr>          +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/16 17:47:45 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/16 20:06:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "vec.h"
+#include "utils.h"
 
 bool	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 {
+	assert((int[]){vec != NULL, type_size >= 0, buffering_size >= 0, 42}, "Cannot create vec with given data.");
 	vec->buffering_size = buffering_size;
 	vec->size = 0;
 	vec->type_size = type_size;
@@ -27,6 +29,8 @@ bool	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 
 void	*vec_get(t_vec *vec, unsigned int index)
 {
+	assert((int[]){vec != NULL, 42}, "Null passed to vec_get.");
+	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
 	if (index >= vec->size)
 		return (NULL);
 	return (vec->data + index * vec->type_size);
@@ -36,6 +40,8 @@ bool	vec_append(t_vec *vec, void *data)
 {
 	char	*new_data;
 
+	assert((int[]){vec != NULL, data != NULL, 42}, "Null passed to vec_append.");
+	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
 	if (vec->size >= vec->allocated_size)
 	{
 		new_data = malloc((vec->allocated_size + vec->buffering_size)
@@ -55,7 +61,9 @@ bool	vec_append(t_vec *vec, void *data)
 bool	vec_truncate(t_vec *vec)
 {
 	char	*new_data;
-
+	
+	assert((int[]){vec != NULL, 42}, "Null passed to vec_truncate.");
+	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
 	new_data = malloc(vec->size * vec->type_size);
 	if (!new_data)
 		return (false);
@@ -68,11 +76,14 @@ bool	vec_truncate(t_vec *vec)
 
 void	vec_free(t_vec *vec)
 {
+	assert((int[]){vec != NULL, 42}, "Null passed to vec_free.");
 	free(vec->data);
 }
 
 bool	vec_clone(t_vec *new, t_vec *old)
 {
+	assert((int[]){new != NULL, old != NULL, 42}, "Null passed to vec_clone.");
+	assert((int[]){old->data != NULL, 42}, "Non-initialised vec.");
 	new->data = malloc(old->size * old->type_size);
 	if (!new->data)
 		return (false);
@@ -86,6 +97,7 @@ bool	vec_clone(t_vec *new, t_vec *old)
 
 void	vec_null(t_vec *vec)
 {
+	assert((int[]){vec != NULL, 42}, "Null passed to vec_null.");
 	vec->data = NULL;
 	vec->size = 0;
 	vec->type_size = 0;
@@ -98,8 +110,9 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	char			*new_data;
 	unsigned int	alloc_size;
 
-	if (vec->type_size != other->type_size)
-		return (false);
+	assert((int[]){vec != NULL, other != NULL, 42}, "Null passed to vec_expand_and_free.");
+	assert((int[]){vec->data != NULL, other->data != NULL, 42}, "Non-initialised vec.");
+	assert((int[]){vec->type_size == other->type_size, 42}, "Typesize is different between vec and other.");
 	alloc_size = (vec->size + other->size + vec->buffering_size)
 		* vec->type_size;
 	new_data = malloc(alloc_size);
@@ -115,14 +128,17 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	return (true);
 }
 
-char	*vec_to_cstring(t_vec vec)
+char	*vec_to_cstring(t_vec *vec)
 {
 	char	*str;
 
-	str = malloc((vec.size + 1) * sizeof(char));
+	assert((int[]){vec != NULL, 42}, "Null passed to vec_to_cstring.");
+	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
+	assert((int[]){vec->type_size == 1, 42}, "The data in vec is larger than a char.");
+	str = malloc((vec->size + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
-	ft_memcpy(str, vec.data, vec.size * sizeof(char));
-	str[vec.size] = 0;
+	ft_memcpy(str, vec->data, vec->size * sizeof(char));
+	str[vec->size] = 0;
 	return (str);
 }

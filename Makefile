@@ -26,6 +26,7 @@ include src/btree/Makefile
 include src/builtin/Makefile
 include src/vec/Makefile
 include src/vec_to_cmd/Makefile
+include src/utils/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\

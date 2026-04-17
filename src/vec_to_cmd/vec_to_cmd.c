@@ -62,7 +62,7 @@ void	vec_to_cmd(t_btree *tree)
 		pointed_expr = (t_token *)vec_get(&tree->expr, i);
 		if (pointed_expr->type == token_type_plain)
 		{
-			actual_argv = expand_line(vec_to_cstring(pointed_expr->data));
+			actual_argv = expand_line(vec_to_cstring(&pointed_expr->data));
 			append_str_to_str_array(&new_cmd->argv, actual_argv);
 			if (!(new_cmd->name))
 			{
