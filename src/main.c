@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 21:20:38 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 10:16:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void free_tokens(t_vec *expr)
 	vec_free(expr);
 }
 
-bool	main_token(char *line, char *env[])
+bool	main_token(char *line, t_minishell *minishell)
 {
 	t_vec parsed;
 	t_tokeniser_error result = tokenise(line, &parsed);
@@ -148,7 +148,7 @@ bool	main_token(char *line, char *env[])
 	tree = malloc(sizeof(t_btree));
 	tree->node = root;
 	tree->expr = parsed;
-	tree->env = env;
+	tree->minishell = minishell;
 	exec_binary_tree(tree, files);
 
 	free_tokens(&parsed);
@@ -163,13 +163,13 @@ int	main(int argc, char **argv, char *env[])
 	{
 		minishell_init(&minishell);
 		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
-		handle_prompt(env);
+		handle_prompt(&minishell);
 	}
 	else if (argc == 2)
 	{
 		minishell_init(&minishell);
 		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
-		execute_file(argv[1], env);
+		execute_file(argv[1], &minishell);
 	}
 	else
 		display_error_message("Too many arguments!");

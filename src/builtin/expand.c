@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 19:31:44 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 10:11:16 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	*expand_variable(char *raw_line, char *pre_line, size_t *i)
 		var_name = str_append_char(var_name, raw_line[*i]);
 		(*i)++;
 	}
-	var_content = getenv(var_name);
+	var_content = env_variable_manager_get_single(env_variable_manager,
+			var_name);
 	free(var_name);
 	while (var_content && var_content[k])
 	{
@@ -52,7 +53,7 @@ char	*expand_variable(char *raw_line, char *pre_line, size_t *i)
 	return (pre_line);
 }
 
-char	*expand_line(char *raw_line)
+char	*expand_line(t_minishell *minishell, char *raw_line)
 {
 	char	*new_line;
 	size_t	i;

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/15 16:45:07 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/17 10:11:21 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # include "pid.h"
 # include "pipex.h"
 # include "libft.h"
+# include "minishell.h"
 
 typedef struct s_pipex	t_pipex;
+typedef struct s_minishell	t_minishell;
 
 typedef enum e_operator
 {
@@ -64,10 +66,9 @@ typedef struct s_btree
 {
 	t_vec				expr;
 	struct s_btree_node	*node;
-	char				**env;
+	t_minishell			*minishell;
 }	t_btree;
 
-t_pipex	cmd_to_pipex(t_cmd *cmd, char **env); // TODO: not defined
 void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list);
 void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
 void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);

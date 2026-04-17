@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 15:19:29 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/14 17:52:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 11:23:21 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	cpy_btree(t_btree *new, t_btree *old)
 {
 	t_btree_node	*cpy_node;
 
-	new->env = old->env;
+	new->minishell = old->minishell;
 	new->expr = old->expr;
 	new->node = malloc(sizeof(t_btree_node));
 	cpy_node = old->node;
