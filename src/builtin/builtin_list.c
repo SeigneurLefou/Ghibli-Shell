@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 17:01:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 18:38:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ bool is_command_built_in(char *name)
 	return (false);
 }
 
-bool	exec_builtin(t_cmd *cmds)
+bool	exec_builtin(t_cmd *cmds, t_env_variables_manager *env_manager)
 {
 	if (!ft_strcmp(cmds->name, "echo"))
 		builtin_echo(cmds->argc, cmds->argv);
 	if (!ft_strcmp(cmds->name, "cd"))
-		builtin_cd(cmds->argc, cmds->argv);
+		builtin_cd(cmds->argc, cmds->argv, env_manager);
 	if (!ft_strcmp(cmds->name, "pwd"))
 		builtin_pwd(cmds->argc, cmds->argv);
 	return (false);
