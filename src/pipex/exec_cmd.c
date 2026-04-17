@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 10:38:05 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 13:32:16 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	get_cmd_path(t_cmd **cmd, t_minishell *minishell)
 	}
 	free(cmd_path);
 	cmd_path = NULL;
-	path = env_variable_manager_get_single(&minishell->env_variables_manager,
-			"PATH");
+	path =ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
+			"PATH"));
 	cmd_path = test_all_path(path, cmd);
 	(*cmd)->path = cmd_path;
 }

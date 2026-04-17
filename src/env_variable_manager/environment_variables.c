@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/17 10:12:13 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 13:31:40 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**env_variables_manager_get_env_compatible_variables_char_star_star(t_env_v
 	t_iterator		it;
 	unsigned int	index;
 
-	env = malloc(env_variable_manager->variables.size + 1);
+	env = malloc(sizeof(char *) * (env_variable_manager->variables.size + 1));
 	if (!env)
 		return (NULL);
 	env[env_variable_manager->variables.size] = NULL;

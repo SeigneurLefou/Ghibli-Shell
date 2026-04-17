@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 10:29:10 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/17 13:10:33 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ char	*set_prompt_line(t_minishell *minishell)
 	int		fd;
 	char	*path;
 
-	path = env_variable_manager_get_single(&minishell->env_variables_manager,
-			"HOME");
+	path = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
+			"HOME"));
 	path = ft_strjoin(path, "/.ghiblirc");
 	fd = open(path, O_RDONLY | O_CREAT, 0644);
 	if (fd < 0)
@@ -41,7 +41,7 @@ char	*set_prompt_line(t_minishell *minishell)
 		free(line);
 		line = get_next_line(fd);
 	}
-	prompt = expand_line(&line[17]);
+	prompt = expand_line(minishell, &line[17]);
 	free(line);
 	free(path);
 	if (fd > 2)
