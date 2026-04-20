@@ -60,7 +60,11 @@ You can also run scripts from a file (usualy .gsh files).
 This will execute the file line by line until minishell encounters an error or reach the end of the file.
 Exit the shell with the `exit` command.
 
-You can edit the environment variables such as the `PROMPT` variable in the `~/.ghiblirc` gsh file.
+### Additional features
+- You can edit the environment variables such as the `PROMPT` variable in the `~/.ghiblirc` gsh file.
+- The prompt is displayed using the `PROMPT` environment variable. You can modify the variable to change the prompt.
+- The shell supports `source`.
+- The built-in echo supports escapes.
 
 ## Resources
 We mainly used the man of the commands for documentation. The ascii arts animations are made by *yben-dje*.
