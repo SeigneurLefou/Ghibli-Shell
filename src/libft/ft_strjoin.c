@@ -3,54 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 17:18:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 14:32:57 by lchamard         ###   ########.fr       */
+/*   Created: 2025/10/17 14:24:02 by marvin            #+#    #+#             */
+/*   Updated: 2026/04/20 16:54:05 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
-static void	*ft_alloc_char(char *s1, char *s2)
-{
-	size_t	len;
-	char	*res;
-
-	if (!s1 && !s2)
-		return (NULL);
-	len = 0;
-	if (s1)
-		len += ft_strlen(s1);
-	if (s2)
-		len += ft_strlen(s2);
-	res = ft_calloc(len + 1, sizeof(char));
-	return (res);
-}
+#include "libft.h"
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*joinstr;
-	size_t	i;
-	size_t	j;
+	size_t	size;
+	char	*new;
 
-	joinstr = ft_alloc_char(s1, s2);
-	if (!joinstr)
+	if (!s1 || !s2)
 		return (NULL);
-	i = 0;
-	while (s1 && s1[i])
-	{
-		joinstr[i] = s1[i];
-		i++;
-	}
-	if (s1)
-		free(s1);
-	j = 0;
-	while (s2 && s2[j])
-	{
-		joinstr[i] = s2[j];
-		i++;
-		j++;
-	}
-	return (joinstr);
+	size = ft_strlen(s1) + ft_strlen(s2) + 1;
+	new = ft_calloc(size, sizeof(char));
+	if (!new)
+		return (NULL);
+	ft_memcpy(new, s1, ft_strlen(s1) + 1);
+	ft_strlcat(new, s2, size);
+	return (new);
 }
