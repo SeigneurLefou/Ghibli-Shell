@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/17 10:17:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:30:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool execute_file(char *filename, t_minishell *minishell)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		display_error_message("Failed to open the file.");
+		perror("GhibliShell");
 		return (false);
 	}
 	while (line)

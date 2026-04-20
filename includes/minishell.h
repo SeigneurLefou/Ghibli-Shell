@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 10:28:33 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:07:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_minishell
 	t_env_variables_manager	env_variables_manager;
 }							t_minishell;
 
-char						*set_prompt_line(t_minishell *minishell);
 void						handle_signal(int sig);
 char						*handle_prompt(t_minishell *minishell);
 bool						main_token(char *line, t_minishell *minishell);
