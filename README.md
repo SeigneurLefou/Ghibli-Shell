@@ -65,6 +65,8 @@ Exit the shell with the `exit` command.
 - The prompt is displayed using the `PROMPT` environment variable. You can modify the variable to change the prompt.
 - The shell supports `source`.
 - The built-in echo supports escapes.
+- Simply executing `export` will display the list of all variables.
+- The `SHLVL` est supporté.
 
 ## Resources
 We mainly used the man of the commands for documentation. The ascii arts animations are made by *yben-dje*.
