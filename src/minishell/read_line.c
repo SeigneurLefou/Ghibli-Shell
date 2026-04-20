@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 13:10:33 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:01:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,6 @@ void	handle_signal(int sig)
 	return ;
 }
 
-char	*set_prompt_line(t_minishell *minishell)
-{
-	char	*prompt;
-	char	*line;
-	int		fd;
-	char	*path;
-
-	path = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-			"HOME"));
-	path = ft_strjoin(path, "/.ghiblirc");
-	fd = open(path, O_RDONLY | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		free(path);
-		return (NULL);
-	}
-	line = get_next_line(fd);
-	while (line && ft_strncmp(line, "set prompt_line=\"", 17))
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
-	prompt = expand_line(minishell, &line[17]);
-	free(line);
-	free(path);
-	if (fd > 2)
-		close(fd);
-	return (prompt);
-}
-
 char	*handle_prompt(t_minishell *minishell)
 {
 	char	*line;
@@ -59,7 +29,7 @@ char	*handle_prompt(t_minishell *minishell)
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
-		prompt_line = set_prompt_line(minishell);
+		prompt_line = expand_line(minishell, "$PROMPT");
 		if (!prompt_line)
 			prompt_line = "$> ";
 		line = readline(prompt_line);

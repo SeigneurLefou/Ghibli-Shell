@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 16:56:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:20:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);	
 	}
 
-	unsigned int i = 0;
+	/*unsigned int i = 0;
 	while (i < parsed.size)
 	{
 		t_token cmd = *(t_token *)vec_get(&parsed, i);
@@ -105,7 +105,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		write(1, (char *)cmd.data.data, cmd.data.size);
 		write(1, "<-\n", 3);
 		i++;
-	}
+	}*/
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
@@ -155,6 +155,25 @@ bool	main_token(char *line, t_minishell *minishell)
 	return (true);
 }
 
+void load_config_file(t_minishell *minishell, char *config_file)
+{
+	char *home_path;
+	
+	home_path = env_variable_manager_get_single(&minishell->env_variables_manager, "HOME");
+	if (!home_path)
+		return ;
+	int lenght = ft_strlen(home_path);
+	if (lenght < 2)
+		return ;
+	if (home_path[lenght - 1] != '/')
+		home_path = ft_strjoin(home_path, "/");
+	if (!home_path)
+		return ;
+	char *complete_path = ft_strjoin(home_path, config_file);
+	if (complete_path && !access(complete_path, F_OK))
+		execute_file(complete_path, minishell);
+}
+
 int	main(int argc, char **argv, char *env[])
 {
 	t_minishell	minishell;
@@ -163,12 +182,14 @@ int	main(int argc, char **argv, char *env[])
 	{
 		minishell_init(&minishell);
 		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
+		load_config_file(&minishell, ".ghiblirc");
 		handle_prompt(&minishell);
 	}
 	else if (argc == 2)
 	{
 		minishell_init(&minishell);
 		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
+		load_config_file(&minishell, ".ghiblirc");
 		execute_file(argv[1], &minishell);
 	}
 	else
