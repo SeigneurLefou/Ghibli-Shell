@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/17 19:24:53 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/20 19:21:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	builtin_cd(int argc, char **argv, t_env_variables_manager *env_manager)
+int	builtin_cd(int argc, char **argv, t_minishell *minishell)
 {
 	char	path_buffer[PATH_MAX];
 
@@ -25,7 +25,7 @@ int	builtin_cd(int argc, char **argv, t_env_variables_manager *env_manager)
 		perror("CD");
     if (!getcwd(path_buffer, PATH_MAX))
 		perror("CD");
-    env_variable_manager_set(env_manager, "PWD", path_buffer);
-    env_variable_manager_set(env_manager, "OLDPWD", path_buffer);
+    env_variable_manager_set(&minishell->env_variables_manager, "PWD", path_buffer);
+    env_variable_manager_set(&minishell->env_variables_manager, "OLDPWD", path_buffer);
 	return (0);
 }

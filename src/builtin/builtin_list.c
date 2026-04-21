@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/04/21 10:02:27 by lchamard         ###   ########.fr       */
-=======
-/*   Updated: 2026/04/21 09:56:31 by lchamard         ###   ########.fr       */
->>>>>>> 9a2c9fcd3a6dcae4bb90d2f49936bc80b98ccf81
+/*   Updated: 2026/04/20 20:01:45 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +14,7 @@
 
 bool is_command_built_in(char *name)
 {
-	const char *builtins[] = {"echo", "cd", "pwd", "export", NULL};
+	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", NULL};
 	unsigned int index;
 	
 	index = 0;
@@ -31,16 +27,18 @@ bool is_command_built_in(char *name)
 	return (false);
 }
 
-bool	exec_builtin(t_cmd *cmds, t_env_variables_manager *env_manager)
+bool	exec_builtin(t_cmd *cmds, t_minishell *minishell)
 {
 	if (!ft_strcmp(cmds->name, "echo"))
 		builtin_echo(cmds->argc, cmds->argv);
 	if (!ft_strcmp(cmds->name, "cd"))
-		builtin_cd(cmds->argc, cmds->argv, env_manager);
+		builtin_cd(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "pwd"))
-		builtin_pwd(cmds->argc, cmds->argv);
+		builtin_pwd(cmds->argc);
 	if (!ft_strcmp(cmds->name, "export"))
-		builtin_export(cmds->argc, cmds->argv, env_manager);
+		builtin_export(cmds->argc, cmds->argv, minishell);
+	if (!ft_strcmp(cmds->name, "source"))
+		builtin_source(cmds->argc, cmds->argv, minishell);
 	return (false);
 }
 
