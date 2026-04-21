@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 13:43:47 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/21 14:22:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
-		exec_builtin(pipex_var->cmd, &pipex_var->minishell);
+		exec_builtin(pipex_var->cmd, pipex_var->minishell);
 	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
 		env = env_variables_manager_get_env_compatible_variables_char_star_star(&pipex_var->minishell->env_variables_manager);
