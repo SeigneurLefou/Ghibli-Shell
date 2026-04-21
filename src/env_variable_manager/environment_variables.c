@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/20 20:25:55 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:23:28 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manage
 
 void	env_variables_manager_free(t_env_variables_manager *env_variable_manager)
 {
-	list_clear_and_free(&env_variable_manager->variables, free);
+	list_clear(&env_variable_manager->variables, free);
 }
 
 bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_variable_manager, char **env)

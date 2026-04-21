@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 20:21:46 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:27:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,25 +153,6 @@ bool	main_token(char *line, t_minishell *minishell)
 
 	free_tokens(&parsed);
 	return (true);
-}
-
-void load_config_file(t_minishell *minishell, char *config_file)
-{
-	char *home_path;
-	
-	home_path = env_variable_manager_get_single(&minishell->env_variables_manager, "HOME");
-	if (!home_path)
-		return ;
-	int lenght = ft_strlen(home_path);
-	if (lenght < 2)
-		return ;
-	if (home_path[lenght - 1] != '/')
-		home_path = ft_strjoin(home_path, "/");
-	if (!home_path)
-		return ;
-	char *complete_path = ft_strjoin(home_path, config_file);
-	if (complete_path && !access(complete_path, F_OK))
-		execute_file(complete_path, minishell);
 }
 
 void increment_shell_lvl(t_minishell *minishell)

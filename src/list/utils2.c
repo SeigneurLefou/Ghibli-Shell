@@ -6,20 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:44:20 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 15:35:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:24:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
-
-void	list_clear_and_free(t_list *list, void (*free_func)(void *))
-{
-	if (list)
-	{
-		list_clear(list, free_func);
-		free(list);
-	}
-}
 
 static bool	push_back_and_check(t_list *new, void *result,
 		void (*free_func)(void *))
@@ -28,7 +19,7 @@ static bool	push_back_and_check(t_list *new, void *result,
 	{
 		if (free_func)
 			free_func(result);
-		list_clear_and_free(new, free_func);
+		list_clear(new, free_func);
 		return (false);
 	}
 	return (true);

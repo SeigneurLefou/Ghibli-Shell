@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 00:08:27 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 15:21:26 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:24:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool list_complete_duplicate(t_list *list, t_list *new, void *(duplicate_func)(v
 		{
 			if (!result && free_func)
 				free_func(value);
-			list_clear_and_free(new, free_func);
+			list_clear(new, free_func);
 			return (false);
 		}
 	}
