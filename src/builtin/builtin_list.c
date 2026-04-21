@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 20:01:45 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 12:17:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,39 @@ bool is_command_built_in(char *name)
 	return (false);
 }
 
-bool	exec_builtin(t_cmd *cmds, t_minishell *minishell)
+int	exec_builtin(t_cmd *cmds, t_minishell *minishell)
 {
+	int result;
+
+	result = -1;
 	if (!ft_strcmp(cmds->name, "echo"))
-		builtin_echo(cmds->argc, cmds->argv);
+		result = builtin_echo(cmds->argc, cmds->argv);
 	if (!ft_strcmp(cmds->name, "cd"))
-		builtin_cd(cmds->argc, cmds->argv, minishell);
+		result = builtin_cd(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "pwd"))
-		builtin_pwd(cmds->argc);
+		result = builtin_pwd(cmds->argc);
 	if (!ft_strcmp(cmds->name, "export"))
-		builtin_export(cmds->argc, cmds->argv, minishell);
+		result = builtin_export(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "source"))
-		builtin_source(cmds->argc, cmds->argv, minishell);
+		result = builtin_source(cmds->argc, cmds->argv, minishell);
+	return (result);
+}
+
+bool	setup_and_exec_builtin(t_btree *tree, int files[2])
+{
+	t_pipex	pipex_var;
+
+	pipex_var.pid = 0;
+	tree->node->wstatus = -1;
+	pipex_var.minishell = tree->minishell;
+	pipex_var.cmd = tree->node->cmds;
+	pipex_var.fds[0] = files[0];
+	pipex_var.fds[1] = files[1];
+	tree->node->wstatus = exec_builtin(pipex_var.cmd, tree->minishell);
+	if (pipex_var.fds[0] > 2)
+		close(pipex_var.fds[0]);
+	if (pipex_var.fds[1] > 2)
+		close(pipex_var.fds[1]);
 	return (false);
 }
+

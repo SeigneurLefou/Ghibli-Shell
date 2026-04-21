@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 16:58:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:32:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_pipex
 	int				pid;
 	t_minishell		*minishell;
 	struct s_cmd	*cmd;
+	int				wstatus;
 }				t_pipex;
 
 int		here_doc_file(char *limiter);

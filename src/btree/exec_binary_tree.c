@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 19:35:56 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 16:17:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
-	if (is_command_built_in(pipex_var.cmd->name))
-		tree->node->wstatus = exec_builtin(pipex_var.cmd, tree->minishell);
-	else
-		fork_pid(&pipex_var);
+	fork_pid(&pipex_var);
 	vec_append(pid_list, &pipex_var.pid);
 	if (pipex_var.fds[0] > 2)
 		close(pipex_var.fds[0]);
@@ -83,6 +80,7 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	exec_pipeline(tree_cpy, files, &command_pid);
 	if (command_pid.data)
 		vec_expand_and_free(pid_list, &command_pid);
+	vec_init(&command_pid, sizeof(pid_t), 5);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
 	exec_right_pipeline(tree, files, &command_pid);
@@ -120,9 +118,17 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	open_io_fds(tree, files);
 	if (!tree->node->left && !tree->node->right)
 	{
-		exec_cmd(tree, files, &pid_list);
-		waitpid(*(pid_t *)vec_get(&pid_list, 0), &tree->node->wstatus, 0);
-		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		vec_to_cmd(tree);
+		if (is_command_built_in(tree->node->cmds->name))
+		{
+			setup_and_exec_builtin(tree, files);
+		}
+		else
+		{
+			exec_cmd(tree, files, &pid_list);
+			waitpid(*(pid_t *)vec_get(&pid_list, 0), &tree->node->wstatus, 0);
+			tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		}
 		return (tree->node->wstatus);
 	}
 	else if (tree->node->operator == operator_pipe)
