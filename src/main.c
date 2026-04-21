@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 18:20:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/20 20:21:46 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,24 +174,44 @@ void load_config_file(t_minishell *minishell, char *config_file)
 		execute_file(complete_path, minishell);
 }
 
+void increment_shell_lvl(t_minishell *minishell)
+{
+	char *shell_lvl = env_variable_manager_get_single(&minishell->env_variables_manager, "SHLVL");
+	if (!shell_lvl)
+	{
+		minishell->shell_level = 1;
+		return ;
+	}
+	int shell_lvl_num = ft_atoi(shell_lvl);
+	minishell->shell_level = shell_lvl_num + 1;
+	shell_lvl = ft_itoa(minishell->shell_level);
+	if (shell_lvl)
+		env_variable_manager_set(&minishell->env_variables_manager, "SHLVL", shell_lvl);
+	free(shell_lvl);
+}
+
 int	main(int argc, char **argv, char *env[])
 {
 	t_minishell	minishell;
-
-	if (argc == 1)
+	
+	if (argc > 2)
 	{
-		minishell_init(&minishell);
-		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
-		load_config_file(&minishell, ".ghiblirc");
-		handle_prompt(&minishell);
-	}
-	else if (argc == 2)
-	{
-		minishell_init(&minishell);
-		env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
-		load_config_file(&minishell, ".ghiblirc");
-		execute_file(argv[1], &minishell);
-	}
-	else
 		display_error_message("Too many arguments!");
+		return (1);
+	}
+	minishell_init(&minishell);
+	env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
+	increment_shell_lvl(&minishell);
+	if (minishell.shell_level > 100)
+	{
+		display_error_message("Maximum shell recursion excedded!");
+		env_variables_manager_free(&minishell.env_variables_manager);
+		return (1);
+	}
+	load_config_file(&minishell, ".ghiblirc");
+	if (argc == 1)
+		handle_prompt(&minishell);
+	else if (argc == 2)
+		execute_file(argv[1], &minishell);
+	env_variables_manager_free(&minishell.env_variables_manager);
 }

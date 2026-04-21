@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/20 17:58:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/20 20:25:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*env_variable_manager_get_single(t_env_variables_manager *env_variable_mana
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
+		if ((int)ft_strlen(element) >= key_len && !ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
 			return (element + key_len + (element[key_len] == '='));
 		index++;
 	}

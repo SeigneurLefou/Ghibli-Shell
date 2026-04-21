@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 18:40:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/20 19:35:56 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
 	if (is_command_built_in(pipex_var.cmd->name))
-		tree->node->wstatus = exec_builtin(pipex_var.cmd, &tree->minishell->env_variables_manager);
+		tree->node->wstatus = exec_builtin(pipex_var.cmd, tree->minishell);
 	else
 		fork_pid(&pipex_var);
 	vec_append(pid_list, &pipex_var.pid);
