@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 10:02:36 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/21 12:09:23 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	take_child(t_pipex *pipex_var)
 {
 	char	**env;
 
-	printf("fd 0 : [%d], fd 1 : [%d]\n", pipex_var->fds[0], pipex_var->fds[1]);
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
@@ -111,12 +110,7 @@ void	take_child(t_pipex *pipex_var)
 		dup2(pipex_var->fds[1], 1);
 		close(pipex_var->fds[1]);
 	}
-	if (is_command_built_in(pipex_var->cmd->name))
-	{
-		pipex_var->wstatus = exec_builtin(pipex_var->cmd, &pipex_var->minishell->env_variables_manager);
-		exit(pipex_var->wstatus);
-	}
-	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
+	if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
 		env = env_variables_manager_get_env_compatible_variables_char_star_star(&pipex_var->minishell->env_variables_manager);
 		execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
