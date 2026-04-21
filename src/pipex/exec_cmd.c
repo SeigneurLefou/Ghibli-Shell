@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 18:33:17 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/21 09:08:25 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	take_child(t_pipex *pipex_var)
 {
 	char	**env;
 
+	printf("fd 0 : [%d], fd 1 : [%d]\n", pipex_var->fds[0], pipex_var->fds[1]);
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
