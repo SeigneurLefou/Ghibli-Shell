@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/22 16:47:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:50:54 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ bool set_expand(t_token *current_token, bool state)
 		index++;
 		if (!vec_append(&current_token->expandable_scopes, &index))
 			return (false);
+		current_token->is_expand = false;
 	}
 	else if (!state && current_token->is_expand)
 		{
@@ -194,6 +195,7 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 	char quote_char = 0;
 	t_token current_token;
 	current_token.type = token_type_void;
+	current_token.is_expand = false;
 	while (expr[i])
 	{
 		if (quote_char == '"')
