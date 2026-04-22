@@ -20,6 +20,8 @@ typedef struct s_token
 {
 	t_vec					data;
 	t_token_type			type;
+	t_vec					expandable_scopes;
+	bool					is_expand;
 }							t_token;
 
 typedef enum e_tokeniser_error
