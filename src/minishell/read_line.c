@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 18:01:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 17:03:07 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,13 @@ char	*handle_prompt(t_minishell *minishell)
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
-		prompt_line = expand_line(minishell, "$PROMPT");
-		if (!prompt_line)
+		if (env_variable_manager_exists(&minishell->env_variables_manager, "PROMPT"))
+		{
+			prompt_line = expand_line(minishell, "$PROMPT");
+			if (!prompt_line)
+				prompt_line = "$> ";
+		}
+		else
 			prompt_line = "$> ";
 		line = readline(prompt_line);
 		if (!line)

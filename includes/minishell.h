@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 20:06:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 15:58:26 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "error_manager.h"
 # include "file_runner.h"
 # include "get_next_line.h"
+# include "ghiblirc_default.h"
 # include "libft.h"
 # include "list.h"
 # include "pid.h"
@@ -47,5 +48,7 @@ char						*handle_prompt(t_minishell *minishell);
 bool						main_token(char *line, t_minishell *minishell);
 void						minishell_init(t_minishell *minishell);
 void						increment_shell_lvl(t_minishell *minishell);
+void						load_config_file(t_minishell *minishell,
+								char *config_file);
 
 #endif

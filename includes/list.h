@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:58:03 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 15:52:31 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:23:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ int							lget_int(t_list *list, t_u32 index);
 void						list_pop_at_free(t_list *list, t_u32 index,
 								void (*free_func)(void *));
 
-void						list_clear_and_free(t_list *list,
-								void (*free_func)(void *));
 int							list_map_duplicate(t_list *list, t_list *out,
 								void *(*func)(void *),
 								void (*free_func)(void *));
