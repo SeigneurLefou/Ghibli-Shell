@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 15:58:40 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/23 09:55:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ void	vec_to_cmd(t_btree *tree)
 {
 	t_cmd	*new_cmd;
 	size_t	i;
-	t_token	*pointed_expr;
+	t_token	pointed_expr;
 	char	*actual_argv;
 
 	i = tree->node->expr_start;
 	new_cmd = ft_cmdnew();
 	while (i <= tree->node->expr_end)
 	{
-		pointed_expr = (t_token *)vec_get(&tree->expr, i);
-		if (pointed_expr->type == token_type_plain)
+		pointed_expr = *(t_token *)vec_get(&tree->expr, i);
+		if (pointed_expr.type == token_type_plain)
 		{
-			actual_argv = expand_line(tree->minishell, vec_to_cstring(&pointed_expr->data));
+			actual_argv = expand_line(&pointed_expr, tree->minishell);
 			append_str_to_str_array(&new_cmd->argv, actual_argv);
 			if (!(new_cmd->name))
 			{
