@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 13:02:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/23 14:30:32 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char	*expand_line(t_token *raw_line, t_minishell *minishell)
 		else
 		{
 			new_line = str_append_char(new_line, *(char *)vec_get(&raw_line->data, i));
-			printf("line when classical char : %s, %u\n", new_line, raw_line->expandable_scopes.size);
 			i++;
 		}
 	}
