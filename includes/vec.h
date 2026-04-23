@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/16 19:57:46 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:13:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ bool				vec_expand_and_free(t_vec *vec, t_vec *other);
 // Bro, this function is useful. Trust me
 void				vec_null(t_vec *vec);
 char				*vec_to_cstring(t_vec *vec);
+void				vec_set(t_vec *vec, unsigned int index, void *data);
 
 #endif
