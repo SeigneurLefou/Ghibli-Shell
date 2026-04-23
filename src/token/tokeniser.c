@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/22 16:50:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 11:34:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,11 @@ bool parse_token_simple_quote(char *expr, unsigned int *i, t_token *current_toke
 	return (true);
 }
 
+bool is_tilde_escape_compatible(char c)
+{
+	return (c == ' ' || c == '/' || c == '\0' || c == '|' || c == '&' || c == '<' || c == '>');
+}
+
 t_tokeniser_error tokenise(char *expr, t_vec *command)
 {
 	vec_init(command, sizeof(t_token), 4);
@@ -226,7 +231,7 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				push_char(&current_token, expr[i]);
 				set_expand(&current_token, true);
 			}
-			else if (expr[i] == '~' && expr[i + 1] != '~' && (i == 0 || expr[i - 1] != '~'))
+			else if (expr[i] == '~' && current_token.type == token_type_void && is_tilde_escape_compatible(expr[i + 1]))
 			{
 				push_char(&current_token, expr[i]);
 				set_expand(&current_token, true);
