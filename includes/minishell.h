@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 15:58:26 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 12:22:22 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include "tty.h"
 
 typedef struct s_minishell
 {

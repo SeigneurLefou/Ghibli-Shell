@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 17:03:07 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 12:21:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*handle_prompt(t_minishell *minishell)
 	{
 		if (env_variable_manager_exists(&minishell->env_variables_manager, "PROMPT"))
 		{
-			prompt_line = expand_line(minishell, "$PROMPT");
+			prompt_line = render_prompt(expand_line(minishell, "$PROMPT"), minishell);
 			if (!prompt_line)
 				prompt_line = "$> ";
 		}
