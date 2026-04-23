@@ -66,7 +66,15 @@ Exit the shell with the `exit` command.
 - The shell supports `source`.
 - The built-in echo supports escapes.
 - Simply executing `export` will display the list of all variables.
-- The `SHLVL` est supporté.
+- The `SHLVL` is supported.
+- You can add conditions and expands in the prompt line.
+#### Arrietty's prompt line:
+You can add conditions with `%ftext;` and `!ftext;` where `f` is a flag. Currently, Ghiblishell supports `%h` and `!h` to check if the user is under its `home` directory. `@` is for "if" and `!` is for `if not`. It also supports custom expands with `@e` where `e` is the data's name. Currently, you can use `@u` to get the username and `@l` to get the location. You can combine the two features.
+
+Here is an example prompt line config
+```bash
+export PROMPT='GhibliShell %hunder home at @l;!h@u\@@l; \n > '
+```
 
 ## Resources
 We mainly used the man of the commands for documentation. The ascii arts animations are made by *yben-dje*.
