@@ -75,6 +75,7 @@ Here is an example prompt line config
 ```bash
 export PROMPT='GhibliShell %hunder home at @l;!h@u\@@l; \n > '
 ```
+The prompt line also have support for some escapes including `\e` and ansii escape sequences.
 
 ## Resources
 We mainly used the man of the commands for documentation. The ascii arts animations are made by *yben-dje*.
