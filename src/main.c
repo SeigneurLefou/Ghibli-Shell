@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 18:27:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:03:54 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,25 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);	
 	}
 
-	/*unsigned int i = 0;
+	unsigned int i = 0;
 	while (i < parsed.size)
 	{
-		t_token cmd = *(t_token *)vec_get(&parsed, i);
-		if (cmd.type == token_type_plain)
-			write(1, "Plain:     ", 12);
+		t_token token = *(t_token *)vec_get(&parsed, i);
+		if (token.type == token_type_plain)
+			printf("Plain:     %s<-\n", vec_to_cstring(&token.data));
 		else
-			write(1, "Delimiter: ", 12);
-		write(1, (char *)cmd.data.data, cmd.data.size);
-		write(1, "<-\n", 3);
+			printf("Delimiter: %s<-\n", vec_to_cstring(&token.data));
+		printf("Expands [");
+		for (unsigned int j = 0; j < token.expandable_scopes.size; j ++)
+		{
+			if (j % 2 == 0)
+				printf("start %d, ", *(unsigned int *)vec_get(&token.expandable_scopes, j));
+			else
+				printf("end %d, ", *(unsigned int *)vec_get(&token.expandable_scopes, j));
+		}
+		printf("]\n");
 		i++;
-	}*/
+	}
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
