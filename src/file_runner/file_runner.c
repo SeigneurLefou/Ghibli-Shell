@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/20 16:30:18 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 14:47:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ bool execute_file(char *filename, t_minishell *minishell)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			return (false);
+			{
+				close(fd);
+				return (false);
+			}
 		if (line)
 		{
 			trimmed = ft_strtrim(line, "\r\n \t");
@@ -40,6 +43,7 @@ bool execute_file(char *filename, t_minishell *minishell)
 			{
 				free(trimmed);
 				free(line);
+				close(fd);
 				return (false);
 			}
 		}
