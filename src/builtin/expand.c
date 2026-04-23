@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 13:04:59 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/22 10:11:36 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,11 @@ char	*str_append_char(char *str, char c)
 	return (new_str);
 }
 
-char	*expand_variable(char *raw_line, char *pre_line, size_t *i, t_minishell *minishell)
+char	*give_variable_content(char *raw_line, size_t *i, t_minishell *minishell)
 {
 	char	*var_name;
 	char	*var_content;
-	size_t	k;
 
-	(*i)++;
-	k = 0;
 	var_name = NULL;
 	while (raw_line[*i] && ft_isalnum(raw_line[*i]))
 	{
@@ -45,17 +42,13 @@ char	*expand_variable(char *raw_line, char *pre_line, size_t *i, t_minishell *mi
 	var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
 			var_name));
 	free(var_name);
-	while (var_content && var_content[k])
-	{
-		pre_line = str_append_char(pre_line, var_content[k]);
-		k++;
-	}
-	return (pre_line);
+	return (var_content);
 }
 
 char	*expand_line(t_minishell *minishell, char *raw_line)
 {
 	char	*new_line;
+	char	*var_content;
 	size_t	i;
 
 	new_line = NULL;
@@ -63,7 +56,14 @@ char	*expand_line(t_minishell *minishell, char *raw_line)
 	while (raw_line && raw_line[i] && raw_line[i] != '\"')
 	{
 		if (raw_line[i] == '$')
-			new_line = expand_variable(raw_line, new_line, &i, minishell);
+		{
+			i++;
+			var_content = give_variable_content(raw_line, &i, minishell);
+			if (new_line)
+				new_line = ft_strjoin(new_line, var_content);
+			else
+				new_line = ft_strdup(var_content);
+		}
 		else
 		{
 			new_line = str_append_char(new_line, raw_line[i]);
@@ -72,4 +72,3 @@ char	*expand_line(t_minishell *minishell, char *raw_line)
 	}
 	return (new_line);
 }
-
