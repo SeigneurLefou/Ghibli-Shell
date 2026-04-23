@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/22 16:03:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:49:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ bool	main_token(char *line, t_minishell *minishell)
 		for (unsigned int j = 0; j < token.expandable_scopes.size; j ++)
 		{
 			if (j % 2 == 0)
-				printf("start %d, ", *(unsigned int *)vec_get(&token.expandable_scopes, j));
+				printf("start %d %s, ", ((t_expand_data *)vec_get(&token.expandable_scopes, j))->index, ((t_expand_data *)vec_get(&token.expandable_scopes, j))->allow_split? "allow split": "");
 			else
-				printf("end %d, ", *(unsigned int *)vec_get(&token.expandable_scopes, j));
+				printf("end %d, ", ((t_expand_data *)vec_get(&token.expandable_scopes, j))->index);
 		}
 		printf("]\n");
 		i++;
