@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.,fr>          +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/16 20:06:27 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:17:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,4 +141,41 @@ char	*vec_to_cstring(t_vec *vec)
 	ft_memcpy(str, vec->data, vec->size * sizeof(char));
 	str[vec->size] = 0;
 	return (str);
+}
+
+bool	vec_split(t_vec *vec, char	*line, char character)
+{
+	int		len;
+	int		index;
+
+	index = 0;
+	while (line && *line)
+	{
+		len = word_len(line, character);
+		if (len)
+		{
+			vec_append(vec, ft_substr(line, 0, len));
+			line += len;
+			while (*line && *line == character)
+				line++;
+		}
+		else
+			line++;
+	}
+	return (true);
+}
+
+char	**vec_to_charss(t_vec *vec)
+{
+	char	**str_array;
+	size_t	i;
+
+	str_array = malloc(sizeof(char *) * (vec->size + 1));
+	i = 0;
+	while (i < vec->size)
+	{
+		str_array[i] = ft_strdup(vec_get(vec, i));
+		i++;
+	}
+	return (str_array);
 }

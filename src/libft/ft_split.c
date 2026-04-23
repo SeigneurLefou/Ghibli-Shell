@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:23:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/27 17:55:05 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:37:10 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_sub_strings(const char *s, char c)
+int	count_sub_strings(const char *s, char c)
 {
 	int	count;
 
@@ -32,7 +32,7 @@ static int	count_sub_strings(const char *s, char c)
 	return (count);
 }
 
-static size_t	word_len(const char *s, char c)
+size_t	word_len(const char *s, char c)
 {
 	size_t	len;
 
@@ -42,7 +42,7 @@ static size_t	word_len(const char *s, char c)
 	return (len);
 }
 
-static int	check_and_unwrap(char **strings_array, int index)
+int	check_and_unwrap(char **strings_array, int index)
 {
 	if (!strings_array[index])
 	{

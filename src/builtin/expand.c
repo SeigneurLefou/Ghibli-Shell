@@ -6,11 +6,33 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 14:30:32 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:14:05 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+
+void	add_var_content_to_line_vector(t_vec *line, char *var_content,
+			bool is_split)
+{
+	t_vec	splited_var_content;
+	char	*new_line;
+
+	if (!is_split)
+	{
+		new_line = vec_get(line, 0);
+		if (new_line)
+			new_line = ft_strjoin(new_line, var_content);
+		else
+			new_line = ft_strdup(var_content);
+	}
+	else
+	{
+		vec_init(&splited_var_content, sizeof(char *), 5);
+		vec_split(&splited_var_content, var_content, ' ');
+		vec_expand_and_free(line, &splited_var_content); // TODO : le premier element du var content est join avec le dernier de line puis le reste est expand
+	}
+}
 
 char	*str_append_char(char *str, char c)
 {
@@ -55,13 +77,16 @@ char	*give_variable_content(t_token *raw_line, size_t *i,
 	return (var_content);
 }
 
-char	*expand_line(t_token *raw_line, t_minishell *minishell)
+char	**expand_line(t_token *raw_line, t_minishell *minishell, bool is_split)
 {
 	char	*new_line;
 	char	*var_content;
 	size_t	i;
 	size_t	expand_pointer;
+	char	**array_line;
+	t_vec	res;
 
+	vec_init(&res, sizeof(char *), 5);
 	new_line = NULL;
 	i = 0;
 	expand_pointer = 0;
@@ -72,10 +97,7 @@ char	*expand_line(t_token *raw_line, t_minishell *minishell)
 		{
 			expand_pointer++;
 			var_content = give_variable_content(raw_line, &i, minishell, expand_pointer);
-			if (new_line)
-				new_line = ft_strjoin(new_line, var_content);
-			else
-				new_line = ft_strdup(var_content);
+			add_var_content_to_line_vector(&res, var_content, is_split);
 		}
 		else
 		{
@@ -83,5 +105,6 @@ char	*expand_line(t_token *raw_line, t_minishell *minishell)
 			i++;
 		}
 	}
-	return (new_line);
+	array_line = vec_to_charss(&res);
+	return (array_line);
 }
