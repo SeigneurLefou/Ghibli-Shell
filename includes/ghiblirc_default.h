@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:32:02 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/21 17:36:50 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 14:37:28 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ echo '                                               \
 echo '                                               \
                                           ⣀⣰⣿⣥⡀⠀⠀⠀⠀⠀⠀\
 ⠀⠀⠀⠀⠀⠀⣘⣧⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⣿\\n'\n\
-export PROMPT='GhibliShell > '"
+export PROMPT='GhibliShell @u\\@@l > '"
 
 # define GHIBLIRC_SETUP_PROMPT "It seems like there is no .ghiblirc file \
 in your home directory.\n\
