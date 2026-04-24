@@ -55,6 +55,8 @@ int							builtin_source(int argc, char **argv,
 								t_minishell *minishell);
 int							builtin_unset(int argc, char **argv,
 								t_minishell *minishell);
+int							builtin_exit(int argc,
+								t_minishell *minishell);
 int							builtin_env(int argc, t_minishell *minishell);
 
 #endif
