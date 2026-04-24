@@ -1,6 +1,4 @@
-#include "libft.h"
-#include <stdbool.h>
-#include <stdlib.h>
+#include "builtin.h"
 
 static char parse_escape(char escaped_char)
 {

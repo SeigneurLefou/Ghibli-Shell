@@ -14,7 +14,7 @@
 
 bool is_command_built_in(char *name)
 {
-	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", "exit", NULL};
+	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", "exit", "env", NULL};
 	unsigned int index;
 	
 	index = 0;
@@ -46,6 +46,8 @@ int	exec_builtin(t_cmd *cmds, t_minishell *minishell)
 		result = builtin_unset(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "exit"))
 		result = builtin_exit(cmds->argc, minishell);
+	if (!ft_strcmp(cmds->name, "env"))
+		result = builtin_env(cmds->argc, minishell);
 	return (result);
 }
 
