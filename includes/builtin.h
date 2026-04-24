@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 14:23:19 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/24 10:59:47 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,18 @@ bool	setup_and_exec_builtin(t_btree *tree, int files[2]);
 int		exec_builtin(t_cmd *cmds, t_minishell *minishell);
 bool	is_command_built_in(char *name);
 
-int		builtin_echo(int argc, char **argv);
-int		builtin_cd(int argc, char **argv,
-			t_minishell *minishell);
-int		builtin_pwd(int argc);
-int		builtin_export(int argc, char **argv,
-			t_minishell *minishell);
-int		builtin_source(int argc, char **argv,
-			t_minishell *minishell);
+int							builtin_echo(int argc, char **argv);
+int							builtin_cd(int argc, char **argv,
+								t_minishell *minishell);
+int							builtin_pwd(int argc);
+int							builtin_export(int argc, char **argv,
+								t_minishell *minishell);
+int							builtin_source(int argc, char **argv,
+								t_minishell *minishell);
+int							builtin_unset(int argc, char **argv,
+								t_minishell *minishell);
+int							builtin_exit(int argc,
+								t_minishell *minishell);
+int							builtin_env(int argc, t_minishell *minishell);
 
 #endif

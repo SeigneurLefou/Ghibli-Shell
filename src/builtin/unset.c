@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_manager.c                                :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/16 13:57:17 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 12:37:25 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/23 19:21:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtin.h"
 
-void minishell_init(t_minishell *minishell)
+int	builtin_unset(int argc, char **argv, t_minishell *minishell)
 {
-    minishell->env_variables_manager = env_variables_manager_new();
-    minishell->shell_level = 1;
-    minishell->internal_file_recursion = 0;
-    minishell->request_exit = false;
+	if (argc != 2)
+	{
+		write(2, "Unset needs one argument.\n", 27);
+		return (1);
+	}
+	env_variable_manager_unset_key(&minishell->env_variables_manager, argv[1]);
+	return (0);
 }

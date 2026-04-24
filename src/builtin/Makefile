@@ -6,6 +6,9 @@ SRC += $(BUILTIN_PATH)expand.c \
 	$(BUILTIN_PATH)cd.c \
 	$(BUILTIN_PATH)pwd.c \
 	$(BUILTIN_PATH)export.c \
-	$(BUILTIN_PATH)source.c
+	$(BUILTIN_PATH)source.c \
+	$(BUILTIN_PATH)unset.c \
+	$(BUILTIN_PATH)exit.c \
+	$(BUILTIN_PATH)env.c
 
 OUT_DIRS += $(OUTPUT_DIR)/$(BUILTIN_PATH)
