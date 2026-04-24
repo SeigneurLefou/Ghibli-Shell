@@ -25,6 +25,7 @@ We gived the name of Ghibli's characters to the project's modules.
 | Built-in              | Sheeta                  | The levitation stone is magic like the built-in commands.     |
 | File runner           | Jiro                    | He creates planes.                                            |
 | Env variable manager  | Totoro                  | Because he cares about the Environment.                       |
+| Signals handler       | Umi                     | She can send messages with flags.                             |
 
 Open a discussion thread if you want more info about the choices.
 
