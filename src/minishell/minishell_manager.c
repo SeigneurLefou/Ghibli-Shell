@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:57:17 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 12:37:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/24 15:39:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,5 @@ void minishell_init(t_minishell *minishell)
     minishell->shell_level = 1;
     minishell->internal_file_recursion = 0;
     minishell->request_exit = false;
+    g_signal = -1;
 }

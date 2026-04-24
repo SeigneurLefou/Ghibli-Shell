@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/23 14:29:21 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:03:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,4 +160,20 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 	prompt = vec_to_cstring(&rendered);
 	vec_free(&rendered);
 	return (prompt);
+}
+
+char *get_prompt_line(t_minishell *minishell)
+{
+	char * prompt_line;
+
+	prompt_line = env_variable_manager_get_single(&minishell->env_variables_manager, "PROMPT");
+	if (prompt_line)
+	{
+		prompt_line = render_prompt(prompt_line, minishell);
+		if (!prompt_line)
+			prompt_line = ft_strdup("$> ");
+	}
+	else
+		prompt_line = ft_strdup("$> ");
+	return prompt_line;
 }

@@ -6,18 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 13:25:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:05:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	handle_signal(int sig)
-{
-	write(1, "^C\n", 3);
-	(void)sig;
-	return ;
-}
 
 void handle_prompt(t_minishell *minishell)
 {
@@ -29,16 +22,10 @@ void handle_prompt(t_minishell *minishell)
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
-		prompt_line = env_variable_manager_get_single(&minishell->env_variables_manager, "PROMPT");
+		prompt_line = get_prompt_line(minishell);
 		if (prompt_line)
-		{
-			prompt_line = render_prompt(prompt_line, minishell);
-			if (!prompt_line)
-				prompt_line = "$> ";
-		}
-		else
-			prompt_line = "$> ";
-		line = readline(prompt_line);
+			printf("%s", prompt_line);
+		line = readline("");
 		if (!line)
 			minishell->request_exit = true;
 		else

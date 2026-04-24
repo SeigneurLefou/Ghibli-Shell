@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 13:23:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/24 15:42:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "tty.h"
+# include "signals.h"
+
+static int g_signal;
 
 typedef struct s_minishell
 {
@@ -45,7 +48,6 @@ typedef struct s_minishell
 	bool					request_exit;
 }							t_minishell;
 
-void						handle_signal(int sig);
 void						handle_prompt(t_minishell *minishell);
 bool						main_token(char *line, t_minishell *minishell);
 void						minishell_init(t_minishell *minishell);
