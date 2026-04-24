@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:58:26 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 17:03:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/24 17:27:23 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			add_str_to_vec_char(&new_line, var_content);
 			free(var_content);
 		}
-		vec_append(&new_line, vec_get(&token->data, i));
+		else
+			vec_append(&new_line, vec_get(&token->data, i));
 		i++;
 	}
 	vec_append(argv, &new_line); // TODO : expand the last argv with new_line
