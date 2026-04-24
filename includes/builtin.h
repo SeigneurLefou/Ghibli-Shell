@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 18:14:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/24 14:23:19 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,7 @@ typedef struct s_function_node
 	t_builtin_function		fn;
 }							t_function_node;
 
-void	add_var_content_to_line_vector(t_vec *line, char *var_content,
-			bool is_split);
-char	*give_variable_content(t_token *raw_line, size_t *i,
-		t_minishell *minishell, size_t expand_pointer);
-char	**expand_line(t_token *raw_line, t_minishell *minishell,
-		bool is_split);
+bool	expand(t_vec *argv, t_token *token, t_minishell *minishell);
 bool	setup_and_exec_builtin(t_btree *tree, int files[2]);
 int		exec_builtin(t_cmd *cmds, t_minishell *minishell);
 bool	is_command_built_in(char *name);

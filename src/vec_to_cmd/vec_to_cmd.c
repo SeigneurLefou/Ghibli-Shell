@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 18:14:50 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:11:51 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,25 @@ void	vec_to_cmd(t_btree *tree)
 	t_cmd	*new_cmd;
 	size_t	i;
 	t_token	pointed_expr;
-	char	**actual_argv;
+	t_vec	argv;
 
-	i = tree->node->expr_start;
 	new_cmd = ft_cmdnew();
+	vec_init(&argv, sizeof(t_vec), 2);
+	i = tree->node->expr_start;
 	while (i <= tree->node->expr_end)
 	{
 		pointed_expr = *(t_token *)vec_get(&tree->expr, i);
 		if (pointed_expr.type == token_type_plain)
 		{
-			actual_argv = expand_line(&pointed_expr, tree->minishell, true);
-			expand_str(&new_cmd->argv, actual_argv);
+			expand(&argv, &pointed_expr, tree->minishell);
 			if (!(new_cmd->name))
 			{
 				new_cmd->argc = 0;
-				new_cmd->name = actual_argv[0];
-				if (!is_command_built_in(actual_argv[0]))
-					get_cmd_path(&new_cmd[0], tree->minishell);
+				new_cmd->name = vec_to_cstring(vec_get(&argv, 0));
+				if (!is_command_built_in(new_cmd->name))
+				{
+					get_cmd_path(new_cmd, tree->minishell);
+				}
 			}
 			new_cmd->argc++;
 		}
@@ -104,5 +106,6 @@ void	vec_to_cmd(t_btree *tree)
 			i++;
 		i++;
 	}
+	new_cmd->argv = vec_vec_char_to_str_array(&argv);
 	tree->node->cmds = new_cmd;
 }
