@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:24:04 by marvin            #+#    #+#             */
-/*   Updated: 2026/04/24 13:39:27 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/25 12:34:11 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (s1[start] && contains(set, s1[start]))
 		start++;
 	end = ft_strlen(s1) - 1;
-	while (!end && contains(set, s1[end]))
+	while (end && contains(set, s1[end]))
 		end--;
 	new = ft_substr(s1, start, end - start + 1);
 	return (new);

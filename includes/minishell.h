@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 15:42:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/25 12:17:17 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # include "tty.h"
 # include "signals.h"
 
-static int g_signal;
+extern int g_signal;
 
 typedef struct s_minishell
 {

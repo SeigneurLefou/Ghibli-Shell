@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 18:49:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/25 12:23:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);	
 	}
 
-	unsigned int i = 0;
+	/*unsigned int i = 0;
 	while (i < parsed.size)
 	{
 		t_token token = *(t_token *)vec_get(&parsed, i);
@@ -112,7 +112,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		}
 		printf("]\n");
 		i++;
-	}
+	}*/
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)

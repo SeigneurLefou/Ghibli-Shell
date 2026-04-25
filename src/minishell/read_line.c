@@ -6,11 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 16:05:10 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/25 12:26:47 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_signal = 0;
 
 void handle_prompt(t_minishell *minishell)
 {
@@ -20,6 +22,7 @@ void handle_prompt(t_minishell *minishell)
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
+	int stdin_save = dup(0);
 	while (1)
 	{
 		prompt_line = get_prompt_line(minishell);
@@ -27,7 +30,16 @@ void handle_prompt(t_minishell *minishell)
 			printf("%s", prompt_line);
 		line = readline("");
 		if (!line)
-			minishell->request_exit = true;
+		{
+			if (g_signal > 0)
+			{
+				g_signal = -1;
+				dup2(stdin_save, 0);
+				continue;
+			}
+			else
+				minishell->request_exit = true;
+		}
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
 		if (line && trimmed)
@@ -43,5 +55,6 @@ void handle_prompt(t_minishell *minishell)
 		if (minishell->request_exit)
 			break;
 	}
+	close(stdin_save);
 	rl_clear_history();
 }
