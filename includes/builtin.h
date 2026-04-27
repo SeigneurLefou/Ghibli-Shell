@@ -6,7 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/04/27 06:39:31 by lchamard         ###   ########.fr       */
+=======
+/*   Updated: 2026/04/24 10:59:47 by yben-dje         ###   ########.fr       */
+>>>>>>> 8c84509 ([Sheeta] Add the env command)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +59,11 @@ int							builtin_source(int argc, char **argv,
 								t_minishell *minishell);
 int							builtin_unset(int argc, char **argv,
 								t_minishell *minishell);
+<<<<<<< HEAD
 int							builtin_exit(int argc,
 								t_minishell *minishell);
+=======
+int							builtin_env(int argc, t_minishell *minishell);
+>>>>>>> 8c84509 ([Sheeta] Add the env command)
 
 #endif
