@@ -16,10 +16,17 @@ typedef enum e_token_type
 	token_type_void,
 }							t_token_type;
 
+typedef struct s_escape_data
+{
+	unsigned int			index;
+	bool					allow_split;
+}							t_expand_data;
+
 typedef struct s_token
 {
 	t_vec					data;
 	t_token_type			type;
+	// t_vec<t_expand_data>
 	t_vec					expandable_scopes;
 	bool					is_expand;
 }							t_token;
@@ -48,8 +55,8 @@ typedef enum e_parsing_error_type
 typedef struct s_parsing_checker_result
 {
 	t_parsing_error_type	parsing_error;
-	int			index1;
-	int			index2;
+	int						index1;
+	int						index2;
 }							t_parsing_checker_result;
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);
