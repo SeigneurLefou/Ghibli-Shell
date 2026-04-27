@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/04/24 12:40:52 by yben-dje         ###   ########.fr       */
-=======
-/*   Updated: 2026/04/24 10:58:49 by yben-dje         ###   ########.fr       */
->>>>>>> 8c84509 ([Sheeta] Add the env command)
+/*   Updated: 2026/04/27 06:46:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +14,7 @@
 
 bool is_command_built_in(char *name)
 {
-<<<<<<< HEAD
-	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", "exit", NULL};
-=======
-	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", "env", NULL};
->>>>>>> 8c84509 ([Sheeta] Add the env command)
+	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", "exit", "env", NULL};
 	unsigned int index;
 	
 	index = 0;
@@ -53,12 +45,19 @@ int	exec_builtin(t_cmd *cmds, t_minishell *minishell)
 	if (!ft_strcmp(cmds->name, "unset"))
 		result = builtin_unset(cmds->argc, cmds->argv, minishell);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (!ft_strcmp(cmds->name, "exit"))
 		result = builtin_exit(cmds->argc, minishell);
 =======
 	if (!ft_strcmp(cmds->name, "env"))
 		result = builtin_env(cmds->argc, minishell);
 >>>>>>> 8c84509 ([Sheeta] Add the env command)
+=======
+	if (!ft_strcmp(cmds->name, "exit"))
+		result = builtin_exit(cmds->argc, minishell);
+	if (!ft_strcmp(cmds->name, "env"))
+		result = builtin_env(cmds->argc, minishell);
+>>>>>>> 12a3170f42e6515e75444be350de4a00818c9620
 	return (result);
 }
 
