@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 12:17:57 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 19:22:06 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool is_command_built_in(char *name)
 {
-	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", NULL};
+	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", NULL};
 	unsigned int index;
 	
 	index = 0;
@@ -42,6 +42,8 @@ int	exec_builtin(t_cmd *cmds, t_minishell *minishell)
 		result = builtin_export(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "source"))
 		result = builtin_source(cmds->argc, cmds->argv, minishell);
+	if (!ft_strcmp(cmds->name, "unset"))
+		result = builtin_unset(cmds->argc, cmds->argv, minishell);
 	return (result);
 }
 
