@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 16:11:51 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/27 08:28:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	vec_to_cmd(t_btree *tree)
 					get_cmd_path(new_cmd, tree->minishell);
 				}
 			}
-			new_cmd->argc++;
+			new_cmd->argc++; // Calculate the argc in the end of the loop for case of expand split
 		}
 		else
 			i++;
