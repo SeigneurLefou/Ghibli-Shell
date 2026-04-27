@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 14:59:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:25:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	handle_signal(int sig)
 	return ;
 }
 
-char	*handle_prompt(t_minishell *minishell)
+void handle_prompt(t_minishell *minishell)
 {
 	char	*line;
-	char	*res;
 	char	*prompt_line;
+	char *trimmed;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
@@ -40,25 +40,21 @@ char	*handle_prompt(t_minishell *minishell)
 			prompt_line = "$> ";
 		line = readline(prompt_line);
 		if (!line)
+			minishell->request_exit = true;
+		else
+			trimmed = ft_strtrim(line, "\r\n \t");
+		if (line && trimmed)
 		{
-			printf("exit\n");
-			rl_clear_history();
-			exit(0);
+			if (trimmed[0])
+			{
+				add_history(trimmed);
+				main_token(trimmed, minishell);
+				free(trimmed);
+			}
 		}
-		if (line && *line)
-		{
-			add_history(line);
-			main_token(line, minishell);
-		}
-		if (!ft_strcmp(line, "exit"))
-		{
-			printf("exit\n");
-			rl_clear_history();
-			exit(0);
-		}
-		res = line;
 		free(line);
+		if (minishell->request_exit)
+			break;
 	}
 	rl_clear_history();
-	return (res);
 }
