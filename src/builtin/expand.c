@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:58:26 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/24 17:27:23 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/27 06:30:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	*expand_tild(t_token *token, size_t *i,
 	var_content = NULL;
 	if (*(char *)vec_get(&token->data, *i) == '~')
 	{
-		(*i)++;
 		var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
 				"HOME"));
 	}
@@ -78,7 +77,9 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			expand_pointer++;
 			var_content = expand_tild(token, &i, minishell);
 			if (!var_content)
+			{
 				var_content = give_variable_content(token, &i, minishell, expand_pointer);
+			}
 			add_str_to_vec_char(&new_line, var_content);
 			free(var_content);
 		}
