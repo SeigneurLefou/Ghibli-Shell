@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/27 06:38:29 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/27 06:38:29 by lchamard         ###   ########.fr       */
+/*   Created: 2026/04/27 06:44:34 by lchamard          #+#    #+#             */
+/*   Updated: 2026/04/27 06:44:34 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,9 @@ char	*expand_tild(t_token *token, size_t *i,
 	var_content = NULL;
 	if (*(char *)vec_get(&token->data, *i) == '~')
 	{
-		(*i)++;
 		var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-<<<<<<< HEAD
 				"HOME"));
 	}
-=======
-					"HOME"));
-		return (var_content);
-	}
-	(*i)++;
-	while (*i < raw_line->data.size
-		&& *i <= ((t_expand_data *)vec_get(&raw_line->expandable_scopes,
-				expand_pointer))->index)
-	{
-		var_name = str_append_char(var_name, *(char *)vec_get(&raw_line->data,
-					*i));
-		(*i)++;
-	}
-	var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-				var_name));
-	free(var_name);
->>>>>>> 9e71244 ([Shizuku/Ponyo] Store context info to allow splitting)
 	return (var_content);
 }
 bool	add_str_to_vec_char(t_vec *new_line, char *var_content)
@@ -96,7 +77,9 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			expand_pointer++;
 			var_content = expand_tild(token, &i, minishell);
 			if (!var_content)
+			{
 				var_content = give_variable_content(token, &i, minishell, expand_pointer);
+			}
 			add_str_to_vec_char(&new_line, var_content);
 			free(var_content);
 		}
