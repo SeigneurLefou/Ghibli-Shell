@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.,fr>          +#+  +:+       +#+       */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 16:59:46 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/27 06:33:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ void	*vec_get(t_vec *vec, unsigned int index)
 	if (index >= vec->size)
 		return (NULL);
 	return (vec->data + index * vec->type_size);
+}
+
+void	vec_set(t_vec *vec, unsigned int index, void *data)
+{
+	assert((int[]){vec != NULL, 42}, "Null passed to vec_get.");
+	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
+	assert((int[]){index >= vec->size, 42}, "Index is out of bounds.");
+	ft_memcpy(vec->data + index * vec->type_size, data, vec->type_size);
 }
 
 bool	vec_append(t_vec *vec, void *data)

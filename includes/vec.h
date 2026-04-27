@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 15:08:22 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/27 06:32:34 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void				vec_null(t_vec *vec);
 char				*vec_to_cstring(t_vec *vec);
 bool				vec_split(t_vec *vec, char	*line, char character);
 char				**vec_vec_char_to_str_array(t_vec *vec);
+void				vec_set(t_vec *vec, unsigned int index, void *data);
 
 #endif
