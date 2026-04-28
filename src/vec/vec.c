@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/27 09:17:35 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:36:05 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ bool	vec_append(t_vec *vec, void *data)
 {
 	char	*new_data;
 
-	assert((int[]){vec != NULL, data != NULL, 42}, "Null passed to vec_append.");
-	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
+//	assert((int[]){vec != NULL, data != NULL, 42}, "Null passed to vec_append.");
+//	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
 	if (vec->size >= vec->allocated_size)
 	{
 		new_data = malloc((vec->allocated_size + vec->buffering_size)
@@ -173,18 +173,37 @@ char	*vec_to_cstring(t_vec *vec)
 	return (str);
 }
 
+bool vec_substr(t_vec *vec, char *line, int start, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (!vec_append(vec, &line[start + i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 bool	vec_split(t_vec *vec, char	*line, char character)
 {
 	int		len;
 	int		index;
+	t_vec	new_line;
 
 	index = 0;
+	vec_init(&new_line, sizeof(char), 6);
 	while (line && *line)
 	{
 		len = word_len(line, character);
 		if (len)
 		{
-			vec_append(vec, ft_substr(line, 0, len));
+			vec_substr(&new_line, line, 0, len);
+			printf("new_line len : %d\n", new_line.size);
+			vec_null(&new_line);
+			vec_append(vec, &new_line);
 			line += len;
 			while (*line && *line == character)
 				line++;

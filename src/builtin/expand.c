@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/27 11:34:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:36:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			if ((*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1)).allow_split) // S'il faut split cette condition vaut true
 			{
 				vec_split(&var_split, var_content, ' '); // On split le texte en un vec de vec de char ou chaque vec de char est un mot
+				printf("SPLIT SIZE : %d\n", var_split.size);
 				vec_expand(&new_line, vec_get(&var_split, 0)); // On fusionne le premier "mot" avec la nouvelle ligne
 				vec_append(&new_argv, &new_line); // On ajoute la nouvelle ligne aux nouveaux argv
 				j = 1;
@@ -97,8 +98,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 					vec_append(&new_argv, vec_get(&var_split, j)); // On ajoute toutes les lignes sauf la dernière à l'argv
 					j++;
 				}
-				vec_free(&new_line);
-				vec_init(&new_line, sizeof(char), 20);
+				vec_null(&new_line);
 				vec_append(&new_line, vec_get(&var_split, j)); // On remplace la nouvelle ligne par le derniere mot du split
 			}
 			else
