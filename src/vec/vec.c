@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/28 09:36:05 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/28 13:30:02 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ bool	vec_append(t_vec *vec, void *data)
 {
 	char	*new_data;
 
-//	assert((int[]){vec != NULL, data != NULL, 42}, "Null passed to vec_append.");
-//	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
+	assert((int[]){vec != NULL, data != NULL, 42}, "Null passed to vec_append.");
+	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
 	if (vec->size >= vec->allocated_size)
 	{
 		new_data = malloc((vec->allocated_size + vec->buffering_size)
