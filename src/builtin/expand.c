@@ -70,16 +70,20 @@ bool	expand_split(t_vec *argv, t_vec *new_line, char *var_content)
 	vec_split(&var_split, var_content, ' '); // On split le texte en un vec de vec de char ou chaque vec de char est un mot
 	printf("SPLIT SIZE : %d\n", var_split.size);
 	vec_expand(new_line, vec_get(&var_split, 0)); // On fusionne le premier "mot" avec la nouvelle ligne
-	vec_append(argv, &new_line); // On ajoute la nouvelle ligne aux nouveaux argv
-	vec_free(new_line);
-	j = 1;
-	while (j < var_split.size - 1)
+	if (var_split.size > 1)
 	{
-		vec_append(argv, vec_get(&var_split, j)); // On ajoute toutes les lignes sauf la dernière à l'argv
-		j++;
+		vec_append(argv, &new_line); // On ajoute la nouvelle ligne aux nouveaux argv
+		vec_free(new_line);
+		vec_init(new_line, sizeof(char), 20);
+		j = 1;
+		while (j < var_split.size - 1)
+		{
+			vec_append(argv, vec_get(&var_split, j)); // On ajoute toutes les lignes sauf la dernière à l'argv
+			j++;
+		}
+		printf("new_line size : %u, new_line pointer : %p, vec_split[j] : %p\n", new_line->size, new_line, vec_get(&var_split, j));
+		vec_append(new_line, vec_get(&var_split, j)); // On remplace la nouvelle ligne par le derniere mot du split
 	}
-	printf("new_line size : %u, new_line pointer : %p, vec_split[j] : %p\n", new_line->size, new_line, vec_get(&var_split, j));
-	vec_append(new_line, vec_get(&var_split, j)); // On remplace la nouvelle ligne par le derniere mot du split
 	return (true);
 }
 
