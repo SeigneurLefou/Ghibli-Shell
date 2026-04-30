@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 10:08:37 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 15:41:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	vec_to_cmd(t_btree *tree)
 	t_vec	argv;
 
 	new_cmd = ft_cmdnew();
-	vec_init(&argv, sizeof(t_vec), 3);
+	vec_init(&argv, sizeof(t_vec), 6);
 	i = tree->node->expr_start;
 	while (i <= tree->node->expr_end)
 	{

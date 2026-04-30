@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 11:35:50 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 15:33:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,10 +173,24 @@ char	*vec_to_cstring(t_vec *vec)
 	return (str);
 }
 
+bool	str_to_vec_char(t_vec *vec, char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line && line[i])
+	{
+		vec_append(vec, &line[i]);
+		i++;
+	}
+	return (true);
+}
+
 bool	vec_split(t_vec *vec, char *line, char sep)
 {
 	int		len;
 	t_vec	sub_vec;
+	char	*str;
 
 	while (line && *line)
 	{
@@ -185,14 +199,13 @@ bool	vec_split(t_vec *vec, char *line, char sep)
 		len = word_len(line, sep);
 		if (!*line)
 			return (true);
-		sub_vec.allocated_size = len + 1;
-		sub_vec.buffering_size = 16;
-		sub_vec.data = ft_substr(line, 0, len);
+		vec_init(&sub_vec, sizeof(char), len);
+		str = ft_substr(line, 0, len);
+		str_to_vec_char(&sub_vec, str);
 		if (!sub_vec.data)
 			return (false);
-		sub_vec.size = len;
-		sub_vec.type_size = sizeof(char);
 		vec_append(vec, &sub_vec);
+		vec_free(&sub_vec);
 		line += len;
 	}
 	return (true);
