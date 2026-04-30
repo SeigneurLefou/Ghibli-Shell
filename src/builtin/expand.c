@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/29 11:29:40 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 11:27:38 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*expand_tild(t_token *token, size_t *i, t_minishell *minishell)
 				"HOME"));
 		(*i)++;
 	}
-	printf("I after tild test : %lu\n", *i);
 	return (var_content);
 }
 
@@ -65,24 +64,34 @@ bool	expand_split(t_vec *argv, t_vec *new_line, char *var_content)
 {
 	t_vec	var_split;
 	size_t	j;
+	size_t		i;
 
 	vec_init(&var_split, sizeof(t_vec), 5);
-	vec_split(&var_split, var_content, ' '); // On split le texte en un vec de vec de char ou chaque vec de char est un mot
-	printf("SPLIT SIZE : %d\n", var_split.size);
-	vec_expand(new_line, vec_get(&var_split, 0)); // On fusionne le premier "mot" avec la nouvelle ligne
+	vec_split(&var_split, var_content, ' ');
+	vec_expand(new_line, vec_get(&var_split, 0));
 	if (var_split.size > 1)
 	{
-		vec_append(argv, &new_line); // On ajoute la nouvelle ligne aux nouveaux argv
+		vec_append(argv, &new_line);
+		printf("new_line size type : %u\n", new_line->type_size);
+		printf("expand argv[%d] size of : %d, size of vec : %lu\n", 0, (*(t_vec *)vec_get(argv, 0)).type_size, sizeof(char));
 		vec_free(new_line);
 		vec_init(new_line, sizeof(char), 20);
 		j = 1;
 		while (j < var_split.size - 1)
 		{
-			vec_append(argv, vec_get(&var_split, j)); // On ajoute toutes les lignes sauf la dernière à l'argv
+			vec_append(argv, vec_get(&var_split, j)); // <- ICI
+			printf("var_split[%lu] size of : %d, size of vec : %lu\n", j, (*(t_vec *)vec_get(&var_split, j)).type_size, sizeof(char));
+			printf("expand argv[%lu] size of : %d, size of vec : %lu\n", j, (*(t_vec *)vec_get(argv, j)).type_size, sizeof(char));
 			j++;
 		}
-		printf("new_line size : %u, new_line pointer : %p, vec_split[j] : %p\n", new_line->size, new_line, vec_get(&var_split, j));
-		vec_append(new_line, vec_get(&var_split, j)); // On remplace la nouvelle ligne par le derniere mot du split
+		vec_expand(new_line, vec_get(&var_split, j));
+		printf("new_line size type : %u\n", new_line->type_size);
+	}
+	i = 0;
+	while (i < argv->size)
+	{
+		printf("expand argv[%lu] size of : %d, size of vec : %lu\n", i, (*(t_vec *)vec_get(argv, i)).type_size, sizeof(char));
+		i++;
 	}
 	return (true);
 }
@@ -106,23 +115,23 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			var_content = expand_tild(token, &i, minishell);
 			if (!var_content)
 				var_content = give_variable_content(token, &i, minishell,
-						(*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer)).index); // Ici je récupère le contenu de la variable d'environnement
-			if ((*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1)).allow_split) // S'il faut split cette condition vaut true
+						(*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer)).index);
+			if ((*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1)).allow_split)
 			{
 				if (!expand_split(argv, &new_line, var_content))
 					return (false);
 			}
 			else
-				add_str_to_vec_char(&new_line, var_content); // Si il ne faut pas faire de split on ajoute le contenu de la variable d'env à la nouvelle ligne
+				add_str_to_vec_char(&new_line, var_content);
 			free(var_content);
 			expand_pointer++;
 		}
 		else
 		{
-			vec_append(&new_line, vec_get(&token->data, i)); // Sinon on ajoute le caractere pointé à la nouvelle ligne
+			vec_append(&new_line, vec_get(&token->data, i));
 			i++;
 		}
 	}
-	vec_append(argv, &new_line); // TODO : expand the last argv with new_line
+	vec_append(argv, &new_line);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/29 10:23:25 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 11:35:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,20 +173,6 @@ char	*vec_to_cstring(t_vec *vec)
 	return (str);
 }
 
-// bool vec_substr(t_vec *vec, char *line, int start, int len)
-// {
-	// int	i;
-// 
-	// i = 0;
-	// while (line[i] && i < len)
-	// {
-		// if (!vec_append(vec, &line[start + i]))
-			// return (false);
-		// i++;
-	// }
-	// return (true);
-// }
-
 bool	vec_split(t_vec *vec, char *line, char sep)
 {
 	int		len;
@@ -205,40 +191,12 @@ bool	vec_split(t_vec *vec, char *line, char sep)
 		if (!sub_vec.data)
 			return (false);
 		sub_vec.size = len;
-		printf("new_line len : %d\n", sub_vec.size);
 		sub_vec.type_size = sizeof(char);
 		vec_append(vec, &sub_vec);
 		line += len;
 	}
 	return (true);
 }
-
-// bool	vec_split(t_vec *vec, char	*line, char character)
-// {
-	// int		len;
-	// int		index;
-	// t_vec	new_line;
-// 
-	// index = 0;
-	// vec_init(&new_line, sizeof(char), 6);
-	// while (line && *line)
-	// {
-		// len = word_len(line, character);
-		// if (len)
-		// {
-			// vec_substr(&new_line, line, 0, len);
-			// printf("AAAAAAaaaa\n");
-			// vec_null(&new_line);
-			// vec_append(vec, &new_line);
-			// line += len;
-			// while (*line && *line == character)
-				// line++;
-		// }
-		// else
-			// line++;
-	// }
-	// return (true);
-// }
 
 char	**vec_vec_char_to_str_array(t_vec *vec)
 {
@@ -249,6 +207,7 @@ char	**vec_vec_char_to_str_array(t_vec *vec)
 	i = 0;
 	while (i < vec->size)
 	{
+		printf("argv[%lu] size of : %d, size of vec : %lu\n", i, (*(t_vec *)vec_get(vec, i)).type_size, sizeof(char));
 		str_array[i] = vec_to_cstring(vec_get(vec, i));
 		i++;
 	}

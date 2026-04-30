@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/27 08:28:26 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 10:08:37 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	vec_to_cmd(t_btree *tree)
 	t_vec	argv;
 
 	new_cmd = ft_cmdnew();
-	vec_init(&argv, sizeof(t_vec), 2);
+	vec_init(&argv, sizeof(t_vec), 3);
 	i = tree->node->expr_start;
 	while (i <= tree->node->expr_end)
 	{
@@ -91,21 +91,15 @@ void	vec_to_cmd(t_btree *tree)
 		if (pointed_expr.type == token_type_plain)
 		{
 			expand(&argv, &pointed_expr, tree->minishell);
-			if (!(new_cmd->name))
-			{
-				new_cmd->argc = 0;
-				new_cmd->name = vec_to_cstring(vec_get(&argv, 0));
-				if (!is_command_built_in(new_cmd->name))
-				{
-					get_cmd_path(new_cmd, tree->minishell);
-				}
-			}
-			new_cmd->argc++; // Calculate the argc in the end of the loop for case of expand split
+			new_cmd->argc += argv.size;
 		}
 		else
 			i++;
 		i++;
 	}
 	new_cmd->argv = vec_vec_char_to_str_array(&argv);
+	new_cmd->name = new_cmd->argv[0];
+	if (!is_command_built_in(new_cmd->name))
+		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;
 }
