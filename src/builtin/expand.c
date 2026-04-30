@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 11:27:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 11:52:16 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,17 @@ bool	expand_split(t_vec *argv, t_vec *new_line, char *var_content)
 	vec_expand(new_line, vec_get(&var_split, 0));
 	if (var_split.size > 1)
 	{
-		vec_append(argv, &new_line);
+		vec_append(argv, &new_line); // <- ICI
 		printf("new_line size type : %u\n", new_line->type_size);
-		printf("expand argv[%d] size of : %d, size of vec : %lu\n", 0, (*(t_vec *)vec_get(argv, 0)).type_size, sizeof(char));
+		printf("expand argv[%d] size of : %d, size of vec : %lu\n", 1, (*(t_vec *)vec_get(argv, 1)).type_size, sizeof(char));
 		vec_free(new_line);
 		vec_init(new_line, sizeof(char), 20);
 		j = 1;
 		while (j < var_split.size - 1)
 		{
-			vec_append(argv, vec_get(&var_split, j)); // <- ICI
+			vec_append(argv, vec_get(&var_split, j));
 			printf("var_split[%lu] size of : %d, size of vec : %lu\n", j, (*(t_vec *)vec_get(&var_split, j)).type_size, sizeof(char));
-			printf("expand argv[%lu] size of : %d, size of vec : %lu\n", j, (*(t_vec *)vec_get(argv, j)).type_size, sizeof(char));
+			printf("expand argv[%lu] size of : %d, size of vec : %lu\n", j + 1, (*(t_vec *)vec_get(argv, j + 1)).type_size, sizeof(char));
 			j++;
 		}
 		vec_expand(new_line, vec_get(&var_split, j));
