@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 19:08:37 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:13:00 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,6 @@ char	**vec_vec_char_to_str_array(t_vec *vec)
 	i = 0;
 	while (i < vec->size)
 	{
-		printf("argv[%lu] size of : %d, size of vec : %lu\n", i, (*(t_vec *)vec_get(vec, i)).type_size, sizeof(char));
 		str_array[i] = vec_to_cstring(vec_get(vec, i));
 		i++;
 	}
