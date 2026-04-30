@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 15:33:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 19:08:37 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,6 @@ bool	vec_split(t_vec *vec, char *line, char sep)
 		if (!sub_vec.data)
 			return (false);
 		vec_append(vec, &sub_vec);
-		vec_free(&sub_vec);
 		line += len;
 	}
 	return (true);
