@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/25 12:26:47 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:01:29 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,31 @@ void handle_prompt(t_minishell *minishell)
 	char	*line;
 	char	*prompt_line;
 	char *trimmed;
+	bool	first_sigint;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
 	int stdin_save = dup(0);
+	first_sigint = true;
 	while (1)
 	{
 		prompt_line = get_prompt_line(minishell);
+		line = NULL;
 		if (prompt_line)
-			printf("%s", prompt_line);
-		line = readline("");
+			line = readline(prompt_line);
+		else
+			line = readline("$>");
 		if (!line)
 		{
 			if (g_signal > 0)
 			{
 				g_signal = -1;
 				dup2(stdin_save, 0);
+				rl_replace_line("", 1);
+				if (first_sigint)
+					write(1, "\n", 1);
+				rl_on_new_line();
+				first_sigint = false;
 				continue;
 			}
 			else
@@ -46,6 +55,7 @@ void handle_prompt(t_minishell *minishell)
 		{
 			if (trimmed[0])
 			{
+				first_sigint = true;
 				add_history(trimmed);
 				main_token(trimmed, minishell);
 				free(trimmed);
