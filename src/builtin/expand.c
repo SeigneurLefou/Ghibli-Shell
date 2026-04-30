@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 14:10:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 18:31:04 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,14 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 	while (i < token->data.size)
 	{
 		if (expand_pointer < token->expandable_scopes.size
-			&& i == *(unsigned int *)vec_get(&token->expandable_scopes, expand_pointer))
+			&& i == ((t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer))->index)
 		{
 			expand_pointer++;
 			var_content = expand_tild(token, &i, minishell);
 			if (!var_content)
 				var_content = give_variable_content(token, &i, minishell,
 						(*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer)).index);
-			if ((*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1)).allow_split)
+			if (((t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1))->allow_split)
 			{
 				if (!expand_split(argv, &new_line, var_content))
 					return (false);
