@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/20 18:32:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:17:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int		infile_gestion(t_pipex *pipex_var);
 int		pipe_gestion(t_pipex *pipex_var);
 int		child_gestion(t_pipex *pipex_var);
 void	take_child(t_pipex *pipex_var);
-void	get_cmd_path(t_cmd **cmd, t_minishell *minishell);
-char	*test_all_path(char *path, t_cmd **cmd);
+void	get_cmd_path(t_cmd *cmd, t_minishell *minishell);
+char	*test_all_path(char *path, t_cmd *cmd);
 void	ft_free_path(char **splited_path, int i);
 char	*get_env(char **env, char *var);
 int		wait_all_pid(t_vec *pids);

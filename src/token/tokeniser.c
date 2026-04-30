@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 18:47:20 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/29 10:30:33 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool set_expand(t_token *current_token, bool state, bool allow_split)
 		expand_data.index++;
 		if (!vec_append(&current_token->expandable_scopes, &expand_data))
 			return (false);
-		current_token->is_expand = false;
+		current_token->is_expand = true;
 	}
 	else if (!state && current_token->is_expand)
 		{

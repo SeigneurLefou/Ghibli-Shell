@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 14:22:18 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:16:17 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_free_path(char **splited_path, int i)
 	ft_double_free_start(splited_path, i);
 }
 
-char	*test_all_path(char *path, t_cmd **cmd)
+char	*test_all_path(char *path, t_cmd *cmd)
 {
 	char	*cmd_path;
 	char	**splited_path;
@@ -58,7 +58,7 @@ char	*test_all_path(char *path, t_cmd **cmd)
 	while (splited_path && splited_path[i])
 	{
 		cmd_path = ft_strjoin(splited_path[i++], "/");
-		cmd_path = ft_strjoin(cmd_path, (*cmd)->name);
+		cmd_path = ft_strjoin(cmd_path, cmd->name);
 		if (!access(cmd_path, X_OK | F_OK))
 			break ;
 		free(cmd_path);
@@ -68,23 +68,23 @@ char	*test_all_path(char *path, t_cmd **cmd)
 	return (cmd_path);
 }
 
-void	get_cmd_path(t_cmd **cmd, t_minishell *minishell)
+void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
 {
 	char	*path;
 	char	*cmd_path;
 
-	if (!(*cmd)->name)
+	if (!cmd->name)
 	{
 		errno = 13;
-		(*cmd)->path = NULL;
+		cmd->path = NULL;
 		return ;
 	}
-	cmd_path = ft_strdup((*cmd)->name);
+	cmd_path = ft_strdup(cmd->name);
 	if (cmd_path && ft_strchr(cmd_path, '/'))
 	{
 		if (!access(cmd_path, X_OK | F_OK))
 		{
-			(*cmd)->path = cmd_path;
+			cmd->path = cmd_path;
 			return ;
 		}
 	}
@@ -93,7 +93,7 @@ void	get_cmd_path(t_cmd **cmd, t_minishell *minishell)
 	path =ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
 			"PATH"));
 	cmd_path = test_all_path(path, cmd);
-	(*cmd)->path = cmd_path;
+	cmd->path = cmd_path;
 }
 
 void	take_child(t_pipex *pipex_var)

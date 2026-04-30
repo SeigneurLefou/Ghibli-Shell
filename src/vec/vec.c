@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/11 12:03:57 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/23 18:14:51 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
+/*   Updated: 2026/04/30 11:35:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,28 @@ bool	vec_expand_and_free(t_vec *vec, t_vec *other)
 	return (true);
 }
 
+bool	vec_expand(t_vec *vec, t_vec *other)
+{
+	char			*new_data;
+	unsigned int	alloc_size;
+
+	assert((int[]){vec != NULL, other != NULL, 42}, "Null passed to vec_expand_and_free.");
+	assert((int[]){vec->data != NULL, other->data != NULL, 42}, "Non-initialised vec.");
+	assert((int[]){vec->type_size == other->type_size, 42}, "Typesize is different between vec and other.");
+	alloc_size = (vec->size + other->size + vec->buffering_size)
+		* vec->type_size;
+	new_data = malloc(alloc_size);
+	if (!new_data)
+		return (false);
+	ft_memcpy(new_data, vec->data, vec->size * vec->type_size);
+	vec->allocated_size = vec->size + other->size + vec->buffering_size;
+	ft_memcpy(new_data + vec->size * vec->type_size, other->data, other->size
+		* other->type_size);
+	vec->size += other->size;
+	vec->data = new_data;
+	return (true);
+}
+
 char	*vec_to_cstring(t_vec *vec)
 {
 	char	*str;
@@ -149,4 +171,46 @@ char	*vec_to_cstring(t_vec *vec)
 	ft_memcpy(str, vec->data, vec->size * sizeof(char));
 	str[vec->size] = 0;
 	return (str);
+}
+
+bool	vec_split(t_vec *vec, char *line, char sep)
+{
+	int		len;
+	t_vec	sub_vec;
+
+	while (line && *line)
+	{
+		while (*line && *line == sep)
+			line++;
+		len = word_len(line, sep);
+		if (!*line)
+			return (true);
+		sub_vec.allocated_size = len + 1;
+		sub_vec.buffering_size = 16;
+		sub_vec.data = ft_substr(line, 0, len);
+		if (!sub_vec.data)
+			return (false);
+		sub_vec.size = len;
+		sub_vec.type_size = sizeof(char);
+		vec_append(vec, &sub_vec);
+		line += len;
+	}
+	return (true);
+}
+
+char	**vec_vec_char_to_str_array(t_vec *vec)
+{
+	char	**str_array;
+	size_t	i;
+
+	str_array = malloc(sizeof(char *) * (vec->size + 1));
+	i = 0;
+	while (i < vec->size)
+	{
+		printf("argv[%lu] size of : %d, size of vec : %lu\n", i, (*(t_vec *)vec_get(vec, i)).type_size, sizeof(char));
+		str_array[i] = vec_to_cstring(vec_get(vec, i));
+		i++;
+	}
+	str_array[i] = NULL;
+	return (str_array);
 }

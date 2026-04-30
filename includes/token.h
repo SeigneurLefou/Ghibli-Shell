@@ -16,7 +16,7 @@ typedef enum e_token_type
 	token_type_void,
 }							t_token_type;
 
-typedef struct s_escape_data
+typedef struct s_expand_data
 {
 	unsigned int			index;
 	bool					allow_split;

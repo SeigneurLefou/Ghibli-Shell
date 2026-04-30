@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 09:55:46 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/04/30 10:08:37 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	ft_array_strlen(char **array_str)
 	return (len);
 }
 
-void	append_str_to_str_array(char ***dest, const char *src)
+void	append_str_to_array_str(char ***dest, const char *src)
 {
 	size_t	len;
 	char	**new_array;
@@ -47,35 +47,59 @@ void	append_str_to_str_array(char ***dest, const char *src)
 	*dest = new_array;
 }
 
+void	expand_str(char ***dest, char **src)
+{
+	size_t	len;
+	char	**new_array;
+	size_t	i;
+	size_t	j;
+
+	new_array = malloc((ft_array_strlen(*dest) + ft_array_strlen(src) + 1));
+	len = ft_array_strlen(*dest);
+	i = 0;
+	while (i < len)
+	{
+		new_array[i] = (*dest)[i];
+		i++;
+	}
+	len = ft_array_strlen(src);
+	j = 0;
+	while (j < len)
+	{
+		new_array[i] = src[j];
+		i++;
+		j++;
+	}
+	new_array[i] = NULL;
+	free(*dest);
+	*dest = new_array;
+}
 
 void	vec_to_cmd(t_btree *tree)
 {
 	t_cmd	*new_cmd;
 	size_t	i;
 	t_token	pointed_expr;
-	char	*actual_argv;
+	t_vec	argv;
 
-	i = tree->node->expr_start;
 	new_cmd = ft_cmdnew();
+	vec_init(&argv, sizeof(t_vec), 3);
+	i = tree->node->expr_start;
 	while (i <= tree->node->expr_end)
 	{
 		pointed_expr = *(t_token *)vec_get(&tree->expr, i);
 		if (pointed_expr.type == token_type_plain)
 		{
-			actual_argv = expand_line(&pointed_expr, tree->minishell);
-			append_str_to_str_array(&new_cmd->argv, actual_argv);
-			if (!(new_cmd->name))
-			{
-				new_cmd->argc = 0;
-				new_cmd->name = actual_argv;
-				if (!is_command_built_in(actual_argv))
-					get_cmd_path(&new_cmd, tree->minishell);
-			}
-			new_cmd->argc++;
+			expand(&argv, &pointed_expr, tree->minishell);
+			new_cmd->argc += argv.size;
 		}
 		else
 			i++;
 		i++;
 	}
+	new_cmd->argv = vec_vec_char_to_str_array(&argv);
+	new_cmd->name = new_cmd->argv[0];
+	if (!is_command_built_in(new_cmd->name))
+		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;
 }
