@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 15:08:15 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/01 15:50:22 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/01 16:19:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ bool	read_file(char *filename)
 				return (false);
 			}
 			add_history(trimmed);
+			free(trimmed);
 		}
 		free(line);
 	}
@@ -62,10 +63,11 @@ void	load_history_file(t_minishell *minishell, char *filename)
 	if (config_path)
 	{
 		if (!access(config_path, F_OK))
-			execute_file(config_path, minishell);
+			read_file(config_path);
+		else
+			open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
-	else
-		open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
+	free(config_path);
 }
 
 void	add_to_history_file(t_minishell *minishell, char *filename, char *line)
@@ -80,6 +82,10 @@ void	add_to_history_file(t_minishell *minishell, char *filename, char *line)
 		{
 			fd = open(config_path, O_CREAT | O_WRONLY | O_APPEND, 0644);
 			write(fd, line, ft_strlen(line));
+			write(fd, "\n", 1);
 		}
+		else
+			open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
+	free(config_path);
 }
