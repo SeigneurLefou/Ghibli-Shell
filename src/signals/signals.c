@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tty.h                                              :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/23 12:19:19 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 16:04:19 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/24 15:30:28 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/04/30 20:02:22 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TTY_H
-# define TTY_H
+#include "signals.h"
 
-# include "environment_variables.h"
-# include "minishell.h"
-# include "vec.h"
-
-typedef struct s_minishell	t_minishell;
-
-char						*render_prompt(char *base_prompt,
-								t_minishell *minishell);
-char						*get_prompt_line(t_minishell *minishell);
-
-#endif
+void	handle_signal(int sig)
+{
+	g_signal = sig;
+	close(0);
+}

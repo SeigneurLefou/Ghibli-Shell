@@ -29,6 +29,7 @@ include src/vec/Makefile
 include src/vec_to_cmd/Makefile
 include src/utils/Makefile
 include src/tty/Makefile
+include src/signals/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\
