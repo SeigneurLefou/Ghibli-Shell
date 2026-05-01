@@ -10,7 +10,7 @@ else
 	CFLAGS := -g #Wall -Wextra -Werror
 endif
 ifdef SANIT
-	CFLAGS += -fsanitize=address -MMD -MP
+	CFLAGS += -fsanitize=address -fsanitize=leak -MMD -MP
 endif
 
 FILE_COUNT := $(words $(SRC))

@@ -5,88 +5,126 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/13 14:25:49 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/23 18:39:10 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
+/*   Updated: 2026/04/30 20:11:54 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-char	*str_append_char(char *str, char c)
+char	*give_variable_content(t_token *token, size_t *i,
+		t_minishell *minishell, size_t max_i)
 {
-	size_t	i;
-	char	*new_str;
-
-	i = 0;
-	new_str = ft_calloc(sizeof(char), ft_strlen(str) + 2);
-	while (str && str[i])
-	{
-		new_str[i] = str[i];
-		i++;
-	}
-	new_str[i] = c;
-	return (new_str);
-}
-
-char	*give_variable_content(t_token *raw_line, size_t *i,
-		t_minishell *minishell, size_t expand_pointer)
-{
-	char	*var_name;
+	t_vec	var_name;
 	char	*var_content;
 
-	var_name = NULL;
-	if (*(char *)vec_get(&raw_line->data, *i) == '~')
-	{
-		(*i)++;
-		var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-					"HOME"));
-		return (var_content);
-	}
+	vec_init(&var_name, sizeof(char), 6);
 	(*i)++;
-	while (*i < raw_line->data.size
-		&& *i <= ((t_expand_data *)vec_get(&raw_line->expandable_scopes,
-				expand_pointer))->index)
+	while (*i < token->data.size
+		&& *i <= max_i)
 	{
-		var_name = str_append_char(var_name, *(char *)vec_get(&raw_line->data,
-					*i));
+		vec_append(&var_name, vec_get(&token->data, *i));
 		(*i)++;
 	}
 	var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-				var_name));
-	free(var_name);
+			vec_to_cstring(&var_name)));
+	vec_free(&var_name);
 	return (var_content);
 }
 
-char	*expand_line(t_token *raw_line, t_minishell *minishell)
+char	*expand_tild(t_token *token, size_t *i, t_minishell *minishell)
 {
-	char	*new_line;
 	char	*var_content;
+
+	var_content = NULL;
+	if (*(char *)vec_get(&token->data, *i) == '~')
+	{
+		var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
+				"HOME"));
+		(*i)++;
+	}
+	return (var_content);
+}
+
+bool	add_str_to_vec_char(t_vec *new_line, char *var_content)
+{
+	int	i;
+
+	i = 0;
+	while (var_content[i])
+	{
+		if (!vec_append(new_line, &var_content[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+bool	expand_split(t_vec *argv, t_vec *new_line, char *var_content)
+{
+	t_vec	var_split;
+	size_t	j;
+	size_t		i;
+
+	vec_init(&var_split, sizeof(t_vec), 5);
+	vec_split(&var_split, var_content, ' ');
+	vec_expand(new_line, vec_get(&var_split, 0));
+	if (var_split.size > 1)
+	{
+		vec_append(argv, new_line); // <- ICI
+		vec_init(new_line, sizeof(char), 20);
+		j = 1;
+		while (j < var_split.size - 1)
+		{
+			vec_append(argv, vec_get(&var_split, j));
+			j++;
+		}
+		vec_expand(new_line, vec_get(&var_split, j));
+	}
+	i = 0;
+	while (i < argv->size)
+	{
+		i++;
+	}
+	return (true);
+}
+
+bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
+{
 	size_t	i;
+	t_vec	new_line;
+	char	*var_content;
 	size_t	expand_pointer;
 
-	new_line = NULL;
 	i = 0;
+	vec_init(&new_line, sizeof(char), 20);
 	expand_pointer = 0;
-	while (i < raw_line->data.size)
+	while (i < token->data.size)
 	{
-		if (expand_pointer < raw_line->expandable_scopes.size
-			&& i == ((t_expand_data *)vec_get(&raw_line->expandable_scopes,
-					expand_pointer))->index)
+		if (expand_pointer < token->expandable_scopes.size
+			&& i == ((t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer))->index)
 		{
 			expand_pointer++;
-			var_content = give_variable_content(raw_line, &i, minishell,
-					expand_pointer);
-			if (new_line)
-				new_line = ft_strjoin(new_line, var_content);
+			var_content = expand_tild(token, &i, minishell);
+			if (!var_content)
+				var_content = give_variable_content(token, &i, minishell,
+						(*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer)).index);
+			if (((t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1))->allow_split)
+			{
+				if (!expand_split(argv, &new_line, var_content))
+					return (false);
+			}
 			else
-				new_line = ft_strdup(var_content);
+				add_str_to_vec_char(&new_line, var_content);
+			free(var_content);
+			expand_pointer++;
 		}
 		else
 		{
-			new_line = str_append_char(new_line,
-					*(char *)vec_get(&raw_line->data, i));
+			vec_append(&new_line, vec_get(&token->data, i));
 			i++;
 		}
 	}
-	return (new_line);
+	vec_append(argv, &new_line);
+	return (true);
 }
