@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 20:01:29 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:26:58 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void handle_prompt(t_minishell *minishell)
 		prompt_line = get_prompt_line(minishell);
 		line = NULL;
 		if (prompt_line)
+		{
 			line = readline(prompt_line);
+			free(prompt_line);
+		}
 		else
 			line = readline("$>");
 		if (!line)
@@ -57,6 +60,7 @@ void handle_prompt(t_minishell *minishell)
 			{
 				first_sigint = true;
 				add_history(trimmed);
+				add_to_history_file(minishell, ".ghiblistory", trimmed);
 				main_token(trimmed, minishell);
 				free(trimmed);
 			}

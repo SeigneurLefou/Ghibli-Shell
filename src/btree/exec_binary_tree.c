@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/21 16:17:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/01 11:50:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,15 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	{
 		vec_to_cmd(tree);
 		if (is_command_built_in(tree->node->cmds->name))
-		{
 			setup_and_exec_builtin(tree, files);
-		}
 		else
 		{
 			exec_cmd(tree, files, &pid_list);
 			waitpid(*(pid_t *)vec_get(&pid_list, 0), &tree->node->wstatus, 0);
 			tree->node->wstatus = give_exit_code(tree->node->wstatus);
 		}
+		// env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+				// ft_itoa(tree->node->wstatus));
 		return (tree->node->wstatus);
 	}
 	else if (tree->node->operator == operator_pipe)
@@ -136,6 +136,8 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		exec_pipeline(tree, files, &pid_list);
 		tree->node->wstatus = wait_all_pid(&pid_list);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		// env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+				// ft_itoa(tree->node->wstatus));
 		return (tree->node->wstatus);
 	}
 	else if (tree->node->left)
@@ -147,5 +149,7 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	if (files[0])
 		files[0] = fake_fdin();
 	exec_right_tree(tree, files);
+	// env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+			// ft_itoa(tree->node->wstatus));
 	return (tree->node->wstatus);
 }
