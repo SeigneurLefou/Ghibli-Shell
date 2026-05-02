@@ -35,29 +35,26 @@ bool	read_file(char *filename)
 			close(fd);
 			return (false);
 		}
-		if (line)
+		trimmed = ft_strtrim(line, " \n\r\t");
+		if (!trimmed)
 		{
-			trimmed = ft_strtrim(line, " \n\r\t");
-			if (!trimmed)
-			{
-				free(trimmed);
-				free(line);
-				close(fd);
-				return (false);
-			}
-			add_history(trimmed);
 			free(trimmed);
+			free(line);
+			close(fd);
+			return (false);
 		}
+		add_history(trimmed);
+		free(trimmed);
 		free(line);
 	}
-	if (fd > 2)
-		close(fd);
+	close(fd);
 	return (true);
 }
 
 void	load_history_file(t_minishell *minishell, char *filename)
 {
 	char	*config_path;
+	int		fd;
 
 	config_path = get_config_file_path(minishell, filename);
 	if (config_path)
@@ -65,8 +62,9 @@ void	load_history_file(t_minishell *minishell, char *filename)
 		if (!access(config_path, F_OK))
 			read_file(config_path);
 		else
-			open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
+			fd = open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
+	close(fd);
 	free(config_path);
 }
 
@@ -85,7 +83,8 @@ void	add_to_history_file(t_minishell *minishell, char *filename, char *line)
 			write(fd, "\n", 1);
 		}
 		else
-			open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
+			fd = open(config_path,  O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
+	close(fd);
 	free(config_path);
 }
