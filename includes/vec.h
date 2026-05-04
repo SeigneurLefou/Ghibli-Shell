@@ -18,6 +18,8 @@
 # include "libft.h"
 # include "utils.h"
 
+#                 include "utils.h"
+
 typedef struct s_vec
 {
 	unsigned int	size;
