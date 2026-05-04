@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "vec.h"
-#include "utils.h"
 
 bool	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 {

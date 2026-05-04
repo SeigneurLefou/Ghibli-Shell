@@ -43,6 +43,7 @@ void	ft_free_path(char **splited_path, int i)
 char	*test_all_path(char *path, t_cmd *cmd)
 {
 	char	*cmd_path;
+	char	*iter_path;
 	char	**splited_path;
 	int		i;
 
@@ -57,8 +58,9 @@ char	*test_all_path(char *path, t_cmd *cmd)
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
 	{
-		cmd_path = ft_strjoin(splited_path[i++], "/");
-		cmd_path = ft_strjoin(cmd_path, cmd->name);
+		iter_path = ft_strjoin(splited_path[i++], "/");
+		cmd_path = ft_strjoin(iter_path, cmd->name);
+		free(iter_path);
 		if (!access(cmd_path, X_OK | F_OK))
 			break ;
 		free(cmd_path);
