@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 # include <stdlib.h>
+# include "libft.h"
 
 typedef struct s_vec
 {
