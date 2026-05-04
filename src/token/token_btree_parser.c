@@ -59,7 +59,11 @@ int	get_next_delimiter(t_vec *expr, unsigned int index)
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
+<<<<<<< HEAD
 		if (is_a_delimiter(token, true, true))
+=======
+		if (is_a_delimiter(token, true, false))
+>>>>>>> ad47537 ([Haru] Probably fixed pipe priority issue)
 			break ;
 		index --;
 	}
@@ -79,7 +83,11 @@ bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 	while (end > 0)
 	{
 		token = (t_token *)vec_get(expr, end);
+<<<<<<< HEAD
 		if (is_a_delimiter(token, false, true))
+=======
+		if (is_a_delimiter(token, false, false))
+>>>>>>> ad47537 ([Haru] Probably fixed pipe priority issue)
 			return (false);
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			break ;
