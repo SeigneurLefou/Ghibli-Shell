@@ -18,6 +18,8 @@
 # include <stdbool.h>
 # include <stdlib.h>
 
+#                 include "utils.h"
+
 typedef struct s_vec
 {
 	unsigned int	size;
