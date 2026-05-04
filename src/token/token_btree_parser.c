@@ -1,9 +1,9 @@
 #include "token.h"
 
-bool	is_a_delimiter(t_token *token, bool match_all)
+bool	is_a_delimiter(t_token *token, bool match_all, bool match_pipe)
 {
 	return (token->type == token_type_scope_delimiter
-		&& ((token->data.data[0] == '&' || token->data.data[0] == '|'
+		&& ((token->data.data[0] == '&' || (!match_pipe && (token->data.data[0] == '|' && token->data.size == 2)) || (match_pipe && token->data.data[0] == '|')
 			|| token->data.data[0] == ';') || match_all));
 }
 
@@ -59,7 +59,7 @@ int	get_next_delimiter(t_vec *expr, unsigned int index)
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
-		if (is_a_delimiter(token, true))
+		if (is_a_delimiter(token, true, false))
 			break ;
 		index --;
 	}
@@ -79,7 +79,7 @@ bool	is_in_parentheses(t_vec *expr, unsigned int index, unsigned int end)
 	while (end > 0)
 	{
 		token = (t_token *)vec_get(expr, end);
-		if (is_a_delimiter(token, false))
+		if (is_a_delimiter(token, false, false))
 			return (false);
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			break ;
@@ -119,7 +119,29 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node, bool match_all)
 			parenthese_count++;
 		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
 			parenthese_count--;
-		if (is_a_delimiter(token, match_all) && !parenthese_count)
+		if (is_a_delimiter(token, match_all, true) && !parenthese_count)
+			return (true);
+		index++;
+	}
+	return (false);
+}
+
+bool	contains_non_pipe_delimiter(t_vec *expr, unsigned int start, unsigned int stop)
+{
+	unsigned int	index;
+	t_token			*token;
+	int parenthese_count = 0;
+
+	// TODO: Maybe remove the parenthese counter? IDK if it's usefull.
+	index = start;
+	while (index <= stop)
+	{
+		token = (t_token *)vec_get(expr, index);
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == '(')
+			parenthese_count++;
+		if (token->type == token_type_scope_delimiter && token->data.data[0] == ')')
+			parenthese_count--;
+		if (is_a_delimiter(token, false, false) && !parenthese_count)
 			return (true);
 		index++;
 	}
@@ -241,7 +263,8 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 	else
 	{
 		token = (t_token *)vec_get(expr, expr_end);
-		while (token && !is_a_delimiter(token, false))
+		bool contains_non_pipe = contains_non_pipe_delimiter(expr, node->expr_start, node->expr_end);
+		while (token && (!is_a_delimiter(token, false, !contains_non_pipe)))
 		{
 			expr_end--;
 			token = (t_token *)vec_get(expr, expr_end);
