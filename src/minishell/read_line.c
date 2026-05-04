@@ -6,31 +6,48 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 20:01:29 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/04 17:08:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_signal = 0;
+int	g_signal = 0;
+
+static void	trimmed_line_exec(char *line, char *trimmed,
+				t_minishell *minishell, bool *first_sigint)
+{
+	if (trimmed && trimmed[0])
+	{
+		*first_sigint = true;
+		add_history(trimmed);
+		add_to_history_file(minishell, ".ghiblistory", trimmed);
+		main_token(trimmed, minishell);
+		free(trimmed);
+	}
+	free(line);
+}
 
 void handle_prompt(t_minishell *minishell)
 {
 	char	*line;
 	char	*prompt_line;
-	char *trimmed;
+	char	*trimmed;
 	bool	first_sigint;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
-	int stdin_save = dup(0);
+	int		stdin_save = dup(0);
 	first_sigint = true;
 	while (1)
 	{
 		prompt_line = get_prompt_line(minishell);
 		line = NULL;
 		if (prompt_line)
+		{
 			line = readline(prompt_line);
+			free(prompt_line);
+		}
 		else
 			line = readline("$>");
 		if (!line)
@@ -51,17 +68,7 @@ void handle_prompt(t_minishell *minishell)
 		}
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
-		if (line && trimmed)
-		{
-			if (trimmed[0])
-			{
-				first_sigint = true;
-				add_history(trimmed);
-				main_token(trimmed, minishell);
-				free(trimmed);
-			}
-		}
-		free(line);
+		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
 		if (minishell->request_exit)
 			break;
 	}
