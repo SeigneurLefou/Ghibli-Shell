@@ -59,7 +59,7 @@ int	get_next_delimiter(t_vec *expr, unsigned int index)
 	while (index > 0)
 	{
 		token = (t_token *)vec_get(expr, index);
-		if (is_a_delimiter(token, true, false))
+		if (is_a_delimiter(token, true, true))
 			break ;
 		index --;
 	}
