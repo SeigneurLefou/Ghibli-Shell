@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/16 16:57:51 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/04 10:35:37 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
 void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);
 int		exec_binary_tree(t_btree *tree, int files[2]);
 void	exec_right_tree(t_btree *tree, int files[2]);
+bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list);
 int		cpy_btree_node(t_btree_node *new, t_btree_node *old);
 int		cpy_btree(t_btree *new, t_btree *old);
 

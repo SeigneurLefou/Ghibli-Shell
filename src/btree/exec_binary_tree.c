@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/01 11:50:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/04 11:10:28 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	exec_right_pipeline(t_btree *tree, int files[2],
 	tree_cpy->node = tree_cpy->node->right;
 	open_io_fds(tree_cpy, files);
 	if (tree->node->operator != operator_pipe && !tree->node->wstatus
-		&& tree->node->operator == operator_and )
+		&& tree->node->operator == operator_and)
 		exec_pipeline(tree_cpy, files, command_pid);
 	else if (tree->node->operator != operator_pipe && tree->node->wstatus
-		&& tree->node->operator == operator_or )
+		&& tree->node->operator == operator_or)
 		exec_pipeline(tree_cpy, files, command_pid);
 	else if (tree->node->operator != operator_pipe
 		&& tree->node->operator == operator_semicolon)
@@ -59,14 +59,13 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	int		fd_out;
 	int		pipe_fd[2];
 	t_btree	*tree_cpy;
-	
+
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	vec_init(&command_pid, sizeof(pid_t), 5);
 	open_io_fds(tree_cpy, files);
 	if (!tree->node->left && !tree->node->right)
 	{
-
 		exec_cmd(tree, files, &command_pid);
 		vec_expand_and_free(pid_list, &command_pid);
 		return ;
@@ -76,7 +75,6 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	pipe(pipe_fd);
 	fd_out = files[1];
 	files[1] = pipe_fd[1];
-
 	exec_pipeline(tree_cpy, files, &command_pid);
 	if (command_pid.data)
 		vec_expand_and_free(pid_list, &command_pid);
@@ -107,13 +105,34 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	}
 }
 
-int	exec_binary_tree(t_btree *tree, int files[2])
+bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 {
-	t_vec	pid_list;
 	t_btree	*tree_cpy;
 
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
+	if (tree->node->operator == operator_pipe)
+	{
+		exec_pipeline(tree, files, pid_list);
+		tree->node->wstatus = wait_all_pid(pid_list);
+		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		// env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+				// ft_itoa(tree->node->wstatus));
+		return (true);
+	}
+	else if (tree->node->left)
+	{
+		tree_cpy->node = tree_cpy->node->left;
+		exec_binary_tree(tree_cpy, files);
+		tree->node->wstatus = tree_cpy->node->wstatus;
+	}
+	return (false);
+}
+
+int	exec_binary_tree(t_btree *tree, int files[2])
+{
+	t_vec	pid_list;
+
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, files);
 	if (!tree->node->left && !tree->node->right)
@@ -131,21 +150,8 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 				// ft_itoa(tree->node->wstatus));
 		return (tree->node->wstatus);
 	}
-	else if (tree->node->operator == operator_pipe)
-	{
-		exec_pipeline(tree, files, &pid_list);
-		tree->node->wstatus = wait_all_pid(&pid_list);
-		tree->node->wstatus = give_exit_code(tree->node->wstatus);
-		// env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-				// ft_itoa(tree->node->wstatus));
+	if (exec_left_tree(tree, files, &pid_list))
 		return (tree->node->wstatus);
-	}
-	else if (tree->node->left)
-	{
-		tree_cpy->node = tree_cpy->node->left;
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus = tree_cpy->node->wstatus;
-	}
 	if (files[0])
 		files[0] = fake_fdin();
 	exec_right_tree(tree, files);

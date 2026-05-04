@@ -9,6 +9,7 @@
 # include "get_next_line.h"
 # include "minishell.h"
 
+bool	add_file_to_history(char *line, int fd);
 void	load_history_file(t_minishell *minishell, char *filename);
 void	add_to_history_file(t_minishell *minishell, char *filename, char *line);
 bool	read_file(char *filename);
