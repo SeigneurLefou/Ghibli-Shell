@@ -93,10 +93,6 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	if (status)
 		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
 			status);
-	status = ft_itoa(tree->node->wstatus);
-	if (status)
-		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
 	return (tree->node->wstatus);
 }
 
@@ -117,6 +113,11 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	exec_right_tree(tree, files);
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
+<<<<<<< HEAD
 		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
+=======
+		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+				status);
+>>>>>>> a76e488 ([Ponyo/Arrietty] Add support for $? and even better prompt line)
 	return (tree->node->wstatus);
 }
