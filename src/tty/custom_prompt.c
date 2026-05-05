@@ -12,21 +12,27 @@
 
 #include "tty.h"
 
-static bool	is_flag_active(char flag, t_minishell *minishell) {
-  char *home;
-  char *pwd;
-  char *status;
+static bool	is_flag_active(char flag, t_minishell *minishell)
+{
+	char	*home;
+	char	*pwd;
+	char	*status;
 
-  if (flag == 'h') {
-    home = env_variables_get(&minishell->env_variables_manager, "HOME");
-    pwd = env_variables_get(&minishell->env_variables_manager, "PWD");
-    return (pwd && home && !ft_strncmp(home, pwd, ft_strlen(home)));
-  }
-  if (flag == 's') {
-    status = env_variables_get(&minishell->env_variables_manager, "?");
-    return (!ft_strcmp(status, "0"));
-  }
-  return (false);
+	if (flag == 'h')
+	{
+		home = env_variable_manager_get_single(&minishell->env_variables_manager,
+		"HOME");
+		pwd = env_variable_manager_get_single(&minishell->env_variables_manager,
+		"PWD");
+		return (pwd && home && !ft_strncmp(home, pwd, ft_strlen(home)));
+	}
+	if (flag == 's')
+	{
+		status = env_variable_manager_get_single(&minishell->env_variables_manager,
+			"?");
+		return (!ft_strcmp(status, "0"));
+	}
+	return (false);
 }
 
 static char	parse_escape(char escaped_char) {
@@ -68,8 +74,23 @@ static char	*get_home_relative_pwd(t_minishell *minishell) {
   return (pwd);
 }
 
+static char *get_home_relative_pwd(t_minishell *minishell)
+{
+	char *pwd = env_variable_manager_get_single(&minishell->env_variables_manager,
+				"PWD");
+	char *home = env_variable_manager_get_single(&minishell->env_variables_manager,
+				"HOME");
+	if (!pwd || !home)
+		return (NULL);
+	unsigned int home_size = ft_strlen(home);
+	if (!ft_strncmp(home, pwd, home_size))
+		return (pwd + home_size);
+	return (pwd);
+}
+
 static bool	expand_prompt_custom(t_vec *rendered, char c,
-                                 t_minishell *minishell) {
+                                 t_minishell *minishell)
+{
   char *str;
 
   str = NULL;
@@ -91,7 +112,8 @@ static bool	expand_prompt_custom(t_vec *rendered, char c,
   return (true);
 }
 
-char	*render_prompt(char *base_prompt, t_minishell *minishell) {
+char	*render_prompt(char *base_prompt, t_minishell *minishell)
+{
   unsigned int index;
   t_vec rendered;
   char flag;
