@@ -122,6 +122,6 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
+				status);
 	return (tree->node->wstatus);
 }
