@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 16:03:53 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/05 22:45:51 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,22 @@ static bool	is_flag_active(char flag, t_minishell *minishell)
 {
 	char	*home;
 	char	*pwd;
+	char	*status;
 
-	home = env_variable_manager_get_single(&minishell->env_variables_manager,
-			"HOME");
-	pwd = env_variable_manager_get_single(&minishell->env_variables_manager,
-			"PWD");
 	if (flag == 'h')
+	{
+		home = env_variable_manager_get_single(&minishell->env_variables_manager,
+		"HOME");
+		pwd = env_variable_manager_get_single(&minishell->env_variables_manager,
+		"PWD");
 		return (pwd && home && !ft_strncmp(home, pwd, ft_strlen(home)));
-	// TODO : TEMP
+	}
+	if (flag == 's')
+	{
+		status = env_variable_manager_get_single(&minishell->env_variables_manager,
+			"?");
+		return (!ft_strcmp(status, "0"));
+	}
 	return (false);
 }
 
@@ -59,6 +67,20 @@ static bool	push_expand(t_vec *rendered, char *expand)
 	return (true);
 }
 
+static char *get_home_relative_pwd(t_minishell *minishell)
+{
+	char *pwd = env_variable_manager_get_single(&minishell->env_variables_manager,
+				"PWD");
+	char *home = env_variable_manager_get_single(&minishell->env_variables_manager,
+				"HOME");
+	if (!pwd || !home)
+		return (NULL);
+	unsigned int home_size = ft_strlen(home);
+	if (!ft_strncmp(home, pwd, home_size))
+		return (pwd + home_size);
+	return (pwd);
+}
+
 static bool	expand_prompt_custom(t_vec *rendered, char c,
 		t_minishell *minishell)
 {
@@ -68,10 +90,21 @@ static bool	expand_prompt_custom(t_vec *rendered, char c,
 	if (c == 'l')
 		str = env_variable_manager_get_single(&minishell->env_variables_manager,
 				"PWD");
+	
     if (c == 'u')
 		str = env_variable_manager_get_single(&minishell->env_variables_manager,
 				"USER");
-    push_expand(rendered, str);
+	if (c == 'r')
+		str = get_home_relative_pwd(minishell);
+	if (c == 's')
+		str = env_variable_manager_get_single(&minishell->env_variables_manager,
+				"?");
+	if (c == '1')
+		str = "\001\x1b";
+	if (c == '2')
+		str = "\002";
+	if (str)
+	    push_expand(rendered, str);
     return (true);
 }
 
@@ -101,7 +134,12 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 				while (base_prompt[index] && base_prompt[index] != ';')
 				{
 					if (base_prompt[index + 1] && base_prompt[index] == '\\')
-						c = parse_escape(base_prompt[++index]);
+					{
+						if (base_prompt[index + 1] == ';' || base_prompt[index + 1] == '@' || base_prompt[index + 1] == '\\')
+							c = base_prompt[++index];
+						else
+							c = parse_escape(base_prompt[++index]);
+					}
                     else if (base_prompt[index] == '@' && base_prompt[index + 1])
                     {
                         index++;
@@ -123,12 +161,16 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 			else
 			{
 				while (base_prompt[index] && base_prompt[index] != ';')
+				{
+					if (base_prompt[index] == '\\' && (base_prompt[index + 1] == ';' || base_prompt[index + 1] == '@' || base_prompt[index + 1] == '\\'))
+						index ++;
 					index++;
+				}
 			}
 		}
 		else if (base_prompt[index] == '\\' && (base_prompt[index + 1] == '%'
 				|| base_prompt[index + 1] == '!' || base_prompt[index
-				+ 1] == '@'))
+				+ 1] == '@' || base_prompt[index + 1] == '\\'))
 		{
 			if (!vec_append(&rendered, &base_prompt[++index]))
 			{
