@@ -75,7 +75,8 @@ void	handle_prompt(t_minishell *minishell)
 		}
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
-		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
+		if (line)
+			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
 		if (minishell->request_exit)
 			break ;
 	}
