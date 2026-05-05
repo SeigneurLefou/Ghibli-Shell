@@ -197,6 +197,7 @@ int	main(int argc, char **argv, char *env[])
 		return (1);
 	}
 	load_config_file(&minishell, ".ghiblirc");
+	load_history_file(&minishell, ".ghiblistory");
 	if (argc == 1)
 		handle_prompt(&minishell);
 	else if (argc == 2)
