@@ -70,13 +70,13 @@ Exit the shell with the `exit` command.
 - The `SHLVL` is supported.
 - You can add conditions and expands in the prompt line.
 #### Arrietty's prompt line:
-You can add conditions with `%ftext;` and `!ftext;` where `f` is a flag. Currently, Ghiblishell supports `%h` and `!h` to check if the user is under its `home` directory. `@` is for "if" and `!` is for `if not`. It also supports custom expands with `@e` where `e` is the data's name. Currently, you can use `@u` to get the username and `@l` to get the location. You can combine the two features.
+You can add conditions with `%ftext;` and `!ftext;` where `f` is a flag. Currently, Ghiblishell supports `%h` and `!h` to check if the user is under its `home` directory and `%s`/`!s` to check if the latest command returned 0. `@` is for "if" and `!` is for `if not`. It also supports custom expands with `@e` where `e` is the data's name. Currently, you can use `@u` to get the username, `@l` to get the location, `@s` to get the last command's return code, `@r` to get the `PWD` relative to `HOME`, `@1` to start an ansi escape sequence and `@2` to stop an ansi escape sequence. You can combine the two features.
 
-Here is an example prompt line config
+Here is the default prompt line:
 ```bash
-export PROMPT='GhibliShell %hunder home at @l;!h@u\@@l; \n > '
+export PROMPT='@1[1;35m@2GhibliShell@1[0m@2 @u\@%h@1[1\;33m@2~@1[0m@2@1[36m@2@r@1[0m@2;!h@1[36m@2@l@1[0m@2; @1[1m@2%s@1[32m@2>@1[0m@2;!s@1[31m@2X@1[0m@2;@1[22m@2 '
 ```
-The prompt line also have support for some escapes including `\e` and ansii escape sequences.
+The prompt line also have support for some escapes including `\e` and ansii escape sequences using `@1` and `@2`.
 
 ## Resources
 We mainly used the man of the commands for documentation. The ascii arts animations are made by *yben-dje*.

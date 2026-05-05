@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 09:15:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 20:51:41 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ int	main(int argc, char **argv, char *env[])
 	minishell_init(&minishell);
 	env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
 	increment_shell_lvl(&minishell);
+	env_variable_manager_set(&minishell.env_variables_manager, "?", "0");
 	if (minishell.shell_level > 100)
 	{
 		display_error_message("Maximum shell recursion excedded!");

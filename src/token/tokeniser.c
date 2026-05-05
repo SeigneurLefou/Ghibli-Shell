@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/29 10:30:33 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 20:43:32 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ bool parse_token_double_quote(char *expr, unsigned int *i, t_token *current_toke
 				return (false);
 		}
 	}
-	else if (expr[*i] == '$')
+	else if (expr[*i] == '$' && (is_valid_expand_char(expr[(*i) + 1]) || expr[(*i) + 1] == '?'))
 	{
 		push_char(current_token, expr[*i]);
 		set_expand(current_token, true, false);
@@ -171,7 +171,9 @@ bool parse_token_double_quote(char *expr, unsigned int *i, t_token *current_toke
 	}
 	else
 	{
-		if (!is_valid_expand_char(expr[*i]))
+		if (current_token->is_expand && expr[(*i) - 1] == '?')
+			set_expand(current_token, false, false);
+		else if (!is_valid_expand_char(expr[*i]) && expr[*i] != '?')
 			set_expand(current_token, false, false);
 		if (!push_char(current_token, expr[*i]))
 			return (false);
@@ -227,7 +229,13 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				quote_char = '\'';
 				set_expand(&current_token, false, false);
 			}
-			else if (expr[i] == '$')
+			else if (expr[i] == '*' && current_token.type == token_type_void)
+			{
+				push_char(&current_token, expr[i]);
+				set_expand(&current_token, true, false);
+				set_expand(&current_token, false, false);
+			}
+			else if (expr[i] == '$' && (is_valid_expand_char(expr[i + 1]) || expr[i + 1] == '?'))
 			{
 				push_char(&current_token, expr[i]);
 				set_expand(&current_token, true, true);
@@ -248,7 +256,9 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				append_token(command, &current_token, token_type_plain);
 			else
 			{
-				if (!is_valid_expand_char(expr[i]))
+				if (current_token.is_expand && expr[i - 1] == '?')
+					set_expand(&current_token, false, false);
+				else if (!is_valid_expand_char(expr[i]) && expr[i] != '?')
 					set_expand(&current_token, false, false);
 				push_char(&current_token, expr[i]);
 			}

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/06 09:21:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 20:17:08 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_ma
 	char	*line;
 
 	line = env_variables_manager_create_line(key, value);
-	list_push_back(&env_variable_manager->variables, &line);
+	list_push_back(&env_variable_manager->variables, line);
 	return (true);
 }
 
