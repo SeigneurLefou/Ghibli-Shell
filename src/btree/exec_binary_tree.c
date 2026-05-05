@@ -39,13 +39,9 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && tree->node->operator == operator_and)
-	{
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus = tree_cpy->node->wstatus;
-	}
-	else if (tree->node->wstatus && tree->node->operator == operator_or)
-	{
+	if (!tree->node->wstatus && (tree->node->operator == operator_and
+			|| tree->node->operator == operator_or))
+		{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
@@ -103,7 +99,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 int	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
-	char	*status;
+	char	*wstatus;
 
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, files);

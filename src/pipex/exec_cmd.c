@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 09:46:24 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 08:39:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	take_child(t_pipex *pipex_var)
 		env = env_variables_manager_get_env_compatible_variables_char_star_star(&pipex_var->minishell->env_variables_manager);
 		execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
 	}
+	dprintf(2, "aaaa\n");
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);
