@@ -6,13 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 20:13:00 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/05 11:30:43 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "vec.h"
-#include "utils.h"
 
 bool	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 {
