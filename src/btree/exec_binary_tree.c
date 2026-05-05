@@ -38,13 +38,9 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && tree->node->operator == operator_and)
-	{
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus = tree_cpy->node->wstatus;
-	}
-	else if (tree->node->wstatus && tree->node->operator == operator_or)
-	{
+	if (!tree->node->wstatus && (tree->node->operator == operator_and
+			|| tree->node->operator == operator_or))
+		{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}

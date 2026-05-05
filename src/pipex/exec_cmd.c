@@ -123,6 +123,7 @@ void	take_child(t_pipex *pipex_var)
 		env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
 		execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
 	}
+	dprintf(2, "aaaa\n");
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);
