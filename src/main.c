@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/25 12:23:27 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:38:30 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ int	main(int argc, char **argv, char *env[])
 		return (1);
 	}
 	load_config_file(&minishell, ".ghiblirc");
+	load_history_file(&minishell, ".ghiblistory");
 	if (argc == 1)
 		handle_prompt(&minishell);
 	else if (argc == 2)

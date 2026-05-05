@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 19:30:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/01 14:58:35 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	vec_to_cmd(t_btree *tree)
 	new_cmd->argc = argv.size;
 	new_cmd->argv = vec_vec_char_to_str_array(&argv);
 	new_cmd->name = new_cmd->argv[0];
+	vec_free(&argv);
 	if (!is_command_built_in(new_cmd->name))
 		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;

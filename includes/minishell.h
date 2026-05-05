@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/25 12:17:17 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:37:16 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "pid.h"
 # include "pipex.h"
 # include "token.h"
+# include "history.h"
 # include "vec.h"
 # include "vec_to_cmd.h"
 # include <readline/history.h>
