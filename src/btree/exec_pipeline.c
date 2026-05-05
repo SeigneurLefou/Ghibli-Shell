@@ -31,6 +31,7 @@ void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 		exec_pipeline(tree_cpy, files, command_pid);
 	else
 		exec_pipeline(tree_cpy, files, command_pid);
+	free(tree_cpy);
 }
 
 void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
@@ -50,6 +51,7 @@ void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	exec_pipeline(tree_cpy, files, command_pid);
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
+	free(tree_cpy);
 	vec_init(command_pid, sizeof(pid_t), 5);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
@@ -66,6 +68,7 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 	open_io_fds(tree, files);
 	if (!tree->node->left && !tree->node->right)
 	{
+		vec_to_cmd(tree);
 		exec_cmd(tree, files, &command_pid);
 		vec_expand_and_free(pid_list, &command_pid);
 		return ;

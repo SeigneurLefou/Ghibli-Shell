@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 11:08:01 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 08:39:50 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_free_path(char **splited_path, int i)
 char	*test_all_path(char *path, t_cmd *cmd)
 {
 	char	*cmd_path;
+	char	*iter_path;
 	char	**splited_path;
 	int		i;
 
@@ -57,8 +58,9 @@ char	*test_all_path(char *path, t_cmd *cmd)
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
 	{
-		cmd_path = ft_strjoin(splited_path[i++], "/");
-		cmd_path = ft_strjoin(cmd_path, cmd->name);
+		iter_path = ft_strjoin(splited_path[i++], "/");
+		cmd_path = ft_strjoin(iter_path, cmd->name);
+		free(iter_path);
 		if (!access(cmd_path, X_OK | F_OK))
 			break ;
 		free(cmd_path);
@@ -117,6 +119,7 @@ void	take_child(t_pipex *pipex_var)
 		env = env_variables_manager_get_env_compatible_variables_char_star_star(&pipex_var->minishell->env_variables_manager);
 		execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
 	}
+	dprintf(2, "aaaa\n");
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
 	exit(2);

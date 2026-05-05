@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 16:45:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 11:29:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 {
 	t_pipex	pipex_var;
 
-	vec_to_cmd(tree);
 	pipex_var.pid = 0;
 	tree->node->wstatus = 0;
 	pipex_var.minishell = tree->minishell;
@@ -29,6 +28,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 		close(pipex_var.fds[0]);
 	if (pipex_var.fds[1] > 2)
 		close(pipex_var.fds[1]);
+	ft_cmdclear(tree->node->cmds);
 }
 
 void	exec_right_tree(t_btree *tree, int files[2])
@@ -48,14 +48,13 @@ void	exec_right_tree(t_btree *tree, int files[2])
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
+	free(tree_cpy);
 }
 
 bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_btree	*tree_cpy;
 
-	tree_cpy = malloc(sizeof(t_btree));
-	cpy_btree(tree_cpy, tree);
 	if (tree->node->operator == operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
@@ -65,12 +64,12 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 				// ft_itoa(tree->node->wstatus));
 		return (true);
 	}
-	else if (tree->node->left)
-	{
-		tree_cpy->node = tree_cpy->node->left;
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus = tree_cpy->node->wstatus;
-	}
+	tree_cpy = malloc(sizeof(t_btree));
+	cpy_btree(tree_cpy, tree);
+	tree_cpy->node = tree_cpy->node->left;
+	exec_binary_tree(tree_cpy, files);
+	tree->node->wstatus = tree_cpy->node->wstatus;
+	free(tree_cpy);
 	return (false);
 }
 
@@ -78,7 +77,10 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	vec_to_cmd(tree);
 	if (is_command_built_in(tree->node->cmds->name))
+	{
 		setup_and_exec_builtin(tree, files);
+		ft_cmdclear(tree->node->cmds);
+	}
 	else
 	{
 		exec_cmd(tree, files, pid_list);
@@ -93,6 +95,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 int	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
+	int		wstatus;
 
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, files);
@@ -103,7 +106,8 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	if (files[0])
 		files[0] = fake_fdin();
 	exec_right_tree(tree, files);
+	wstatus = tree->node->wstatus;
 	// env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
 			// ft_itoa(tree->node->wstatus));
-	return (tree->node->wstatus);
+	return (wstatus);
 }

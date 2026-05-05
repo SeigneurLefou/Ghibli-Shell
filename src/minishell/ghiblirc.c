@@ -58,6 +58,7 @@ char	*get_config_file_path(t_minishell *minishell, char *config_file)
 	if (!home_path)
 		return (NULL);
 	complete_path = ft_strjoin(home_path, config_file);
+	free(home_path);
 	return (complete_path);
 }
 
@@ -75,5 +76,6 @@ void	load_config_file(t_minishell *minishell, char *config_file)
 			ask_and_setup_ghiblirc(config_path);
 			execute_file(config_path, minishell);
 		}
+		free(config_path);
 	}
 }

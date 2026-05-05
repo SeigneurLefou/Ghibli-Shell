@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/23 14:47:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/05 10:12:44 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 bool execute_file(char *filename, t_minishell *minishell)
 {
-	unsigned int index;
 	char *line;
 	int fd;
 	char *trimmed;
 
-	index = 0;
 	line = (char *)1;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -32,21 +30,19 @@ bool execute_file(char *filename, t_minishell *minishell)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			{
-				close(fd);
-				return (false);
-			}
-		if (line)
 		{
-			trimmed = ft_strtrim(line, "\r\n \t");
-			if (!trimmed || !main_token(trimmed, minishell))
-			{
-				free(trimmed);
-				free(line);
-				close(fd);
-				return (false);
-			}
+			close(fd);
+			return (false);
 		}
+		trimmed = ft_strtrim(line, "\r\n \t");
+		if (!trimmed || !main_token(trimmed, minishell))
+		{
+			free(trimmed);
+			free(line);
+			close(fd);
+			return (false);
+		}
+		free(trimmed);
 		free(line);
 	}
 	if (fd > 2)
