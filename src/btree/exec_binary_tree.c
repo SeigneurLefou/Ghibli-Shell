@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 11:57:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 20:56:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,17 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 		exec_pipeline(tree, files, pid_list);
 		tree->node->wstatus = wait_all_pid(pid_list);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+<<<<<<< HEAD
 		status = ft_itoa(tree->node->wstatus);
 		if (status) // TODO: HANDLE THIS FAIL !!!!!
 			env_variable_manager_set(&tree->minishell->env_variables_manager,
 				"?", status);
+=======
+		char * status = ft_itoa(tree->node->wstatus);
+		if (status) // TODO: HANDLE THIS FAIL !!!!!
+			env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+					status);
+>>>>>>> 345ebe4 ([Ponyo/Arrietty] Add support for $? and even better prompt line)
 		return (true);
 	}
 	tree_cpy = malloc(sizeof(t_btree));
@@ -93,10 +100,17 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 		waitpid(*(pid_t *)vec_get(pid_list, 0), &tree->node->wstatus, 0);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
 	}
+<<<<<<< HEAD
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
 			status);
+=======
+	char * status = ft_itoa(tree->node->wstatus);
+	if (status)
+		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+				status);
+>>>>>>> 345ebe4 ([Ponyo/Arrietty] Add support for $? and even better prompt line)
 	return (tree->node->wstatus);
 }
 
@@ -118,6 +132,6 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
+				status);
 	return (tree->node->wstatus);
 }
