@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 17:08:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/05 20:59:25 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void handle_prompt(t_minishell *minishell)
 				g_signal = -1;
 				dup2(stdin_save, 0);
 				rl_replace_line("", 1);
+				env_variable_manager_set(&minishell->env_variables_manager, "?",
+						"130");
 				if (first_sigint)
 					write(1, "\n", 1);
 				rl_on_new_line();
@@ -68,7 +70,8 @@ void handle_prompt(t_minishell *minishell)
 		}
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
-		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
+		if (line)
+			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
 		if (minishell->request_exit)
 			break;
 	}
