@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/05 20:56:10 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/06 14:48:09 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,6 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-				status);
+			status);
 	return (tree->node->wstatus);
 }
