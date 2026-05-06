@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/01 15:38:30 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/04 14:31:06 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ bool	main_token(char *line, t_minishell *minishell)
 	if (!parse_token_btree(&parsed, root, 0))
 		return (false);
 
-	//print_tree(&parsed, root);
+	print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
 	tree = malloc(sizeof(t_btree));
