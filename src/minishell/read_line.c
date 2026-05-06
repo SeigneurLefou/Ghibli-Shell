@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/05 18:28:51 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/06 09:15:55 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	g_signal = 0;
 
-static void	trimmed_line_exec(char *trimmed,
-				t_minishell *minishell)
+static void	trimmed_line_exec(char *line, char *trimmed,
+				t_minishell *minishell, bool *first_sigint)
 {
-	if (trimmed && trimmed[0])
+	if (line && trimmed && trimmed[0])
 	{
 		*first_sigint = true;
 		add_history(trimmed);
@@ -67,57 +67,11 @@ void handle_prompt(t_minishell *minishell)
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
 		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
+		// free(line);
+		// free(trimmed);
 		if (minishell->request_exit)
 			break;
 	}
-	free(line);
-	free(trimmed);
 	close(stdin_save);
 	rl_clear_history();
 }
-/*
-while (1)
-	{
-		prompt_line = get_prompt_line(minishell);
-		line = NULL;
-		if (prompt_line)
-		{
-			line = readline(prompt_line);
-			free(prompt_line);
-		}
-		else
-			line = readline("$>");
-		if (!line)
-		{
-			if (g_signal > 0)
-			{
-				g_signal = -1;
-				dup2(stdin_save, 0);
-				rl_replace_line("", 1);
-				if (first_sigint)
-					write(1, "\n", 1);
-				rl_on_new_line();
-				first_sigint = false;
-				continue;
-			}
-			else
-				minishell->request_exit = true;
-		}
-		else
-			trimmed = ft_strtrim(line, "\r\n \t");
-		if (line && trimmed)
-		{
-			if (trimmed[0])
-			{
-				first_sigint = true;
-				add_history(trimmed);
-				add_to_history_file(minishell, ".ghiblistory", trimmed);
-				main_token(trimmed, minishell);
-				free(trimmed);
-			}
-		}
-		free(line);
-		if (minishell->request_exit)
-			break;
-	}
-	*/

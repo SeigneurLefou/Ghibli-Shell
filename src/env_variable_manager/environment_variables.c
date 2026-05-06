@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/21 18:23:28 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/06 09:21:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_ma
 		char *line)
 {
 	char	*new;
+	char	*key;
 	
-	char *key = ft_substr(line, 0, ft_strrchr(line, '=') - line);
+	key = ft_substr(line, 0, ft_strrchr(line, '=') - line);
 	if (env_variable_manager_exists(env_variable_manager, key))
 		env_variable_manager_unset_key(env_variable_manager, key);
+	free(key);
 	new = ft_strdup(line);
 	if (!line)
 		return (false);

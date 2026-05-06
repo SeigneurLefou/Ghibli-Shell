@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/05 11:29:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/06 11:57:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec	*pid_list)
 	if (pipex_var.fds[1] > 2)
 		close(pipex_var.fds[1]);
 	ft_cmdclear(tree->node->cmds);
+	write(2, "bon\n", 4);
 }
 
 void	exec_right_tree(t_btree *tree, int files[2])
