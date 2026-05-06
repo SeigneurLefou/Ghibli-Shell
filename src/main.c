@@ -149,7 +149,7 @@ bool	main_token(char *line, t_minishell *minishell)
 	if (!parse_token_btree(&parsed, root, 0))
 		return (false);
 
-	//print_tree(&parsed, root);
+	print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
 	tree = malloc(sizeof(t_btree));
