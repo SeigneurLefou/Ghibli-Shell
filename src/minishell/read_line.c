@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2026/05/12 15:31:10 by yben-dje         ###   ########.fr       */
-=======
-/*   Updated: 2026/05/05 20:59:25 by yben-dje         ###   ########.fr       */
->>>>>>> 345ebe4 ([Ponyo/Arrietty] Add support for $? and even better prompt line)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +62,8 @@ void	handle_prompt(t_minishell *minishell)
 				g_signal = -1;
 				dup2(stdin_save, 0);
 				rl_replace_line("", 1);
-<<<<<<< HEAD
 				env_variables_set(&minishell->env_variables_manager, "?",
 					"130");
-=======
-				env_variable_manager_set(&minishell->env_variables_manager, "?",
-						"130");
->>>>>>> 345ebe4 ([Ponyo/Arrietty] Add support for $? and even better prompt line)
 				if (first_sigint)
 					write(1, "\n", 1);
 				rl_on_new_line();
@@ -84,8 +75,9 @@ void	handle_prompt(t_minishell *minishell)
 		}
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
-		if (line)
-			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
+		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
+		// free(line);
+		// free(trimmed);
 		if (minishell->request_exit)
 			break ;
 	}
