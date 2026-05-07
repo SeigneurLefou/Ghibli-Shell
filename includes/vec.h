@@ -27,7 +27,7 @@ typedef struct s_vec
 	char			*data;
 }					t_vec;
 
-bool				vec_init(t_vec *vec, size_t type_size,
+void				vec_init(t_vec *vec, size_t type_size,
 						unsigned int buffering_size);
 void				*vec_get(t_vec *vec, unsigned int index);
 bool				vec_append(t_vec *vec, void *data);

@@ -142,6 +142,12 @@ bool	main_token(char *line, t_minishell *minishell)
 	}
 	
 	t_btree_node *root = malloc(2* sizeof(t_btree_node));
+	if (parser_result.parsing_error != parsing_error_success)
+	{
+		display_error_message("Memory allocation Failed!");
+		free_tokens(&parsed);
+		return (false);
+	}
 	root->expr_start = 0;
 	root->expr_end = parsed.size - 1;
 	root->cmds = NULL;

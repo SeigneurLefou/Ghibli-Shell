@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/05 20:43:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 13:45:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,11 @@ bool push_char(t_token *token, char c)
 	if (token->type == token_type_void)
 	{
 		token->type = token_type_plain;
-		if (!vec_init(&token->data, sizeof(char), 16))
-			return (false);
-		if (!vec_init(&token->expandable_scopes, sizeof(t_expand_data), 4))
-			return (false);
+		vec_init(&token->data, sizeof(char), 16);
+		vec_init(&token->expandable_scopes, sizeof(t_expand_data), 4);
 	}	
 	if (c)
-		if (!vec_append(&token->data, &c))
-			return (false);
+		vec_append(&token->data, &c);
 	return (true);
 }
 
