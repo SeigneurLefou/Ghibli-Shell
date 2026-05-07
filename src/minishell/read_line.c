@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 09:15:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/07 14:34:08 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,10 @@ void handle_prompt(t_minishell *minishell)
 		}
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
-<<<<<<< HEAD
 		if (line)
 			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
-=======
-		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
 		// free(line);
 		// free(trimmed);
->>>>>>> 1a25743 ([leaks] free properly the environment)
 		if (minishell->request_exit)
 			break;
 	}
