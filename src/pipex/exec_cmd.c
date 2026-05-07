@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 11:25:54 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/07 09:46:24 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*test_all_path(char *path, t_cmd *cmd)
 		free(cmd_path);
 		cmd_path = NULL;
 	}
-	ft_free_path(splited_path, i);
+	ft_double_free(splited_path);
 	return (cmd_path);
 }
 
