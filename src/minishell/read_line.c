@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2026/05/05 20:59:25 by yben-dje         ###   ########.fr       */
-=======
-/*   Updated: 2026/05/06 09:15:55 by lchamard         ###   ########.fr       */
->>>>>>> 1a25743 ([leaks] free properly the environment)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +69,6 @@ void handle_prompt(t_minishell *minishell)
 		else
 			trimmed = ft_strtrim(line, "\r\n \t");
 		trimmed_line_exec(line, trimmed, minishell, &first_sigint);
-		// free(line);
-		// free(trimmed);
 		if (minishell->request_exit)
 			break;
 	}
