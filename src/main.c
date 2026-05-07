@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 13:21:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 19:14:17 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ bool	main_token(char *line, t_minishell *minishell)
 		free_tokens(&parsed);
 		display_error_message("Unterminated quoted string.");
 		return (false);	
+	} else if (result == tokeniser_error_memory_error)
+	{
+		display_error_message("Memory allocation failed.");
+		return (false);	
 	}
 
 	/*unsigned int i = 0;
@@ -153,9 +157,12 @@ bool	main_token(char *line, t_minishell *minishell)
 	root->cmds = NULL;
 	vec_null(&root->io_files);
 	if (!parse_token_btree(&parsed, root, 0))
+	{
+		display_error_message("Memory allocation failed or max recursion limit reached!");
 		return (false);
+	}
 
-	print_tree(&parsed, root);
+	//print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
 	tree = malloc(sizeof(t_btree));

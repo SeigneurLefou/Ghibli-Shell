@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/05 20:59:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 19:18:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ void handle_prompt(t_minishell *minishell)
 		}
 		else
 			line = readline("$>");
+		if (ft_strlen(line) > 32768)
+		{
+			display_error_message("The input line is too long. Max is 32768.");
+			free(line);
+			continue ;
+		}
 		if (!line)
 		{
 			if (g_signal > 0)
