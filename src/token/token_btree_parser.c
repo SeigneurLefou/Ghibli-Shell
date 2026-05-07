@@ -238,9 +238,16 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 		parse_leaf(expr, node);
 		return (true);
 	}
-
 	btree_a = malloc(sizeof(t_btree_node));
 	btree_b = malloc(sizeof(t_btree_node));
+	if (!btree_b || !btree_a)
+	{
+		free(btree_a);
+		free(btree_b);
+		vec_null(&node->io_files);
+		free(node);
+		return (false);
+	}
 	// TODO: Handle malloc fail
 	expr_end = node->expr_end;
 	btree_a->expr_start = node->expr_start;
@@ -254,7 +261,7 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 		if (!expr_end)
 		{
 			printf("Something has gone very very wrong.\n");
-			// TODO: It leaks here bro
+			// TODO: It leaks here bro. NO IT WILL NOT! TRUST ME!
 			return (false);
 		}
 		btree_b->expr_end = node->expr_end;
