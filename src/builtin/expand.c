@@ -127,6 +127,5 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 		}
 	}
 	vec_append(argv, &new_line);
-	// vec_free(&new_line);
 	return (true);
 }
