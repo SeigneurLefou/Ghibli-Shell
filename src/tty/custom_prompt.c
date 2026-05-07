@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/05 22:45:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 18:35:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,19 @@ static char	parse_escape(char escaped_char)
 		return (escaped_char);
 }
 
-static bool	push_expand(t_vec *rendered, char *expand)
+static void	push_expand(t_vec *rendered, char *expand)
 {
 	unsigned int	index;
 
 	if (!expand)
-		return (true);
+		return ;
 	index = 0;
 	while (expand[index])
 	{
-		if (!vec_append(rendered, &expand[index]))
-			return (false);
+		vec_append(rendered, &expand[index]);
 		index++;
 	}
-	return (true);
+	return ;
 }
 
 static char *get_home_relative_pwd(t_minishell *minishell)
@@ -118,7 +117,8 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 	char			c;
 
 	index = 0;
-	if (!base_prompt || !vec_init(&rendered, sizeof(char), 16))
+	vec_init(&rendered, sizeof(char), 16);
+	if (!base_prompt)
 		return (NULL);
 	while (base_prompt[index])
 	{
@@ -149,11 +149,7 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
                     }
 					else
 						c = base_prompt[index];
-					if (!vec_append(&rendered, &c))
-					{
-						vec_free(&rendered);
-						return (NULL);
-					}
+					vec_append(&rendered, &c);
 					if (base_prompt[index])
 						index++;
 				}
@@ -172,11 +168,7 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 				|| base_prompt[index + 1] == '!' || base_prompt[index
 				+ 1] == '@' || base_prompt[index + 1] == '\\'))
 		{
-			if (!vec_append(&rendered, &base_prompt[++index]))
-			{
-				vec_free(&rendered);
-				return (NULL);
-			}
+			vec_append(&rendered, &base_prompt[++index]);
 		}
 		else if (base_prompt[index] == '@' && base_prompt[index + 1])
 		{
@@ -189,15 +181,16 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 				c = parse_escape(base_prompt[++index]);
 			else
 				c = base_prompt[index];
-			if (!vec_append(&rendered, &c))
-			{
-				vec_free(&rendered);
-				return (NULL);
-			}
+			vec_append(&rendered, &c);
 		}
 		if (!base_prompt[index])
 			break ;
 		index++;
+	}
+	if (rendered.failed)
+	{
+		vec_free(&rendered);
+		return (NULL);
 	}
 	prompt = vec_to_cstring(&rendered);
 	vec_free(&rendered);
@@ -210,12 +203,6 @@ char *get_prompt_line(t_minishell *minishell)
 
 	prompt_line = env_variable_manager_get_single(&minishell->env_variables_manager, "PROMPT");
 	if (prompt_line)
-	{
 		prompt_line = render_prompt(prompt_line, minishell);
-		if (!prompt_line)
-			prompt_line = ft_strdup("$> ");
-	}
-	else
-		prompt_line = ft_strdup("$> ");
-	return prompt_line;
+	return (prompt_line);
 }

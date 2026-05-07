@@ -35,6 +35,7 @@ typedef enum e_tokeniser_error
 {
 	tokeniser_error_succes,
 	tokeniser_error_unterminated_quoted_string,
+	tokeniser_error_memory_error,
 }							t_tokeniser_error;
 
 typedef enum e_parsing_error_type
