@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/05 20:51:41 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 13:21:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,12 @@ bool	main_token(char *line, t_minishell *minishell)
 	}
 	
 	t_btree_node *root = malloc(2* sizeof(t_btree_node));
+	if (parser_result.parsing_error != parsing_error_success)
+	{
+		display_error_message("Memory allocation Failed!");
+		free_tokens(&parsed);
+		return (false);
+	}
 	root->expr_start = 0;
 	root->expr_end = parsed.size - 1;
 	root->cmds = NULL;

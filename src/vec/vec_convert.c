@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_convert.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:28 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 17:16:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/07 13:34:38 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ char	*vec_to_cstring(t_vec *vec)
 	char	*str;
 
 	assert((int[]){vec != NULL, 42}, "Null passed to vec_to_cstring.");
-	assert((int[]){vec->data != NULL, 42}, "Non-initialised vec.");
 	assert((int[]){vec->type_size == 1, 42}, "The data in vec is larger than a char.");
 	str = malloc((vec->size + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
-	ft_memcpy(str, vec->data, vec->size * sizeof(char));
+	if (vec->data)
+		ft_memcpy(str, vec->data, vec->size * sizeof(char));
 	str[vec->size] = 0;
 	return (str);
 }
@@ -34,7 +34,8 @@ bool	str_to_vec_char(t_vec *vec, char *line)
 	i = 0;
 	while (line && line[i])
 	{
-		vec_append(vec, &line[i]);
+		if (!vec_append(vec, &line[i]))
+			return (false);
 		i++;
 	}
 	return (true);
@@ -56,9 +57,11 @@ bool	vec_split(t_vec *vec, char *line, char sep)
 		vec_init(&sub_vec, sizeof(char), len);
 		str = ft_substr(line, 0, len);
 		str_to_vec_char(&sub_vec, str);
-		if (!sub_vec.data)
+		if (!vec_append(vec, &sub_vec))
+		{
+			vec_free(&sub_vec);
 			return (false);
-		vec_append(vec, &sub_vec);
+		}
 		line += len;
 	}
 	return (true);

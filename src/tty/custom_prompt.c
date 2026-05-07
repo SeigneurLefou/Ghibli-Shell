@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/05 22:45:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 13:56:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 	char			c;
 
 	index = 0;
-	if (!base_prompt || !vec_init(&rendered, sizeof(char), 16))
+	vec_init(&rendered, sizeof(char), 16);
+	if (!base_prompt)
 		return (NULL);
 	while (base_prompt[index])
 	{

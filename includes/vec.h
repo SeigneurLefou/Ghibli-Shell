@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/05 11:31:44 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/07 13:26:29 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_vec
 	char			*data;
 }					t_vec;
 
-bool				vec_init(t_vec *vec, size_t type_size,
+void				vec_init(t_vec *vec, size_t type_size,
 						unsigned int buffering_size);
 void				*vec_get(t_vec *vec, unsigned int index);
 bool				vec_append(t_vec *vec, void *data);
