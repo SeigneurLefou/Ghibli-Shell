@@ -6,15 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2026/05/07 11:19:42 by lchamard         ###   ########.fr       */
-=======
 /*   Updated: 2026/05/05 08:31:12 by lchamard         ###   ########.fr       */
->>>>>>> 20d4497 ([leaks] free tree and root in the main)
-=======
-/*   Updated: 2026/05/05 08:31:12 by lchamard         ###   ########.fr       */
->>>>>>> 00c5700 ([leaks] free tree and root in the main)
 /*                                                                            */
 /* ************************************************************************** */
 
