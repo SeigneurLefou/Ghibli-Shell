@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/30 20:11:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/07 17:29:04 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,10 @@ bool	add_str_to_vec_char(t_vec *new_line, char *var_content)
 	i = 0;
 	while (var_content[i])
 	{
-		if (!vec_append(new_line, &var_content[i]))
-			return (false);
+		vec_append(new_line, &var_content[i]);
 		i++;
 	}
-	return (true);
+	return (!new_line->failed);
 }
 
 bool	expand_split(t_vec *argv, t_vec *new_line, char *var_content)
