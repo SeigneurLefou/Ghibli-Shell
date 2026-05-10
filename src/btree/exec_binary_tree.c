@@ -104,6 +104,7 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		return (exec_leaf(tree, files, &pid_list));
 	if (exec_left_tree(tree, files, &pid_list))
 		return (tree->node->wstatus);
+	vec_free(&pid_list);
 	if (files[0])
 		files[0] = fake_fdin();
 	exec_right_tree(tree, files);
