@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:28 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 18:33:47 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/11 16:31:49 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char	**vec_vec_char_to_str_array(t_vec *vec)
 	size_t	i;
 
 	str_array = malloc(sizeof(char *) * (vec->size + 1));
+	if (!str_array)
+		return (NULL);
 	i = 0;
 	while (i < vec->size)
 	{

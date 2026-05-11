@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/05 20:17:08 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:37:37 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,27 @@ bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_ma
 		char *line)
 {
 	char	*new;
+	char *key;
+	char *sep;
+	bool exists;
 	
-	char *key = ft_substr(line, 0, ft_strrchr(line, '=') - line);
-	if (env_variable_manager_exists(env_variable_manager, key))
-		env_variable_manager_unset_key(env_variable_manager, key);
+	sep = ft_strchr(line, '=');
+	if (!sep)
+		key = ft_strdup(line);
+	else
+		key = ft_substr(line, 0, sep - line);	
 	new = ft_strdup(line);
-	if (!line)
+	if (!new || !key)
+	{
+		free(key);
+		free(new);
 		return (false);
-	if (!list_push_back(&env_variable_manager->variables, new))
+	}
+	exists = env_variable_manager_exists(env_variable_manager, key);
+	if (exists && sep)
+		env_variable_manager_unset_key(env_variable_manager, key);
+	free(key);
+	if (!(exists && !sep) && !list_push_back(&env_variable_manager->variables, new))
 		return (false);
 	return (true);
 }
@@ -138,7 +151,7 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if (!ft_strncmp(key, element, key_len) && element[key_len] == '=')
+		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
 		{
 			cell = list_get_cell_at_index(&env_variable_manager->variables,
 					index);
@@ -168,7 +181,7 @@ bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manage
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if (!ft_strncmp(key, element, key_len) && element[key_len] == '=')
+		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
 		{
 			list_pop_at_free(&env_variable_manager->variables, index, free);
 			return (true);
