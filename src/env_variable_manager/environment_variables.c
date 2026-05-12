@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 10:05:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:11:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	env_variables_set_raw(t_env_variables_manager *env_variable_manager,
 	char	*key;
 	char	*sep;
 	bool	exists;
-
+	
 	sep = ft_strchr(line, '=');
 	if (!sep)
 		key = ft_strdup(line);
