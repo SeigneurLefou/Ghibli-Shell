@@ -13,7 +13,6 @@ LDFLAGS := -lreadline
 INCLUDES = includes
 
 include src/env_variable_manager/Makefile
-include src/config_manager/Makefile
 include src/file_runner/Makefile
 include src/error/Makefile
 include src/minishell/Makefile

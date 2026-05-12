@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/01 15:37:16 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/12 17:56:33 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "btree.h"
 # include "builtin.h"
 # include "cmd.h"
-# include "config_manager.h"
 # include "environment_variables.h"
 # include "error_manager.h"
 # include "file_runner.h"
