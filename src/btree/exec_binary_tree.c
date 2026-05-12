@@ -25,10 +25,6 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.fds[1] = files[1];
 	fork_pid(&pipex_var);
 	vec_append(pid_list, &pipex_var.pid);
-	if (pipex_var.fds[0] > 2)
-		close(pipex_var.fds[0]);
-	if (pipex_var.fds[1] > 2)
-		close(pipex_var.fds[1]);
 }
 
 void	exec_right_tree(t_btree *tree, int files[2])
@@ -100,18 +96,26 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
 	char	*status;
+	int		new_files[2];
 
+	new_files[0] = files[0];
+	new_files[1] = files[1];
 	vec_init(&pid_list, sizeof(pid_t), 10);
-	open_io_fds(tree, files);
+	open_io_fds(tree, new_files);
 	if (!tree->node->left && !tree->node->right)
-		return (exec_leaf(tree, files, &pid_list));
-	if (exec_left_tree(tree, files, &pid_list))
+		return (exec_leaf(tree, new_files, &pid_list));
+	if (exec_left_tree(tree, new_files, &pid_list))
 		return (tree->node->wstatus);
-	if (files[0])
-		files[0] = fake_fdin();
-	exec_right_tree(tree, files);
+	if (new_files[0] > 2 && new_files[0] != files[0])
+		close(new_files[0]);
+	new_files[0] = fake_fdin();
+	exec_right_tree(tree, new_files);
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
+	if (new_files[0] > 2 && new_files[0] != files[0])
+		close(new_files[0]);
+	if (new_files[1] > 2 && new_files[1] != files[1])
+		close(new_files[1]);
 	return (tree->node->wstatus);
 }

@@ -111,7 +111,8 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
-		exec_builtin(pipex_var->cmd, pipex_var->minishell, pipex_var->fds);
+		exit(exec_builtin(pipex_var->cmd, pipex_var->minishell,
+					(int[2]){0, 1}));
 	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
 		env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);

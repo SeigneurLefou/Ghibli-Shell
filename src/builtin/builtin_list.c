@@ -64,10 +64,6 @@ bool	setup_and_exec_builtin(t_btree *tree, int files[2])
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
 	tree->node->wstatus = exec_builtin(pipex_var.cmd, tree->minishell, pipex_var.fds);
-	if (pipex_var.fds[0] > 2)
-		close(pipex_var.fds[0]);
-	if (pipex_var.fds[1] > 2)
-		close(pipex_var.fds[1]);
 	return (false);
 }
 
