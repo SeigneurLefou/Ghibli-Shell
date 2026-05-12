@@ -29,7 +29,7 @@ static bool	is_valid_key(char *line)
 	return (true);
 }
 
-void	display_env_variables(t_minishell *minishell, int fds[2])
+static void	display_env_variables(t_minishell *minishell, int fds[2])
 {
 	unsigned int	index;
 	char			*element;
