@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:52:38 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/20 17:31:20 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 12:22:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ bool					env_variable_manager_exists(t_env_variables_manager *env_variable_manag
 							char *key);
 bool					env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_manager,
 							char *line);
+char					*env_variable_manager_get_raw_line(t_env_variables_manager *env_variable_manager,
+							char *key);
 
 #endif
