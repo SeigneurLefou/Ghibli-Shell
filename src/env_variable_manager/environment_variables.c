@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/12 12:23:38 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:32:25 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment_variables.h"
 
-t_env_variables_manager	env_variables_manager_new(void)
+t_env_variables_manager	env_variables_new(void)
 {
 	t_env_variables_manager	env_variable_manager;
 
@@ -20,7 +20,7 @@ t_env_variables_manager	env_variables_manager_new(void)
 	return (env_variable_manager);
 }
 
-bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_manager,
+bool	env_variables_set_raw(t_env_variables_manager *env_variable_manager,
 		char *line)
 {
 	char	*new;
@@ -40,9 +40,9 @@ bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_ma
 		free(new);
 		return (false);
 	}
-	exists = env_variable_manager_exists(env_variable_manager, key);
+	exists = env_variables_exists(env_variable_manager, key);
 	if (exists && sep)
-		env_variable_manager_unset_key(env_variable_manager, key);
+		env_variables_unset_key(env_variable_manager, key);
 	free(key);
 	if (!(exists && !sep) && !list_push_back(&env_variable_manager->variables,
 			new))
@@ -50,7 +50,7 @@ bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_ma
 	return (true);
 }
 
-char	*env_variable_manager_get_raw_line(t_env_variables_manager *env_variable_manager,
+char	*env_variables_get_raw(t_env_variables_manager *env_variable_manager,
 		char *key)
 {
 	unsigned int	index;
@@ -90,7 +90,7 @@ static char	*env_variables_manager_create_line(char *key, char *value)
 	return (line);
 }
 
-bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_manager,
+bool	env_variables_add(t_env_variables_manager *env_variable_manager,
 		char *key, char *value)
 {
 	char	*line;
@@ -100,7 +100,7 @@ bool	env_variables_manager_add_variable(t_env_variables_manager *env_variable_ma
 	return (true);
 }
 
-char	**env_variables_manager_get_env_compatible_variables_char_star_star(t_env_variables_manager *env_variable_manager)
+char	**env_variables_get_env(t_env_variables_manager *env_variable_manager)
 {
 	char			**env;
 	t_iterator		it;
@@ -120,7 +120,7 @@ char	**env_variables_manager_get_env_compatible_variables_char_star_star(t_env_v
 	return (env);
 }
 
-char	*env_variable_manager_get_single(t_env_variables_manager *env_variable_manager,
+char	*env_variables_get(t_env_variables_manager *env_variable_manager,
 		char *key)
 {
 	unsigned int	index;
@@ -142,7 +142,7 @@ char	*env_variable_manager_get_single(t_env_variables_manager *env_variable_mana
 	return (NULL);
 }
 
-bool	env_variable_manager_exists(t_env_variables_manager *env_variable_manager,
+bool	env_variables_exists(t_env_variables_manager *env_variable_manager,
 		char *key)
 {
 	unsigned int	index;
@@ -164,7 +164,7 @@ bool	env_variable_manager_exists(t_env_variables_manager *env_variable_manager,
 	return (false);
 }
 
-bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
+bool	env_variables_set(t_env_variables_manager *env_variable_manager,
 		char *key, char *value)
 {
 	unsigned int	index;
@@ -190,12 +190,12 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 		}
 		index++;
 	}
-	if (!env_variables_manager_add_variable(env_variable_manager, key, value))
+	if (!env_variables_add(env_variable_manager, key, value))
 		return (false);
 	return (true);
 }
 
-bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manager,
+bool	env_variables_unset_key(t_env_variables_manager *env_variable_manager,
 		char *key)
 {
 	unsigned int	index;
@@ -220,12 +220,12 @@ bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manage
 	return (false);
 }
 
-void	env_variables_manager_free(t_env_variables_manager *env_variable_manager)
+void	env_variables_free(t_env_variables_manager *env_variable_manager)
 {
 	list_clear(&env_variable_manager->variables, free);
 }
 
-bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_variable_manager,
+bool	env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
 		char **env)
 {
 	unsigned int	index;
@@ -233,10 +233,9 @@ bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_v
 	index = 0;
 	while (env[index])
 	{
-		if (!env_variables_manager_set_raw_line(env_variable_manager,
-				env[index]))
+		if (!env_variables_set_raw(env_variable_manager, env[index]))
 		{
-			env_variables_manager_free(env_variable_manager);
+			env_variables_free(env_variable_manager);
 			return (false);
 		}
 		index++;

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:51:00 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/01 15:34:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:31:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ char	*get_config_file_path(t_minishell *minishell, char *config_file)
 	int		lenght;
 	char	*complete_path;
 
-	home_path = env_variable_manager_get_single(&minishell->env_variables_manager,
-			"HOME");
+	home_path = env_variables_get(&minishell->env_variables_manager, "HOME");
 	if (!home_path)
 		return (NULL);
 	lenght = ft_strlen(home_path);

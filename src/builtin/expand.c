@@ -20,14 +20,13 @@ char	*give_variable_content(t_token *token, size_t *i,
 
 	vec_init(&var_name, sizeof(char), 6);
 	(*i)++;
-	while (*i < token->data.size
-		&& *i <= max_i)
+	while (*i < token->data.size && *i <= max_i)
 	{
 		vec_append(&var_name, vec_get(&token->data, *i));
 		(*i)++;
 	}
-	var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-			vec_to_cstring(&var_name)));
+	var_content = ft_strdup(env_variables_get(&minishell->env_variables_manager,
+				vec_to_cstring(&var_name)));
 	vec_free(&var_name);
 	return (var_content);
 }
@@ -39,8 +38,8 @@ char	*expand_tild(t_token *token, size_t *i, t_minishell *minishell)
 	var_content = NULL;
 	if (*(char *)vec_get(&token->data, *i) == '~')
 	{
-		var_content = ft_strdup(env_variable_manager_get_single(&minishell->env_variables_manager,
-				"HOME"));
+		var_content = ft_strdup(env_variables_get(&minishell->env_variables_manager,
+					"HOME"));
 		(*i)++;
 	}
 	return (var_content);
@@ -63,7 +62,7 @@ bool	expand_split(t_vec *argv, t_vec *new_line, char *var_content)
 {
 	t_vec	var_split;
 	size_t	j;
-	size_t		i;
+	size_t	i;
 
 	vec_init(&var_split, sizeof(t_vec), 5);
 	vec_split(&var_split, var_content, ' ');
@@ -101,14 +100,17 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 	while (i < token->data.size)
 	{
 		if (expand_pointer < token->expandable_scopes.size
-			&& i == ((t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer))->index)
+			&& i == ((t_expand_data *)vec_get(&token->expandable_scopes,
+					expand_pointer))->index)
 		{
 			expand_pointer++;
 			var_content = expand_tild(token, &i, minishell);
 			if (!var_content)
 				var_content = give_variable_content(token, &i, minishell,
-						(*(t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer)).index);
-			if (((t_expand_data *)vec_get(&token->expandable_scopes, expand_pointer - 1))->allow_split)
+						(*(t_expand_data *)vec_get(&token->expandable_scopes,
+								expand_pointer)).index);
+			if (((t_expand_data *)vec_get(&token->expandable_scopes,
+						expand_pointer - 1))->allow_split)
 			{
 				if (!expand_split(argv, &new_line, var_content))
 					return (false);

@@ -6,16 +6,16 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 19:18:57 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:31:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_signal = 0;
+int			g_signal = 0;
 
-static void	trimmed_line_exec(char *line, char *trimmed,
-				t_minishell *minishell, bool *first_sigint)
+static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
+		bool *first_sigint)
 {
 	if (line && trimmed && trimmed[0])
 	{
@@ -26,16 +26,17 @@ static void	trimmed_line_exec(char *line, char *trimmed,
 	}
 }
 
-void handle_prompt(t_minishell *minishell)
+void	handle_prompt(t_minishell *minishell)
 {
 	char	*line;
 	char	*prompt_line;
 	char	*trimmed;
 	bool	first_sigint;
+	int		stdin_save;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
-	int		stdin_save = dup(0);
+	stdin_save = dup(0);
 	first_sigint = true;
 	while (1)
 	{
@@ -61,13 +62,13 @@ void handle_prompt(t_minishell *minishell)
 				g_signal = -1;
 				dup2(stdin_save, 0);
 				rl_replace_line("", 1);
-				env_variable_manager_set(&minishell->env_variables_manager, "?",
-						"130");
+				env_variables_set(&minishell->env_variables_manager, "?",
+					"130");
 				if (first_sigint)
 					write(1, "\n", 1);
 				rl_on_new_line();
 				first_sigint = false;
-				continue;
+				continue ;
 			}
 			else
 				minishell->request_exit = true;
@@ -77,7 +78,7 @@ void handle_prompt(t_minishell *minishell)
 		if (line)
 			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
 		if (minishell->request_exit)
-			break;
+			break ;
 	}
 	close(stdin_save);
 	rl_clear_history();

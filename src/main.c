@@ -185,7 +185,7 @@ bool	main_token(char *line, t_minishell *minishell)
 
 void increment_shell_lvl(t_minishell *minishell)
 {
-	char *shell_lvl = env_variable_manager_get_single(&minishell->env_variables_manager, "SHLVL");
+	char *shell_lvl = env_variables_get(&minishell->env_variables_manager, "SHLVL");
 	if (!shell_lvl)
 	{
 		minishell->shell_level = 1;
@@ -195,7 +195,7 @@ void increment_shell_lvl(t_minishell *minishell)
 	minishell->shell_level = shell_lvl_num + 1;
 	shell_lvl = ft_itoa(minishell->shell_level);
 	if (shell_lvl)
-		env_variable_manager_set(&minishell->env_variables_manager, "SHLVL", shell_lvl);
+		env_variables_set(&minishell->env_variables_manager, "SHLVL", shell_lvl);
 	free(shell_lvl);
 }
 
@@ -209,13 +209,13 @@ int	main(int argc, char **argv, char *env[])
 		return (1);
 	}
 	minishell_init(&minishell);
-	env_variables_manager_add_variables_from_env(&minishell.env_variables_manager, env);
+	env_variables_add_from_env(&minishell.env_variables_manager, env);
 	increment_shell_lvl(&minishell);
-	env_variable_manager_set(&minishell.env_variables_manager, "?", "0");
+	env_variables_set(&minishell.env_variables_manager, "?", "0");
 	if (minishell.shell_level > 100)
 	{
 		display_error_message("Maximum shell recursion excedded!");
-		env_variables_manager_free(&minishell.env_variables_manager);
+		env_variables_free(&minishell.env_variables_manager);
 		return (1);
 	}
 	load_config_file(&minishell, ".ghiblirc");
@@ -224,5 +224,5 @@ int	main(int argc, char **argv, char *env[])
 		handle_prompt(&minishell);
 	else if (argc == 2)
 		execute_file(argv[1], &minishell);
-	env_variables_manager_free(&minishell.env_variables_manager);
+	env_variables_free(&minishell.env_variables_manager);
 }
