@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 16:59:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:06:59 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	handle_prompt(t_minishell *minishell)
 	char	*prompt_line;
 	char	*trimmed;
 	bool	first_sigint;
+	int		stdin_save;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);

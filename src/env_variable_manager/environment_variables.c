@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 09:59:40 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:05:31 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,17 +209,8 @@ bool	env_variables_unset_key(t_env_variables_manager *env_variable_manager,
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-<<<<<<< HEAD
-<<<<<<< HEAD
 		if (!ft_strncmp(key, element, key_len) && (!element[key_len]
 				|| element[key_len] == '='))
-=======
-		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
->>>>>>> 68ae57e ([Sheeta/Totoro] handle hidden variables)
-=======
-		if (!ft_strncmp(key, element, key_len) && (!element[key_len]
-				|| element[key_len] == '='))
->>>>>>> 10560ea ([Sheeta/Totoro] Handle variable append)
 		{
 			list_pop_at_free(&env_variable_manager->variables, index, free);
 			return (true);
@@ -234,11 +225,7 @@ void	env_variables_free(t_env_variables_manager *env_variable_manager)
 	list_clear(&env_variable_manager->variables, free);
 }
 
-<<<<<<< HEAD
 bool	env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
-=======
-bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_variable_manager,
->>>>>>> 10560ea ([Sheeta/Totoro] Handle variable append)
 		char **env)
 {
 	unsigned int	index;
@@ -246,12 +233,7 @@ bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_v
 	index = 0;
 	while (env[index])
 	{
-<<<<<<< HEAD
 		if (!env_variables_set_raw(env_variable_manager, env[index]))
-=======
-		if (!env_variables_manager_set_raw_line(env_variable_manager,
-				env[index]))
->>>>>>> 10560ea ([Sheeta/Totoro] Handle variable append)
 		{
 			env_variables_free(env_variable_manager);
 			return (false);

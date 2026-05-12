@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 17:00:58 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:03:03 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,13 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && (tree->node->operator == operator_and
-			|| tree->node->operator == operator_or))
-		{
+	if (!tree->node->wstatus && tree->node->operator== operator_and)
+	{
+		exec_binary_tree(tree_cpy, files);
+		tree->node->wstatus = tree_cpy->node->wstatus;
+	}
+	else if (tree->node->wstatus && tree->node->operator== operator_or)
+	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
@@ -52,7 +56,7 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 	t_btree	*tree_cpy;
 	char	*status;
 
-	if (tree->node->operator == operator_pipe)
+	if (tree->node->operator== operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
 		tree->node->wstatus = wait_all_pid(pid_list);
@@ -90,8 +94,12 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	}
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
+<<<<<<< HEAD
 		env_variables_set(&tree->minishell->env_variables_manager, "?",
 			status);
+=======
+		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
+>>>>>>> a79b778 ([Totoro] Rename functions)
 	return (tree->node->wstatus);
 }
 
