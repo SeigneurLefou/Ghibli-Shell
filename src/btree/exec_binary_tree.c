@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 14:48:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:31:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && tree->node->operator == operator_and)
+	if (!tree->node->wstatus && tree->node->operator== operator_and)
 	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
-	else if (tree->node->wstatus && tree->node->operator == operator_or)
+	else if (tree->node->wstatus && tree->node->operator== operator_or)
 	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
@@ -57,15 +57,15 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
-	if (tree->node->operator == operator_pipe)
+	if (tree->node->operator== operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
 		tree->node->wstatus = wait_all_pid(pid_list);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
 		status = ft_itoa(tree->node->wstatus);
 		if (status) // TODO: HANDLE THIS FAIL !!!!!
-			env_variable_manager_set(&tree->minishell->env_variables_manager,
-				"?", status);
+			env_variables_set(&tree->minishell->env_variables_manager, "?",
+				status);
 		return (true);
 	}
 	else if (tree->node->left)
@@ -92,8 +92,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	}
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
+		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
 	return (tree->node->wstatus);
 }
 
@@ -113,7 +112,6 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	exec_right_tree(tree, files);
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
+		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
 	return (tree->node->wstatus);
 }
