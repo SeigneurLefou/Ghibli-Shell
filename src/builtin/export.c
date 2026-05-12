@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/12 15:27:03 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:32:25 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,11 @@ static bool	handle_append(char *value, t_minishell *minishell, char *sep)
 	key = ft_substr(value, 0, sep - value - 1);
 	if (!key)
 		return (false);
-	var_value = env_variable_manager_get_raw_line(&minishell->env_variables_manager,
+	var_value = env_variables_get_raw(&minishell->env_variables_manager,
 			key);
 	if (!var_value || !ft_strchr(var_value, '='))
 	{
-		if (!env_variable_manager_set(&minishell->env_variables_manager, key, sep
-			+ 1))
+		if (!env_variables_set(&minishell->env_variables_manager, key, sep + 1))
 			return (false);
 		return (true);
 	}
@@ -70,8 +69,7 @@ static bool	handle_append(char *value, t_minishell *minishell, char *sep)
 	var_value = ft_strjoin(var_value, sep + 1);
 	if (!var_value)
 		return (false);
-	if (!env_variables_manager_set_raw_line(&minishell->env_variables_manager,
-			var_value))
+	if (!env_variables_set_raw(&minishell->env_variables_manager, var_value))
 	{
 		free(var_value);
 		return (false);
@@ -90,8 +88,7 @@ static bool	handle_setter(char *value, t_minishell *minishell)
 		if (!handle_append(value, minishell, sep))
 			return (false);
 	}
-	else if (!env_variables_manager_set_raw_line(&minishell->env_variables_manager,
-			value))
+	else if (!env_variables_set_raw(&minishell->env_variables_manager, value))
 		return (false);
 	return (true);
 }
