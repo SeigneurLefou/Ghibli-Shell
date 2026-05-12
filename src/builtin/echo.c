@@ -16,7 +16,7 @@ static char parse_escape(char escaped_char)
 		return (escaped_char);
 }
 
-void	echo_print(char **parts)
+void	echo_print(char **parts, int fds[2])
 {
 	unsigned int	index;
 	unsigned int	index2;
@@ -32,16 +32,16 @@ void	echo_print(char **parts)
 				c = parse_escape(parts[index][++index2]);
 			else
 				c = parts[index][index2];
-			write(1, &c, 1);
+			write(fds[1], &c, 1);
 			index2++;
 		}
         index++;
         if (parts[index])
-            write(1, " ", 1);
+            write(fds[1], " ", 1);
     }
 }
 
-int	builtin_echo(int argc, char **argv)
+int	builtin_echo(int argc, char **argv, int fds[2])
 {
 	bool	newline;
 
@@ -50,15 +50,15 @@ int	builtin_echo(int argc, char **argv)
 	{
 		if (!ft_strncmp(argv[1], "-n", 2))
 		{
-			echo_print(argv + 1);
+			echo_print(argv + 1, fds);
 			newline = false;
 		}
 		else
-			echo_print(argv);
+			echo_print(argv, fds);
 	}
 	else
-		echo_print(argv);
+		echo_print(argv, fds);
 	if (newline)
-		write(1, "\n", 1);
+		write(fds[1], "\n", 1);
 	return (0);
 }

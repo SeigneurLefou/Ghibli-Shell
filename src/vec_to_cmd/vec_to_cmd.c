@@ -98,7 +98,7 @@ void	vec_to_cmd(t_btree *tree)
 	new_cmd->argv = vec_vec_char_to_str_array(&argv);
 	new_cmd->name = new_cmd->argv[0];
 	vec_free(&argv);
-	if (!is_command_built_in(new_cmd->name))
+	if (new_cmd->name && !is_command_built_in(new_cmd->name))
 		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;
 }

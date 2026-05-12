@@ -82,7 +82,9 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	char	*status;
 
 	vec_to_cmd(tree);
-	if (is_command_built_in(tree->node->cmds->name))
+	printf("cmd : %s\n", tree->node->cmds->name);
+	write(1, "aaaaaaaaa\n", 10);
+	if (tree->node->cmds->name && is_command_built_in(tree->node->cmds->name))
 		setup_and_exec_builtin(tree, files);
 	else
 	{
