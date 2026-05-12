@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/11 18:42:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:27:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static bool	is_valid_key(char *line)
 	if (!ft_isalpha(line[0]) && line[0] != '_')
 		return (false);
 	i = 0;
-	while (line[i] && !(line[i] == '=' || (line[i] != '+' && line[i + 1] != '=')))
+	while (line[i] && !(line[i] == '=' || (line[i] == '+' && line[i
+				+ 1] == '=')))
 	{
 		if (!ft_isalnum(line[i]) && line[i] != '_')
 			return (false);
@@ -28,7 +29,7 @@ static bool	is_valid_key(char *line)
 	return (true);
 }
 
-void	display_env_variables(t_minishell *minishell)
+static void	display_env_variables(t_minishell *minishell)
 {
 	unsigned int	index;
 	char			*element;
@@ -44,6 +45,55 @@ void	display_env_variables(t_minishell *minishell)
 		write(1, "\n", 1);
 		index++;
 	}
+}
+
+static bool	handle_append(char *value, t_minishell *minishell, char *sep)
+{
+	char	*key;
+	char	*var_value;
+
+	key = ft_substr(value, 0, sep - value - 1);
+	if (!key)
+		return (false);
+	var_value = env_variable_manager_get_raw_line(&minishell->env_variables_manager,
+			key);
+	if (!var_value || !ft_strchr(var_value, '='))
+	{
+		if (!env_variable_manager_set(&minishell->env_variables_manager, key, sep
+			+ 1))
+			return (false);
+		return (true);
+	}
+	free(key);
+	if (!var_value)
+		return (true);
+	var_value = ft_strjoin(var_value, sep + 1);
+	if (!var_value)
+		return (false);
+	if (!env_variables_manager_set_raw_line(&minishell->env_variables_manager,
+			var_value))
+	{
+		free(var_value);
+		return (false);
+	}
+	free(var_value);
+	return (true);
+}
+
+static bool	handle_setter(char *value, t_minishell *minishell)
+{
+	char	*sep;
+
+	sep = ft_strchr(value, '=');
+	if (sep && value != sep && *(sep - 1) == '+')
+	{
+		if (!handle_append(value, minishell, sep))
+			return (false);
+	}
+	else if (!env_variables_manager_set_raw_line(&minishell->env_variables_manager,
+			value))
+		return (false);
+	return (true);
 }
 
 int	builtin_export(int argc, char **argv, t_minishell *minishell)
@@ -63,9 +113,7 @@ int	builtin_export(int argc, char **argv, t_minishell *minishell)
 		write(2, "Export: not a valid identifier\n", 32);
 		return (1);
 	}
-	// TODO: Handle += 
-	if (!env_variables_manager_set_raw_line(&minishell->env_variables_manager,
-			argv[1]))
+	if (!handle_setter(argv[1], minishell))
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/11 18:37:37 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 12:23:38 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_ma
 		char *line)
 {
 	char	*new;
-	char *key;
-	char *sep;
-	bool exists;
-	
+	char	*key;
+	char	*sep;
+	bool	exists;
+
 	sep = ft_strchr(line, '=');
 	if (!sep)
 		key = ft_strdup(line);
 	else
-		key = ft_substr(line, 0, sep - line);	
+		key = ft_substr(line, 0, sep - line);
 	new = ft_strdup(line);
 	if (!new || !key)
 	{
@@ -44,9 +44,32 @@ bool	env_variables_manager_set_raw_line(t_env_variables_manager *env_variable_ma
 	if (exists && sep)
 		env_variable_manager_unset_key(env_variable_manager, key);
 	free(key);
-	if (!(exists && !sep) && !list_push_back(&env_variable_manager->variables, new))
+	if (!(exists && !sep) && !list_push_back(&env_variable_manager->variables,
+			new))
 		return (false);
 	return (true);
+}
+
+char	*env_variable_manager_get_raw_line(t_env_variables_manager *env_variable_manager,
+		char *key)
+{
+	unsigned int	index;
+	char			*element;
+	t_iterator		it;
+	int				key_len;
+
+	key_len = ft_strlen(key);
+	it = iterator_new(&env_variable_manager->variables, 0);
+	index = 0;
+	while (index < env_variable_manager->variables.size)
+	{
+		element = iterator_next(&it);
+		if ((int)ft_strlen(element) >= key_len && !ft_strncmp(key, element,
+				key_len) && (!element[key_len] || element[key_len] == '='))
+			return (element);
+		index++;
+	}
+	return (NULL);
 }
 
 static char	*env_variables_manager_create_line(char *key, char *value)
@@ -103,34 +126,38 @@ char	*env_variable_manager_get_single(t_env_variables_manager *env_variable_mana
 	unsigned int	index;
 	char			*element;
 	t_iterator		it;
+	int				key_len;
 
-	int key_len = ft_strlen(key);
+	key_len = ft_strlen(key);
 	it = iterator_new(&env_variable_manager->variables, 0);
 	index = 0;
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if ((int)ft_strlen(element) >= key_len && !ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
+		if ((int)ft_strlen(element) >= key_len && !ft_strncmp(key, element,
+				key_len) && (!element[key_len] || element[key_len] == '='))
 			return (element + key_len + (element[key_len] == '='));
 		index++;
 	}
 	return (NULL);
 }
 
-bool env_variable_manager_exists(t_env_variables_manager *env_variable_manager,
+bool	env_variable_manager_exists(t_env_variables_manager *env_variable_manager,
 		char *key)
 {
 	unsigned int	index;
 	char			*element;
 	t_iterator		it;
+	int				key_len;
 
-	int key_len = ft_strlen(key);
+	key_len = ft_strlen(key);
 	it = iterator_new(&env_variable_manager->variables, 0);
 	index = 0;
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
+		if (!ft_strncmp(key, element, key_len) && (!element[key_len]
+				|| element[key_len] == '='))
 			return (true);
 		index++;
 	}
@@ -144,22 +171,22 @@ bool	env_variable_manager_set(t_env_variables_manager *env_variable_manager,
 	char			*element;
 	t_iterator		it;
 	t_list_cell		*cell;
-	
-	int key_len = ft_strlen(key);
+	int				key_len;
+
+	key_len = ft_strlen(key);
 	it = iterator_new(&env_variable_manager->variables, 0);
 	index = 0;
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
+		if (!ft_strncmp(key, element, key_len) && (!element[key_len]
+				|| element[key_len] == '='))
 		{
 			cell = list_get_cell_at_index(&env_variable_manager->variables,
 					index);
 			free(cell->value);
 			cell->value = env_variables_manager_create_line(key, value);
-			if (!cell->value)
-				return (false);
-			return (true);
+			return (cell->value != 0);
 		}
 		index++;
 	}
@@ -174,14 +201,16 @@ bool	env_variable_manager_unset_key(t_env_variables_manager *env_variable_manage
 	unsigned int	index;
 	char			*element;
 	t_iterator		it;
+	int				key_len;
 
-	int key_len = ft_strlen(key);
+	key_len = ft_strlen(key);
 	it = iterator_new(&env_variable_manager->variables, 0);
 	index = 0;
 	while (index < env_variable_manager->variables.size)
 	{
 		element = iterator_next(&it);
-		if (!ft_strncmp(key, element, key_len) && (!element[key_len] || element[key_len] == '='))
+		if (!ft_strncmp(key, element, key_len) && (!element[key_len]
+				|| element[key_len] == '='))
 		{
 			list_pop_at_free(&env_variable_manager->variables, index, free);
 			return (true);
@@ -196,14 +225,16 @@ void	env_variables_manager_free(t_env_variables_manager *env_variable_manager)
 	list_clear(&env_variable_manager->variables, free);
 }
 
-bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_variable_manager, char **env)
+bool	env_variables_manager_add_variables_from_env(t_env_variables_manager *env_variable_manager,
+		char **env)
 {
-	unsigned int index;
+	unsigned int	index;
 
 	index = 0;
 	while (env[index])
 	{
-		if (!env_variables_manager_set_raw_line(env_variable_manager, env[index]))
+		if (!env_variables_manager_set_raw_line(env_variable_manager,
+				env[index]))
 		{
 			env_variables_manager_free(env_variable_manager);
 			return (false);
