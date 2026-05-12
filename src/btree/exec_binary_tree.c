@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 14:48:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 16:00:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
 		status = ft_itoa(tree->node->wstatus);
 		if (status) // TODO: HANDLE THIS FAIL !!!!!
-			env_variable_manager_set(&tree->minishell->env_variables_manager,
-				"?", status);
+			env_variables_set(&tree->minishell->env_variables_manager, "?",
+				status);
 		return (true);
 	}
 	else if (tree->node->left)
@@ -92,8 +92,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	}
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
+		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
 	return (tree->node->wstatus);
 }
 
@@ -113,7 +112,6 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	exec_right_tree(tree, files);
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
-			status);
+		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
 	return (tree->node->wstatus);
 }
