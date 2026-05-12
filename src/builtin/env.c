@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 10:46:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:23:54 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ int	builtin_env(int argc, t_minishell *minishell, int fds[2])
 	while (index < minishell->env_variables_manager.variables.size)
 	{
 		element = iterator_next(&it);
-		write(fds[1], element, ft_strlen(element));
-		write(fds[1], "\n", 1);
+		if (ft_strchr(element, '='))
+		{
+			write(1, element, ft_strlen(element));
+			write(1, "\n", 1);
+		}
 		index++;
 	}
 	return (0);
