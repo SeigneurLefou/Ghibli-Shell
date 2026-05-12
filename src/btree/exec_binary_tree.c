@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 10:13:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:15:00 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && tree->node->operator== operator_and)
+	if (!tree->node->wstatus && tree->node->operator == operator_and)
 	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
-	else if (tree->node->wstatus && tree->node->operator== operator_or)
+	else if (tree->node->wstatus && tree->node->operator == operator_or)
 	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
@@ -108,17 +108,11 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		return (exec_leaf(tree, new_files, &pid_list));
 	if (exec_left_tree(tree, new_files, &pid_list))
 		return (tree->node->wstatus);
-<<<<<<< HEAD
 	vec_free(&pid_list);
-	if (files[0])
-		files[0] = fake_fdin();
-	exec_right_tree(tree, files);
-=======
 	if (new_files[0] > 2 && new_files[0] != files[0])
 		close(new_files[0]);
 	new_files[0] = fake_fdin();
 	exec_right_tree(tree, new_files);
->>>>>>> f7fa298 ([miyazaki and sheeta] fix the fds problem for builtin and cmd)
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
