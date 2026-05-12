@@ -93,7 +93,7 @@ static bool	handle_setter(char *value, t_minishell *minishell)
 	return (true);
 }
 
-int	builtin_export(int argc, char **argv, t_minishell *minishell)
+int	builtin_export(int argc, char **argv, t_minishell *minishell, int fds[2])
 {
 	if (argc > 2)
 	{

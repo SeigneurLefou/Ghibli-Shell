@@ -12,7 +12,7 @@
 
 #include "builtin.h"
 
-int	builtin_env(int argc, t_minishell *minishell)
+int	builtin_env(int argc, t_minishell *minishell, int fds[2])
 {
 	unsigned int	index;
 	char			*element;

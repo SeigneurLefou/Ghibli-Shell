@@ -12,7 +12,7 @@
 
 #include "builtin.h"
 
-int	builtin_pwd(int argc)
+int	builtin_pwd(int argc, int fds[2])
 {
 	char	path_buffer[PATH_MAX];
 
@@ -23,6 +23,6 @@ int	builtin_pwd(int argc)
 	}
 	if (!getcwd(path_buffer, PATH_MAX))
 		perror("Pwd");
-	printf("%s\n", path_buffer);
+	write(fds[1], path_buffer, ft_strlen(path_buffer));
 	return (0);
 }

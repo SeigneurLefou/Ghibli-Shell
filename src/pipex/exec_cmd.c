@@ -114,7 +114,7 @@ void	take_child(t_pipex *pipex_var)
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
 	{
-		exec_builtin(pipex_var->cmd, pipex_var->minishell);
+		exec_builtin(pipex_var->cmd, pipex_var->minishell, pipex_var->fds);
 		ft_cmdclear(pipex_var->cmd);
 		exit(pipex_var->wstatus);
 	}

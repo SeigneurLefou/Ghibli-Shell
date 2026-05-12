@@ -38,23 +38,20 @@ typedef struct s_function_node
 }							t_function_node;
 
 bool						setup_and_exec_builtin(t_btree *tree, int files[2]);
-int							exec_builtin(t_cmd *cmds, t_minishell *minishell);
-bool						is_command_built_in(char *name);
-bool						setup_and_exec_builtin(t_btree *tree, int files[2]);
-int							exec_builtin(t_cmd *cmds, t_minishell *minishell);
+int							exec_builtin(t_cmd *cmds, t_minishell *minishell, int fds[2]);
 bool						is_command_built_in(char *name);
 
-int							builtin_echo(int argc, char **argv);
+int							builtin_echo(int argc, char **argv, int fds[2]);
 int							builtin_cd(int argc, char **argv,
 								t_minishell *minishell);
-int							builtin_pwd(int argc);
+int							builtin_pwd(int argc, int fds[2]);
 int							builtin_export(int argc, char **argv,
-								t_minishell *minishell);
+								t_minishell *minishell, int fds[2]);
 int							builtin_source(int argc, char **argv,
 								t_minishell *minishell);
 int							builtin_unset(int argc, char **argv,
 								t_minishell *minishell);
 int							builtin_exit(int argc, t_minishell *minishell);
-int							builtin_env(int argc, t_minishell *minishell);
+int							builtin_env(int argc, t_minishell *minishell, int fds[2]);
 
 #endif
