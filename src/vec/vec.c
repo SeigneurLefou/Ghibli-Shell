@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 18:33:17 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/12 17:44:51 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 {
-	assert((int[]){vec != NULL, type_size >= 0, buffering_size >= 0, 42}, "Cannot create vec with given data.");
+	assert((int[]){vec != NULL, 42}, "Cannot create vec with given data.");
 	vec->buff_size = buffering_size;
 	vec->size = 0;
 	vec->failed = false;
