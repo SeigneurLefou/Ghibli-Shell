@@ -69,6 +69,7 @@ Exit the shell with the `exit` command.
 - Simply executing `export` will display the list of all variables.
 - The `SHLVL` is supported.
 - You can add conditions and expands in the prompt line.
+- The syntax checker shows you were you made an error.
 #### Arrietty's prompt line:
 You can add conditions with `%ftext;` and `!ftext;` where `f` is a flag. Currently, Ghiblishell supports `%h` and `!h` to check if the user is under its `home` directory and `%s`/`!s` to check if the latest command returned 0. `@` is for "if" and `!` is for `if not`. It also supports custom expands with `@e` where `e` is the data's name. Currently, you can use `@u` to get the username, `@l` to get the location, `@s` to get the last command's return code, `@r` to get the `PWD` relative to `HOME`, `@1` to start an ansi escape sequence and `@2` to stop an ansi escape sequence. You can combine the two features.
 
