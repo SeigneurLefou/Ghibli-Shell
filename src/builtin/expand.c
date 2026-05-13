@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 19:46:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/13 12:51:45 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ bool	add_str_to_vec_char(t_vec *new_line, char *var_content)
 {
 	int	i;
 
+	if (!var_content)
+		return (true);
 	i = 0;
 	while (var_content[i])
 	{
@@ -105,6 +107,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 	t_expand_data	*expand_data;
 
 	i = 0;
+	var_content = NULL;
 	vec_init(&new_line, sizeof(char), 20);
 	expand_pointer = 0;
 	while (i < token->data.size)
@@ -143,6 +146,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			i++;
 		}
 	}
-	vec_append(argv, &new_line);
+	if (var_content || new_line.size)
+		vec_append(argv, &new_line);
 	return (true);
 }
