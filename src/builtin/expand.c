@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/13 12:51:45 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/13 13:11:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,13 @@ char	*expand_tild(t_token *token, size_t *i, t_minishell *minishell)
 	var_content = NULL;
 	if (*(char *)vec_get(&token->data, *i) == '~')
 	{
-		var_content = ft_strdup(env_variables_get(&minishell->env_variables_manager,
-					"HOME"));
-		(*i)++;
+		var_content = env_variables_get(&minishell->env_variables_manager,
+					"HOME");
+		if (var_content)
+		{
+			var_content = ft_strdup(var_content);
+			(*i)++;
+		}
 	}
 	return (var_content);
 }
