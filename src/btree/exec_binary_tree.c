@@ -91,7 +91,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	}
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variable_manager_set(&tree->minishell->env_variables_manager, "?",
+		env_variables_set(&tree->minishell->env_variables_manager, "?",
 			status);
 	return (tree->node->wstatus);
 }
