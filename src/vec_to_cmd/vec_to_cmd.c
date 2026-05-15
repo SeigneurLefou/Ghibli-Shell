@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/01 14:58:35 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/07 11:22:32 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,19 @@ void	expand_str(char ***dest, char **src)
 	*dest = new_array;
 }
 
+void	vec_vec_free(t_vec *vec)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < vec->size)
+	{
+		vec_free(vec_get(vec, i));
+		i++;
+	}
+	vec_free(vec);
+}
+
 void	vec_to_cmd(t_btree *tree)
 {
 	t_cmd	*new_cmd;
@@ -97,7 +110,7 @@ void	vec_to_cmd(t_btree *tree)
 	new_cmd->argc = argv.size;
 	new_cmd->argv = vec_vec_char_to_str_array(&argv);
 	new_cmd->name = new_cmd->argv[0];
-	vec_free(&argv);
+	vec_vec_free(&argv);
 	if (!is_command_built_in(new_cmd->name))
 		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;
