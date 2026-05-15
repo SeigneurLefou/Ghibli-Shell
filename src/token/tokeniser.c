@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 18:36:29 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/15 19:37:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ t_tokeniser_error tokenise(char *expr, t_vec *command)
 				quote_char = '\'';
 				set_expand(&current_token, false, false);
 			}
-			else if (expr[i] == '*' && current_token.type == token_type_void)
+			else if (expr[i] == '*')
 			{
 				push_char(&current_token, expr[i]);
 				set_expand(&current_token, true, false);

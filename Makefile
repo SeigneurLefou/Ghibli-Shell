@@ -30,6 +30,7 @@ include src/history/Makefile
 include src/utils/Makefile
 include src/tty/Makefile
 include src/signals/Makefile
+include src/expands/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\
