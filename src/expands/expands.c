@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 23:15:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:20:41 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,30 +225,33 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 	{
 		expand_data = vec_get(&token->expandable_scopes, exp_data_i);
 		if (exp_data_i < token->expandable_scopes.size
-			&& char_index == expand_data->index && *(char *)vec_get(&token->data, expand_data->index) != '*')
+			&& char_index == expand_data->index)
 		{
 			exp_data_i++;
-			expand_data = vec_get(&token->expandable_scopes, exp_data_i);
-			var_content = expand_tild(token, &char_index, minishell);
-			if (!var_content)
-				var_content = give_variable_content(token, &char_index, minishell,
-						expand_data->index);
-			expand_data = vec_get(&token->expandable_scopes, exp_data_i
-					- 1);
-			if (!var_content && expand_data->allow_split)
+			if (*(char *)vec_get(&token->data, expand_data->index) != '*')
 			{
+				expand_data = vec_get(&token->expandable_scopes, exp_data_i);
+				var_content = expand_tild(token, &char_index, minishell);
+				if (!var_content)
+					var_content = give_variable_content(token, &char_index, minishell,
+							expand_data->index);
+				expand_data = vec_get(&token->expandable_scopes, exp_data_i
+						- 1);
+				if (!var_content && expand_data->allow_split)
+				{
+					free(var_content);
+					exp_data_i++;
+					continue ;
+				}
+				if (expand_data->allow_split)
+				{
+					if (!expand_split(argv, &expanded_token, var_content))
+						return (false);
+				}
+				else
+					add_str_to_vec_char(&expanded_token, var_content);
 				free(var_content);
-				exp_data_i++;
-				continue ;
 			}
-			if (expand_data->allow_split)
-			{
-				if (!expand_split(argv, &expanded_token, var_content))
-					return (false);
-			}
-			else
-				add_str_to_vec_char(&expanded_token, var_content);
-			free(var_content);
 			exp_data_i++;
 		}
 		else
