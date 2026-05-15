@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 23:06:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:15:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,16 @@ bool	file_matches_filter(t_vec *filter, char *name)
 	if (!wildcard)
 		return (false); // Shizuku has a biiiiig problem if this happens
 	if (ft_strncmp(str_filter, name, wildcard - str_filter))
+	{
+		free(str_filter);
 		return (false);
+	}
 	if (ft_strcmp(wildcard + 1, name + ft_strlen(name) - ft_strlen(wildcard + 1)))
+	{
+		free(str_filter);
 		return (false);
+	}
+	free(str_filter);
 	return (true);
 }
 
