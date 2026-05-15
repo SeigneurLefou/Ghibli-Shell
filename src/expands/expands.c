@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 23:20:41 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:25:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,15 +167,13 @@ bool	query_files_in_dir(t_vec *out, char *path, t_vec *filter)
 {
 	DIR *dir;
 	struct dirent *dir_entry;
+	bool found; 
 
 	dir = opendir(path);
 	if (!dir)
 		return (false);
 	dir_entry = readdir(dir);
-	if (!dir_entry)
-		closedir(dir);
-	if (!dir_entry)
-		return (false);
+	found = false;
 	while (dir_entry)
 	{
 		if (file_matches_filter(filter, dir_entry->d_name))
@@ -185,11 +183,12 @@ bool	query_files_in_dir(t_vec *out, char *path, t_vec *filter)
 				closedir(dir);
 				return (false);
 			}
+			found = true;
 		}
 		dir_entry = readdir(dir);
 	}
 	closedir(dir);
-	return (!out->failed);
+	return (!out->failed && found);
 }
 
 static bool is_a_wildcard(t_token *token)
@@ -251,6 +250,11 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 				else
 					add_str_to_vec_char(&expanded_token, var_content);
 				free(var_content);
+			}
+			else
+			{
+				vec_append(&expanded_token, vec_get(&token->data, char_index));
+				char_index++;
 			}
 			exp_data_i++;
 		}
