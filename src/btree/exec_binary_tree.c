@@ -99,7 +99,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 int	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
-	char	*wstatus;
+	char	*status;
 
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, files);

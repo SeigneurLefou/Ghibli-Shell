@@ -14,8 +14,8 @@
 
 int			g_signal = 0;
 
-static void	trimmed_line_exec(char *line, char *trimmed,
-				t_minishell *minishell, bool *first_sigint)
+static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
+		bool *first_sigint)
 {
 	if (line && trimmed && trimmed[0])
 	{
