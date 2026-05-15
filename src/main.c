@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 14:31:06 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:42:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,12 @@ bool	main_token(char *line, t_minishell *minishell)
 	{
 		display_error_message("Memory allocation failed.");
 		return (false);	
+	}
+
+	if (!parsed.size)
+	{
+		vec_free(&parsed);
+		return (true);
 	}
 
 	/*unsigned int i = 0;
