@@ -17,15 +17,13 @@ int			g_signal = 0;
 static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		bool *first_sigint)
 {
-	if (trimmed && trimmed[0])
+	if (line && trimmed && trimmed[0])
 	{
 		*first_sigint = true;
 		add_history(trimmed);
 		add_to_history_file(minishell, ".ghiblistory", trimmed);
 		main_token(trimmed, minishell);
-		free(trimmed);
 	}
-	free(line);
 }
 
 void	handle_prompt(t_minishell *minishell)
