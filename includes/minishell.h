@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 10:17:21 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/19 11:42:12 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <signal.h>
 # include "tty.h"
 # include "signals.h"
 
-extern int g_signal;
+extern volatile sig_atomic_t g_signal;
 
 typedef struct s_minishell
 {

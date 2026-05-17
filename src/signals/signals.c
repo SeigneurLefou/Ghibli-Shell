@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 15:30:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/30 20:02:22 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/17 19:30:37 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "signals.h"
 
-void	handle_signal(int sig)
+void	handle_signal_default(int sig)
 {
 	g_signal = sig;
 	close(0);
