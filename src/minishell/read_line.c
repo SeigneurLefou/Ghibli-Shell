@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 15:31:10 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/17 16:59:32 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ void	handle_prompt(t_minishell *minishell)
 	char	*prompt_line;
 	char	*trimmed;
 	bool	first_sigint;
-	int		stdin_save;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
-	stdin_save = dup(0);
+	minishell->stdin_save = dup(0);
 	first_sigint = true;
 	while (1)
 	{
@@ -60,7 +59,7 @@ void	handle_prompt(t_minishell *minishell)
 			if (g_signal > 0)
 			{
 				g_signal = -1;
-				dup2(stdin_save, 0);
+				dup2(minishell->stdin_save, 0);
 				rl_replace_line("", 1);
 				env_variables_set(&minishell->env_variables_manager, "?",
 					"130");
@@ -80,6 +79,6 @@ void	handle_prompt(t_minishell *minishell)
 		if (minishell->request_exit)
 			break ;
 	}
-	close(stdin_save);
+	close(minishell->stdin_save);
 	rl_clear_history();
 }

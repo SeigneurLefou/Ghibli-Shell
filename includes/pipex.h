@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/07 09:46:44 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/17 17:00:49 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_pipex
 int		here_doc_file(char *limiter);
 int		get_file_while_not_limiter(int fd, char *limiter, char **buffer);
 int		pipe_gestion(t_pipex *pipex_var);
-int		fork_pid(t_pipex *pipex_var);
+int		fork_pid(t_pipex *pipex_var, int stdin_pid_copy);
 int		infile_gestion(t_pipex *pipex_var);
 int		pipe_gestion(t_pipex *pipex_var);
 int		child_gestion(t_pipex *pipex_var);
