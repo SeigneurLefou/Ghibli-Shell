@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 17:56:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/17 16:59:16 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_minishell
 	int						shell_level;
 	int						internal_file_recursion;
 	bool					request_exit;
+	int						stdin_save;
 }							t_minishell;
 
 void						handle_prompt(t_minishell *minishell);
