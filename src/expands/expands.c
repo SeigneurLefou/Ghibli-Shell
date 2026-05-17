@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 23:25:44 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/17 16:28:26 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 			char_index++;
 		}
 	}
-	if (var_content || expanded_token.size)
+	if (var_content || expanded_token.size || token->no_skip)
 		vec_append(argv, &expanded_token);
 	return (true);
 }
