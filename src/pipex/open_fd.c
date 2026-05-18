@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 10:35:27 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:35:24 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ void	open_io_fds(t_btree	*tree, int *fds)
 			open_file(file_name, O_CREAT | O_WRONLY | O_APPEND, &(fds)[1]);
 		i++;
 	}
+	printf("%zu io fds\n", i);
 }

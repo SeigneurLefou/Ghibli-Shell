@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 16:55:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:32:15 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->left;
-	open_io_fds(tree_cpy, files);
 	pipe(pipe_fd);
 	fd_out = files[1];
 	files[1] = pipe_fd[1];
+	printf("fd 0 : %d fd 1 : %d\n", files[0], files[1]);
+	open_io_fds(tree_cpy, files);
+	printf("fd 0 : %d fd 1 : %d\n", files[0], files[1]);
 	exec_pipeline(tree_cpy, files, command_pid);
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
@@ -55,6 +57,9 @@ void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	vec_init(command_pid, sizeof(pid_t), 5);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;
+	printf("fd 0 : %d fd 1 : %d\n", files[0], files[1]);
+	open_io_fds(tree_cpy, files);
+	printf("fd 0 : %d fd 1 : %d\n", files[0], files[1]);
 	exec_right_pipeline(tree, files, command_pid);
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
