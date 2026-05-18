@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 16:28:26 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:10:46 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ bool	expand_split(t_vec *argv, t_vec *expanded_token, char *var_content)
 		return (true);
 	vec_init(&var_split, sizeof(t_vec), 5);
 	vec_split(&var_split, var_content, ' ');
+	if (!var_split.size)
+		return (false);
 	vec_expand(expanded_token, vec_get(&var_split, 0));
 	if (var_split.size > 1)
 	{
@@ -125,7 +127,7 @@ bool	file_matches_filter(t_vec *filter, char *name)
 	char *wildcard;
 	char *str_filter;
 	
-	if (!ft_strcmp(name, "..") || !ft_strcmp(name, "."))
+	if (name[0] == '.' && *(char *)vec_get(filter, 0) != '.')
 		return (false);
 	str_filter = vec_to_cstring(filter);
 	if (!str_filter)
