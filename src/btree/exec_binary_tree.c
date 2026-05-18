@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 10:15:00 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 10:17:41 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 		return (exec_leaf(tree, new_files, &pid_list));
 	if (exec_left_tree(tree, new_files, &pid_list))
 		return (tree->node->wstatus);
+<<<<<<< HEAD
 	vec_free(&pid_list);
+=======
+>>>>>>> 690b7076a604a75c2454fbfa92e47e9a4e97a753
 	if (new_files[0] > 2 && new_files[0] != files[0])
 		close(new_files[0]);
 	new_files[0] = fake_fdin();
