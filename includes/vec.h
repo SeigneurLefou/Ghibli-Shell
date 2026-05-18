@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/15 23:10:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:29:23 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "utils.h"
 # include <stdbool.h>
 # include <stdlib.h>
+# include "allocator.h"
 
 typedef struct s_vec
 {

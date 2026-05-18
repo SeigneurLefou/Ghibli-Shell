@@ -24,6 +24,8 @@ void	mem_free(void *ptr)
 {
 	t_smart_pointer	*smart_pointer;
 
+	if (!ptr)
+		return ;
 	smart_pointer = ptr - sizeof(t_smart_pointer);
 	smart_pointer->freed = true;
 }
@@ -31,4 +33,14 @@ void	mem_free(void *ptr)
 void	clean_all(void *ptr)
 {
 	free_every_smart_pointers(ptr - sizeof(t_smart_pointer));
+}
+
+void	clear_garbage_collector(void)
+{
+	void *ptr;
+
+	ptr = mem_alloc(0, NULL, NULL);
+	if (!ptr)
+		return ;
+	clean_all(ptr);
 }

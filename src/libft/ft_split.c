@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:23:59 by marvin            #+#    #+#             */
-/*   Updated: 2026/04/23 15:37:10 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	check_and_unwrap(char **strings_array, int index)
 	if (!strings_array[index])
 	{
 		while (index--)
-			free(strings_array[index]);
-		free(strings_array);
+			mem_free(strings_array[index]);
+		mem_free(strings_array);
 		return (1);
 	}
 	return (0);

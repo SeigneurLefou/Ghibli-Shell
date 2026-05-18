@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 16:55:38 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:29:23 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 {
 	t_btree	*tree_cpy;
 
-	tree_cpy = malloc(sizeof(t_btree));
+	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
 	open_io_fds(tree_cpy, files);
-	if (tree->node->operator != operator_pipe && !tree->node->wstatus
-		&& tree->node->operator == operator_and)
+	if (tree->node->operator!= operator_pipe && !tree->node->wstatus
+		&& tree->node->operator== operator_and)
 		exec_pipeline(tree_cpy, files, command_pid);
-	else if (tree->node->operator != operator_pipe && tree->node->wstatus
-		&& tree->node->operator == operator_or)
+	else if (tree->node->operator!= operator_pipe && tree->node->wstatus
+		&& tree->node->operator== operator_or)
 		exec_pipeline(tree_cpy, files, command_pid);
-	else if (tree->node->operator != operator_pipe
-		&& tree->node->operator == operator_semicolon)
+	else if (tree->node->operator!= operator_pipe
+		&& tree->node->operator== operator_semicolon)
 		exec_pipeline(tree_cpy, files, command_pid);
 	else
 		exec_pipeline(tree_cpy, files, command_pid);
-	free(tree_cpy);
+	mem_free(tree_cpy);
 }
 
 void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
@@ -41,7 +41,7 @@ void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	int		pipe_fd[2];
 	int		fd_out;
 
-	tree_cpy = malloc(sizeof(t_btree));
+	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->left;
 	open_io_fds(tree_cpy, files);
@@ -51,7 +51,7 @@ void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	exec_pipeline(tree_cpy, files, command_pid);
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
-	free(tree_cpy);
+	mem_free(tree_cpy);
 	vec_init(command_pid, sizeof(pid_t), 5);
 	files[0] = pipe_fd[0];
 	files[1] = fd_out;

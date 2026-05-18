@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 17:00:58 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	exec_right_tree(t_btree *tree, int files[2])
 {
 	t_btree	*tree_cpy;
 
-	tree_cpy = malloc(sizeof(t_btree));
+	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
 	if (!tree->node->wstatus && (tree->node->operator == operator_and
@@ -44,7 +44,7 @@ void	exec_right_tree(t_btree *tree, int files[2])
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
-	free(tree_cpy);
+	mem_free(tree_cpy);
 }
 
 bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
@@ -63,12 +63,12 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 				status);
 		return (true);
 	}
-	tree_cpy = malloc(sizeof(t_btree));
+	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->left;
 	exec_binary_tree(tree_cpy, files);
 	tree->node->wstatus = tree_cpy->node->wstatus;
-	free(tree_cpy);
+	mem_free(tree_cpy);
 	return (false);
 }
 

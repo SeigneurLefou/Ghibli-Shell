@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 00:08:27 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/21 18:24:55 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:28:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	list_map(t_list *list, bool (*func)(void **))
 {
 	unsigned int	i;
-	t_list_cell			*cell;
+	t_list_cell		*cell;
 
 	i = 0;
 	while (i < list->size)
@@ -28,8 +28,8 @@ bool	list_map(t_list *list, bool (*func)(void **))
 	return (true);
 }
 
-bool list_complete_duplicate(t_list *list, t_list *new, void *(duplicate_func)(void *),
-		void (*free_func)(void *))
+bool	list_complete_duplicate(t_list *list, t_list *new,
+		void *(duplicate_func)(void *), void (*free_func)(void *))
 {
 	t_u32	i;
 	void	*value;

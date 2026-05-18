@@ -31,6 +31,7 @@ include src/utils/Makefile
 include src/tty/Makefile
 include src/signals/Makefile
 include src/expands/Makefile
+include src/smart_allocator/Makefile
 
 BUILD_FRAME1 = \
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\

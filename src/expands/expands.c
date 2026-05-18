@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 16:28:26 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*give_variable_content(t_token *token, size_t *i,
 	if (!var_content)
 		return (NULL);
 	var_content = ft_strdup(var_content);
-	free(key);
+	mem_free(key);
 	vec_free(&var_name);
 	return (var_content);
 }
@@ -135,15 +135,15 @@ bool	file_matches_filter(t_vec *filter, char *name)
 		return (false); // Shizuku has a biiiiig problem if this happens
 	if (ft_strncmp(str_filter, name, wildcard - str_filter))
 	{
-		free(str_filter);
+		mem_free(str_filter);
 		return (false);
 	}
 	if (ft_strcmp(wildcard + 1, name + ft_strlen(name) - ft_strlen(wildcard + 1)))
 	{
-		free(str_filter);
+		mem_free(str_filter);
 		return (false);
 	}
-	free(str_filter);
+	mem_free(str_filter);
 	return (true);
 }
 
@@ -158,7 +158,7 @@ static bool add_file_on_match(char *path, char *name, t_vec *out)
 	vec_file_path = vec_from_str(file_path);
 	if (!vec_file_path.failed)
 		vec_append(out, &vec_file_path);
-	free(file_path);
+	mem_free(file_path);
 	return (true);
 }
 
@@ -238,7 +238,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 						- 1);
 				if (!var_content && expand_data->allow_split)
 				{
-					free(var_content);
+					mem_free(var_content);
 					exp_data_i++;
 					continue ;
 				}
@@ -249,7 +249,7 @@ bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
 				}
 				else
 					add_str_to_vec_char(&expanded_token, var_content);
-				free(var_content);
+				mem_free(var_content);
 			}
 			else
 			{

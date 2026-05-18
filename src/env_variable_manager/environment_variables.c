@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/12 15:32:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:28:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ bool	env_variables_set_raw(t_env_variables_manager *env_variable_manager,
 	new = ft_strdup(line);
 	if (!new || !key)
 	{
-		free(key);
-		free(new);
+		mem_free(key);
+		mem_free(new);
 		return (false);
 	}
 	exists = env_variables_exists(env_variable_manager, key);
 	if (exists && sep)
 		env_variables_unset_key(env_variable_manager, key);
-	free(key);
+	mem_free(key);
 	if (!(exists && !sep) && !list_push_back(&env_variable_manager->variables,
 			new))
 		return (false);
@@ -80,7 +80,7 @@ static char	*env_variables_manager_create_line(char *key, char *value)
 
 	key_size = ft_strlen(key);
 	value_size = ft_strlen(value);
-	line = malloc(key_size + value_size + 2);
+	line = mem_alloc(key_size + value_size + 2, NULL, NULL);
 	if (!line)
 		return (NULL);
 	ft_memcpy(line, key, key_size);
@@ -106,7 +106,8 @@ char	**env_variables_get_env(t_env_variables_manager *env_variable_manager)
 	t_iterator		it;
 	unsigned int	index;
 
-	env = malloc(sizeof(char *) * (env_variable_manager->variables.size + 1));
+	env = mem_alloc(sizeof(char *) * (env_variable_manager->variables.size + 1),
+			NULL, NULL);
 	if (!env)
 		return (NULL);
 	env[env_variable_manager->variables.size] = NULL;
@@ -184,7 +185,7 @@ bool	env_variables_set(t_env_variables_manager *env_variable_manager,
 		{
 			cell = list_get_cell_at_index(&env_variable_manager->variables,
 					index);
-			free(cell->value);
+			mem_free(cell->value);
 			cell->value = env_variables_manager_create_line(key, value);
 			return (cell->value != 0);
 		}
@@ -212,7 +213,7 @@ bool	env_variables_unset_key(t_env_variables_manager *env_variable_manager,
 		if (!ft_strncmp(key, element, key_len) && (!element[key_len]
 				|| element[key_len] == '='))
 		{
-			list_pop_at_free(&env_variable_manager->variables, index, free);
+			list_pop_at_free(&env_variable_manager->variables, index, mem_free);
 			return (true);
 		}
 		index++;
@@ -222,7 +223,7 @@ bool	env_variables_unset_key(t_env_variables_manager *env_variable_manager,
 
 void	env_variables_free(t_env_variables_manager *env_variable_manager)
 {
-	list_clear(&env_variable_manager->variables, free);
+	list_clear(&env_variable_manager->variables, mem_free);
 }
 
 bool	env_variables_add_from_env(t_env_variables_manager *env_variable_manager,

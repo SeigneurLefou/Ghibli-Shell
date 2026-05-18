@@ -6,12 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 23:11:17 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec_to_cmd.h"
 #include "builtin.h"
+#include "vec_to_cmd.h"
 
 size_t	ft_array_strlen(char **array_str)
 {
@@ -54,7 +54,8 @@ void	expand_str(char ***dest, char **src)
 	size_t	i;
 	size_t	j;
 
-	new_array = malloc((ft_array_strlen(*dest) + ft_array_strlen(src) + 1));
+	new_array = mem_alloc((ft_array_strlen(*dest) + ft_array_strlen(src) + 1),
+			NULL, NULL);
 	len = ft_array_strlen(*dest);
 	i = 0;
 	while (i < len)
@@ -71,11 +72,11 @@ void	expand_str(char ***dest, char **src)
 		j++;
 	}
 	new_array[i] = NULL;
-	free(*dest);
+	mem_free(*dest);
 	*dest = new_array;
 }
 
-void	vec_vec_free(t_vec *vec)
+void	vec_vec_mem_free(t_vec *vec)
 {
 	unsigned int	i;
 
@@ -110,7 +111,7 @@ void	vec_to_cmd(t_btree *tree)
 	new_cmd->argc = argv.size;
 	new_cmd->argv = vec_vec_char_to_str_array(&argv);
 	new_cmd->name = new_cmd->argv[0];
-	vec_vec_free(&argv);
+	vec_vec_mem_free(&argv);
 	if (!is_command_built_in(new_cmd->name))
 		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;
