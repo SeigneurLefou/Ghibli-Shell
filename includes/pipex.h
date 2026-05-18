@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 17:00:49 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:01:00 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*get_env(char **env, char *var);
 int		wait_all_pid(t_vec *pids);
 int		give_exit_code(int status);
 int		fake_fdin(void);
-void	open_file(char *file_name, int open_mode, int *fd);
-void	open_io_fds(t_btree *tree, int *fds);
+bool	open_file(char *file_name, int open_mode, int *fd);
+bool	open_io_fds(t_btree *tree, int *fds);
 
 #endif
