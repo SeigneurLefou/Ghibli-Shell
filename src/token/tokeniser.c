@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:50:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,28 +189,21 @@ static void	clear_all_token(t_vec *command)
 	}
 }
 
-bool	check_tokens_integrity(t_vec *command)
+void	check_tokens_integrity(t_vec *command)
 {
 	unsigned int	index;
 	t_token			*token;
 
 	index = 0;
 	if (command->failed)
-	{
-		clear_all_token(command);
-		return (false);
-	}
+		memory_allocation_failed_error_exit();
 	while (index < command->size)
 	{
 		token = vec_get(command, index);
 		if (token->data.failed || token->expandable_scopes.failed)
-		{
-			clear_all_token(command);
-			return (false);
-		}
+			memory_allocation_failed_error_exit();
 		index++;
 	}
-	return (true);
 }
 
 t_tokeniser_error	tokenise(char *expr, t_vec *command)
@@ -295,8 +288,7 @@ t_tokeniser_error	tokenise(char *expr, t_vec *command)
 	set_expand(&current_token, false, false);
 	if (current_token.type != token_type_void)
 		vec_append(command, &current_token);
-	if (!check_tokens_integrity(command))
-		return (tokeniser_error_memory_error);
+	check_tokens_integrity(command);
 	if (quote_char != 0)
 		return (tokeniser_error_unterminated_quoted_string);
 	return (tokeniser_error_succes);

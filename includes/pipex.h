@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 17:00:49 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:39:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include "get_next_line.h"
 # include "cmd.h"
 # include "builtin.h"
-# include "minishell.h"
 
 typedef struct s_minishell	t_minishell;
 typedef struct s_btree_node	t_btree_node;

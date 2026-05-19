@@ -266,17 +266,8 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 		parse_leaf(expr, node);
 		return (true);
 	}
-	btree_a = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
-	btree_b = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
-	if (!btree_b || !btree_a)
-	{
-		mem_free(btree_a);
-		mem_free(btree_b);
-		vec_null(&node->io_files);
-		mem_free(node);
-		return (false);
-	}
-	// TODO: Handle malloc fail
+	btree_a = mem_alloc(sizeof(t_btree_node), default_error_exit, NULL, 0b1);
+	btree_b = mem_alloc(sizeof(t_btree_node), default_error_exit, NULL, 0b1);
 	expr_end = node->expr_end;
 	btree_a->expr_start = node->expr_start;
 	next_delimiter = get_next_delimiter(expr, expr_end);

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:52:38 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 20:27:27 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:18:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "allocator.h"
 # include "libft.h"
 # include "list.h"
+# include "error_manager.h"
 
 typedef struct s_env_variables_manager
 {
@@ -33,7 +34,7 @@ bool					env_variables_set(t_env_variables_manager *env_variable_manager,
 bool					env_variables_unset_key(t_env_variables_manager *env_variable_manager,
 							char *key);
 void					env_variables_free(t_env_variables_manager *env_variable_manager);
-bool					env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
+void					env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
 							char **env);
 bool					env_variables_exists(t_env_variables_manager *env_variable_manager,
 							char *key);

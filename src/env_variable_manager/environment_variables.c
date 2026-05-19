@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/19 12:26:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:06:05 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,17 +209,15 @@ void	env_variables_free(t_env_variables_manager *env_variable_manager) {
   list_clear(&env_variable_manager->variables, mem_free);
 }
 
-bool	env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
+void	env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
                                 char **env) {
   unsigned int index;
 
   index = 0;
   while (env[index]) {
     if (!env_variables_set_raw(env_variable_manager, env[index])) {
-      env_variables_free(env_variable_manager);
-      return (false);
+      memory_allocation_failed_error_exit();
     }
     index++;
   }
-  return (true);
 }

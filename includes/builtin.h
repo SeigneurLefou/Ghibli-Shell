@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 23:03:35 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:34:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include "cmd.h"
 # include "environment_variables.h"
 # include "libft.h"
-# include "minishell.h"
-# include "pipex.h"
 # include "token.h"
 # include "vec.h"
 # include <linux/limits.h>
@@ -26,6 +24,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct s_env_variables_manager t_env_variables_manager;
 typedef struct s_minishell	t_minishell;
 typedef int					(*t_builtin_function)(int argc, char **argv);
 typedef struct s_btree		t_btree;

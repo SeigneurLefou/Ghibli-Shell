@@ -6,11 +6,15 @@ void	*mem_alloc(size_t size, void (*fail_callback)(void *),
 	t_smart_pointer			*smart_pointer;
 	static t_smart_pointer	*first_mem_ptr = NULL;
 	static t_smart_pointer	*last_mem_ptr = NULL;
-
+	static bool				failed = false;
+	
+	if (failed)
+		return (NULL);
 	clean_freed_pointers(first_mem_ptr, &first_mem_ptr, &last_mem_ptr);
 	smart_pointer = malloc(sizeof(t_smart_pointer) + size);
 	if (!smart_pointer)
 	{
+		failed = true;
 		free_every_smart_pointers(first_mem_ptr);
 		if (fail_callback)
 			fail_callback(fail_callback_args);

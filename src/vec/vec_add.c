@@ -6,20 +6,20 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:20 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:45:54 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec.h"
 
-void	vec_append(t_vec *vec, void *data)
+bool	vec_append(t_vec *vec, void *data)
 {
 	char	*new_data;
 
 	assert((int[]){vec != NULL, data != NULL, 42},
 		"Null passed to vec_append.");
 	if (vec->failed)
-		return ;
+		return (false);
 	if (!vec->data || vec->size >= vec->allocated_size)
 	{
 		new_data = mem_alloc((vec->allocated_size + vec->buff_size)
@@ -27,7 +27,7 @@ void	vec_append(t_vec *vec, void *data)
 		if (!new_data)
 		{
 			vec->failed = true;
-			return ;
+			return (false);
 		}
 		if (vec->data)
 			ft_memcpy(new_data, vec->data, vec->allocated_size
@@ -38,6 +38,7 @@ void	vec_append(t_vec *vec, void *data)
 	}
 	ft_memcpy(vec->data + vec->size * vec->type_size, data, vec->type_size);
 	vec->size++;
+	return (false);
 }
 
 void	vec_expand_and_free(t_vec *vec, t_vec *other)
