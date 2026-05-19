@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 15:19:29 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 19:25:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ int	cpy_btree_node(t_btree_node *new, t_btree_node *old)
 	new->io_files = old->io_files;
 	if (old->left)
 	{
-		new->left = mem_alloc(sizeof(t_btree_node), NULL, NULL);
+		new->left = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
 		cpy_btree_node(new->left, old->left);
 	}
 	else
 		new->left = NULL;
 	if (old->right)
 	{
-		new->right = mem_alloc(sizeof(t_btree_node), NULL, NULL);
+		new->right = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
 		cpy_btree_node(new->right, old->right);
 	}
 	else
@@ -43,7 +43,7 @@ int	cpy_btree(t_btree *new, t_btree *old)
 
 	new->minishell = old->minishell;
 	new->expr = old->expr;
-	new->node = mem_alloc(sizeof(t_btree_node), NULL, NULL);
+	new->node = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
 	cpy_node = old->node;
 	cpy_btree_node(new->node, cpy_node);
 	return (EXIT_SUCCESS);

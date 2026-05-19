@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:20 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:23 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	vec_append(t_vec *vec, void *data)
 	if (!vec->data || vec->size >= vec->allocated_size)
 	{
 		new_data = mem_alloc((vec->allocated_size + vec->buff_size)
-				* vec->type_size, NULL, NULL);
+				* vec->type_size, NULL, NULL, 0b1);
 		if (!new_data)
 		{
 			vec->failed = true;
@@ -54,7 +54,7 @@ void	vec_expand_and_free(t_vec *vec, t_vec *other)
 	if (vec->failed)
 		return ;
 	alloc_size = (vec->size + other->size + vec->buff_size) * vec->type_size;
-	new_data = mem_alloc(alloc_size, NULL, NULL);
+	new_data = mem_alloc(alloc_size, NULL, NULL, 0b1);
 	if (!new_data)
 	{
 		vec->failed = true;
@@ -83,7 +83,7 @@ void	vec_expand(t_vec *vec, t_vec *other)
 	if (vec->failed)
 		return ;
 	alloc_size = (vec->size + other->size + vec->buff_size) * vec->type_size;
-	new_data = mem_alloc(alloc_size, NULL, NULL);
+	new_data = mem_alloc(alloc_size, NULL, NULL, 0b1);
 	if (!new_data)
 		return ;
 	if (vec->data)

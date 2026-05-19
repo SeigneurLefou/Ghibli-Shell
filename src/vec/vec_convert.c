@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:28 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*vec_to_cstring(t_vec *vec)
 	assert((int[]){vec->type_size == 1, 42},
 		"The data in vec is larger than a char.");
 	assert((int[]){!vec->failed, 42}, "Attempted to read a failed vec.");
-	str = mem_alloc((vec->size + 1) * sizeof(char), NULL, NULL);
+	str = mem_alloc((vec->size + 1) * sizeof(char), NULL, NULL, 0b1);
 	if (!str)
 		return (NULL);
 	if (vec->data)
@@ -89,7 +89,7 @@ char	**vec_vec_char_to_str_array(t_vec *vec)
 	char	**str_array;
 	size_t	i;
 
-	str_array = mem_alloc(sizeof(char *) * (vec->size + 1), NULL, NULL);
+	str_array = mem_alloc(sizeof(char *) * (vec->size + 1), NULL, NULL, 0b1);
 	if (!str_array)
 		return (NULL);
 	i = 0;

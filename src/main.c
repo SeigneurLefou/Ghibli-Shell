@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 13:33:13 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);
 	}
 	
-	t_btree_node *root = mem_alloc(2* sizeof(t_btree_node), NULL, NULL);
+	t_btree_node *root = mem_alloc(2* sizeof(t_btree_node), NULL, NULL, 0b1);
 	if (!root)
 	{
 		display_error_message("Memory allocation Failed!");
@@ -172,7 +172,7 @@ bool	main_token(char *line, t_minishell *minishell)
 	// print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
-	tree = mem_alloc(sizeof(t_btree), NULL, NULL);
+	tree = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
 	if (!tree)
 	{
 		display_error_message("Memory allocation Failed!");

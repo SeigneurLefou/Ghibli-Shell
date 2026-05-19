@@ -266,8 +266,8 @@ bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 		parse_leaf(expr, node);
 		return (true);
 	}
-	btree_a = mem_alloc(sizeof(t_btree_node), NULL, NULL);
-	btree_b = mem_alloc(sizeof(t_btree_node), NULL, NULL);
+	btree_a = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
+	btree_b = mem_alloc(sizeof(t_btree_node), NULL, NULL, 0b1);
 	if (!btree_b || !btree_a)
 	{
 		mem_free(btree_a);

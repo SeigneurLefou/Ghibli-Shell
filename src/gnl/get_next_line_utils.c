@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:09:36 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 20:28:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:47 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*gnl_strjoin(char *dst, const char *src, size_t line_size) {
   dst_len = 0;
   while (dst && dst[dst_len])
     dst_len++;
-  new = mem_alloc(dst_len + line_size + 1, NULL, NULL);
+  new = mem_alloc(dst_len + line_size + 1, NULL, NULL, 0b1);
   if (!new)
     return (NULL);
   dst_len = 0;

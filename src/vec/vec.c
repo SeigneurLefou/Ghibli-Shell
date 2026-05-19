@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	vec_truncate(t_vec *vec)
 
 	assert((int[]){vec != NULL, 42}, "Null passed to vec_truncate.");
 	assert((int[]){!vec->failed, 42}, "Attempted to read a failed vec.");
-	new_data = mem_alloc(vec->size * vec->type_size, NULL, NULL);
+	new_data = mem_alloc(vec->size * vec->type_size, NULL, NULL, 0b1);
 	if (!new_data)
 		return (false);
 	if (vec->data)
@@ -51,7 +51,7 @@ bool	vec_clone(t_vec *new, t_vec *old)
 	assert((int[]){new != NULL, old != NULL, 42}, "Null passed to vec_clone.");
 	assert((int[]){!old->failed, 42}, "Attempted to read a failed vec.");
 	if (new->data)
-		new->data = mem_alloc(old->size * old->type_size, NULL, NULL);
+		new->data = mem_alloc(old->size * old->type_size, NULL, NULL, 0b1);
 	else
 		new->data = NULL;
 	if (!new->data)

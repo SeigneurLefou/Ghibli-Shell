@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 11:59:14 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 19:18:35 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	to_alloc = nmemb * size;
 	if (nmemb != to_alloc / size)
 		return (NULL);
-	array = mem_alloc(to_alloc, NULL, NULL);
+	array = mem_alloc(to_alloc, NULL, NULL, 0b1);
 	if (!array)
 		return (NULL);
 	ft_bzero(array, to_alloc);

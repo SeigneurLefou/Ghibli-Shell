@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:26:33 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	expand_str(char ***dest, char **src)
 	size_t	j;
 
 	new_array = mem_alloc((ft_array_strlen(*dest) + ft_array_strlen(src) + 1),
-			NULL, NULL);
+			NULL, NULL, 0b1);
 	len = ft_array_strlen(*dest);
 	i = 0;
 	while (i < len)
