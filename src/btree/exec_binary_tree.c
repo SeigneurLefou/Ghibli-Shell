@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 11:43:09 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/19 16:58:51 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 	t_btree	*tree_cpy;
 	char	*status;
 
-	if (tree->node->operator== operator_pipe)
+	if (tree->node->operator == operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
 		tree->node->wstatus = wait_all_pid(pid_list);

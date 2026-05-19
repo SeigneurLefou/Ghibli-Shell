@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 11:23:49 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/19 16:56:34 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,8 @@ bool	open_io_fds(t_btree	*tree, int fds[2])
 		if (fds[0] < 0 || fds[1] < 0)
 			return (false);
 		i++;
-		printf("filename %s\n", file_name);
-		printf("files 0 : %d, files 1 : %d\n", fds[0], fds[1]);
 		free(file_name);
 	}
-	printf("%zu io files\n", i);
 	return (true);
 }
 
