@@ -6,13 +6,62 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 17:22:01 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/19 08:43:04 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
+
+/* Based on the examples given at https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction */
+bool	setup_sig_handler(void)
+{
+	struct sigaction	sa;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = handle_signal_default;
+	if (sigemptyset(&sa.sa_mask) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGTERM, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	return (true);
+}
+
+bool	disable_sig_handler(void)
+{
+	struct sigaction	sa;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = SIG_IGN;
+	if (sigemptyset(&sa.sa_mask) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGTERM, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	return (true);
+}
 
 static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		bool *first_sigint)
@@ -22,7 +71,9 @@ static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		*first_sigint = true;
 		add_history(trimmed);
 		add_to_history_file(minishell, ".ghiblistory", trimmed);
+		disable_sig_handler();
 		main_token(trimmed, minishell);
+		setup_sig_handler();
 	}
 }
 
@@ -33,12 +84,11 @@ void	handle_prompt(t_minishell *minishell)
 	char	*trimmed;
 	bool	first_sigint;
 
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_signal);
 	minishell->stdin_save = dup(0);
 	first_sigint = true;
 	while (1)
 	{
+		setup_sig_handler();
 		prompt_line = get_prompt_line(minishell);
 		line = NULL;
 		if (prompt_line)
