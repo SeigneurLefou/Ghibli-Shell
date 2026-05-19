@@ -6,13 +6,13 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 11:35:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:02:41 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
 
-void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
+bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 {
 	t_btree	*tree_cpy;
 
@@ -32,9 +32,10 @@ void	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 	else
 		exec_pipeline(tree_cpy, files, command_pid);
 	free(tree_cpy);
+	return (true);
 }
 
-void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
+bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 		t_vec *command_pid)
 {
 	t_btree	*tree_cpy;
@@ -60,9 +61,10 @@ void	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
 	close_new_files(files, new_files);
+	return (true);
 }
 
-void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
+bool	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_vec	command_pid;
 
@@ -72,7 +74,8 @@ void	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 		vec_to_cmd(tree);
 		exec_cmd(tree, files, &command_pid);
 		vec_expand_and_free(pid_list, &command_pid);
-		return ;
+		return (true);
 	}
 	exec_left_right_pipeline(tree, files, pid_list, &command_pid);
+	return (true);
 }

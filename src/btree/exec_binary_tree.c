@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 16:58:51 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:09:21 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
 
-void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
+bool	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_pipex	pipex_var;
 
@@ -24,9 +24,10 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.fds[1] = files[1];
 	fork_pid(&pipex_var, tree->minishell->stdin_save);
 	vec_append(pid_list, &pipex_var.pid);
+	return (true);
 }
 
-void	exec_right_tree(t_btree *tree, int files[2])
+bool	exec_right_tree(t_btree *tree, int files[2])
 {
 	t_btree	*tree_cpy;
 
@@ -44,6 +45,7 @@ void	exec_right_tree(t_btree *tree, int files[2])
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
 	free(tree_cpy);
+	return (true);
 }
 
 bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
@@ -60,7 +62,7 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 		if (status) // TODO: HANDLE THIS FAIL !!!!!
 			env_variables_set(&tree->minishell->env_variables_manager, "?",
 				status);
-		return (true);
+		return (false);
 	}
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
@@ -68,7 +70,7 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 	exec_binary_tree(tree_cpy, files);
 	tree->node->wstatus = tree_cpy->node->wstatus;
 	free(tree_cpy);
-	return (false);
+	return (true);
 }
 
 bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
@@ -91,10 +93,10 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	if (status)
 		env_variables_set(&tree->minishell->env_variables_manager, "?",
 			status);
-	return (tree->node->wstatus);
+	return (true);
 }
 
-int	exec_binary_tree(t_btree *tree, int files[2])
+bool	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
 	char	*status;
@@ -105,10 +107,12 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, new_files);
 	if (!tree->node->left && !tree->node->right)
-		return (exec_leaf(tree, new_files, &pid_list));
-	if (exec_left_tree(tree, new_files, &pid_list))
-		return (tree->node->wstatus);
-	vec_free(&pid_list);
+	{
+		exec_leaf(tree, new_files, &pid_list);
+		return (true);
+	}
+	if (!exec_left_tree(tree, new_files, &pid_list))
+		return (false);
 	if (new_files[0] > 2 && new_files[0] != files[0])
 		close(new_files[0]);
 	new_files[0] = fake_fdin();
@@ -117,5 +121,5 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	close_new_files(files, new_files);
 	if (status)
 		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
-	return (tree->node->wstatus);
+	return (true);
 }
