@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 13:37:45 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/20 09:50:41 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	here_doc_file(char *limiter, int *fd)
 	char	*limiter_with_enter;
 
 	limiter_with_enter = ft_strjoin(limiter, "\n");
-	input_user = NULL;
+	input_user = ft_calloc(1, sizeof(char));
 	pipe(pipe_fd);
 	get_file_while_not_limiter(0, limiter_with_enter, &input_user);
 	write(pipe_fd[1], input_user, ft_strlen(input_user));
@@ -52,5 +52,7 @@ void	here_doc_file(char *limiter, int *fd)
 	if (input_user)
 		free(input_user);
 	free(limiter_with_enter);
+	if (*fd > 2)
+		close(*fd);
 	*fd = pipe_fd[0];
 }

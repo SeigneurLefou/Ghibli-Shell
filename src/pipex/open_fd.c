@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 16:56:34 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/20 09:54:23 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	open_file(char *file_name, int open_mode, int *fd)
 {
 	if (*fd > 2)
 		close(*fd);
-	// VERIFY FILE WITH ACCESS OR STAT
+	// TODO : VERIFY FILE WITH ACCESS OR STAT
 	*fd = open(file_name, open_mode, 0644);
 	if (*fd < 0)
 		return (false);

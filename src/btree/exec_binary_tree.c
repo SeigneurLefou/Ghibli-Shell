@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:09:21 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/20 09:53:49 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ bool	exec_binary_tree(t_btree *tree, int files[2])
 	if (!tree->node->left && !tree->node->right)
 	{
 		exec_leaf(tree, new_files, &pid_list);
+		close_new_files(files, new_files);
 		return (true);
 	}
 	if (!exec_left_tree(tree, new_files, &pid_list))

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:10:46 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/20 08:46:53 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ void	take_child(t_pipex *pipex_var)
 {
 	char	**env;
 
+	if (is_command_built_in(pipex_var->cmd->name))
+	{
+		exec_builtin(pipex_var->cmd, pipex_var->minishell, pipex_var->fds);
+		ft_cmdclear(pipex_var->cmd);
+		exit(pipex_var->wstatus);
+	}
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
@@ -114,6 +120,8 @@ void	take_child(t_pipex *pipex_var)
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
 	{
+		pipex_var->fds[0] = 0;
+		pipex_var->fds[1] = 1;
 		exec_builtin(pipex_var->cmd, pipex_var->minishell, pipex_var->fds);
 		ft_cmdclear(pipex_var->cmd);
 		exit(pipex_var->wstatus);

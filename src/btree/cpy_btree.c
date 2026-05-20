@@ -6,13 +6,13 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 15:19:29 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/17 11:23:21 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/20 08:47:53 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
 
-int	cpy_btree_node(t_btree_node *new, t_btree_node *old)
+bool	cpy_btree_node(t_btree_node *new, t_btree_node *old)
 {
 	new->expr_start = old->expr_start;
 	new->expr_end = old->expr_end;
@@ -34,10 +34,10 @@ int	cpy_btree_node(t_btree_node *new, t_btree_node *old)
 	}
 	else
 		new->right = NULL;
-	return (EXIT_SUCCESS);
+	return (true);
 }
 
-int	cpy_btree(t_btree *new, t_btree *old)
+bool	cpy_btree(t_btree *new, t_btree *old)
 {
 	t_btree_node	*cpy_node;
 
@@ -46,5 +46,5 @@ int	cpy_btree(t_btree *new, t_btree *old)
 	new->node = malloc(sizeof(t_btree_node));
 	cpy_node = old->node;
 	cpy_btree_node(new->node, cpy_node);
-	return (EXIT_SUCCESS);
+	return (true);
 }
