@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/20 09:53:49 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 15:50:33 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ bool	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
+	pipex_var.wstatus = 0;
 	fork_pid(&pipex_var, tree->minishell->stdin_save);
 	vec_append(pid_list, &pipex_var.pid);
 	return (true);
@@ -114,9 +115,6 @@ bool	exec_binary_tree(t_btree *tree, int files[2])
 	}
 	if (!exec_left_tree(tree, new_files, &pid_list))
 		return (false);
-	if (new_files[0] > 2 && new_files[0] != files[0])
-		close(new_files[0]);
-	new_files[0] = fake_fdin();
 	exec_right_tree(tree, new_files);
 	status = ft_itoa(tree->node->wstatus);
 	close_new_files(files, new_files);

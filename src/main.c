@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 11:21:31 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 11:57:39 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ bool	main_token(char *line, t_minishell *minishell)
 	tree->node = root;
 	tree->expr = parsed;
  	tree->minishell = minishell;
+	tree->node->wstatus = 0;
 	exec_binary_tree(tree, files);
 	free(tree);
 	free(root);
