@@ -12,7 +12,7 @@
 
 #include "builtin.h"
 
-int	builtin_env(int argc, t_minishell *minishell)
+int	builtin_env(int argc, t_minishell *minishell, int fds[2])
 {
 	unsigned int	index;
 	char			*element;
@@ -30,8 +30,8 @@ int	builtin_env(int argc, t_minishell *minishell)
 		element = iterator_next(&it);
 		if (ft_strchr(element, '='))
 		{
-			write(1, element, ft_strlen(element));
-			write(1, "\n", 1);
+			write(fds[1], element, ft_strlen(element));
+			write(fds[1], "\n", 1);
 		}
 		index++;
 	}
