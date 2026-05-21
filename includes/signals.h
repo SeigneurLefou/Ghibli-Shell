@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 15:29:16 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 15:43:58 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/17 18:59:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 # define SIGNALS_H
 # include "minishell.h"
 
-void	handle_signal(int sig);
+void	handle_signal_default(int sig);
 
 #endif

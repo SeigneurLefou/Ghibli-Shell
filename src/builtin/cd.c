@@ -6,17 +6,44 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/12 15:31:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:39:48 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	builtin_cd(int argc, char **argv, t_minishell *minishell)
+int go_home(t_minishell *minishell)
 {
-	char	path_buffer[PATH_MAX];
 	char	*home;
 
+	home = env_variables_get(&minishell->env_variables_manager, "HOME");
+	if (home)
+	{
+		if (chdir(home))
+		{
+			perror("CD");
+			return (127);
+		}
+	}
+	return (0);
+}
+
+bool update_pwd(t_minishell *minishell)
+{
+	char	path_buffer[PATH_MAX];
+
+	if (!getcwd(path_buffer, PATH_MAX))
+	{
+		perror("CD");
+		return (false);
+	}
+	env_variables_set(&minishell->env_variables_manager, "PWD", path_buffer);
+	env_variables_set(&minishell->env_variables_manager, "OLDPWD", path_buffer);
+	return (true);
+}
+
+int	builtin_cd(int argc, char **argv, t_minishell *minishell)
+{
 	if (argc > 2)
 	{
 		write(2, "Too much arguments.\n", 21);
@@ -24,21 +51,19 @@ int	builtin_cd(int argc, char **argv, t_minishell *minishell)
 	}
 	if (argc == 1)
 	{
-		home = env_variables_get(&minishell->env_variables_manager, "HOME");
-		if (home)
-		{
-			if (!chdir(home))
-				perror("CD");
-		}
+		int result = go_home(minishell);
+		if (result)
+			return (result);
 	}
 	else
 	{
-		if (!chdir(argv[1]))
+		if (chdir(argv[1]))
+		{
 			perror("CD");
+			return (127);
+		}
 	}
-	if (!getcwd(path_buffer, PATH_MAX))
-		perror("CD");
-	env_variables_set(&minishell->env_variables_manager, "PWD", path_buffer);
-	env_variables_set(&minishell->env_variables_manager, "OLDPWD", path_buffer);
+	if (!update_pwd(minishell))
+		return (1);
 	return (0);
 }

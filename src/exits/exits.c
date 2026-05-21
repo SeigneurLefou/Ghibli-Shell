@@ -1,4 +1,5 @@
 #include "exits.h"
+# include "error_manager.h"
 
 void	memory_allocation_failed_error_exit(void)
 {

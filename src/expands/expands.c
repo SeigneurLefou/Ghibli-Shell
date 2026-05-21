@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:00:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,23 @@ bool	expand_split(t_vec *argv, t_vec *expanded_token, char *var_content)
 	t_vec	var_split;
 	size_t	j;
 
+	j = 1;
 	if (!var_content)
 		return (true);
 	vec_init(&var_split, sizeof(t_vec), 5);
 	vec_split(&var_split, var_content, ' ');
-	vec_expand(expanded_token, vec_get(&var_split, 0));
+	if (!var_split.size)
+		return (false);
+	if (expanded_token->size > 0
+			&& *(char *)vec_get(expanded_token, expanded_token->size - 1) != ' '
+			&&  var_content && var_content[0] && var_content[0] != ' ')
+		vec_expand(expanded_token, vec_get(&var_split, 0));
+	else
+		j = 0;
 	if (var_split.size > 1)
 	{
 		vec_append(argv, expanded_token);
 		vec_init(expanded_token, sizeof(char), 20);
-		j = 1;
 		while (j < var_split.size - 1)
 		{
 			vec_append(argv, vec_get(&var_split, j));
@@ -125,7 +132,7 @@ bool	file_matches_filter(t_vec *filter, char *name)
 	char *wildcard;
 	char *str_filter;
 	
-	if (!ft_strcmp(name, "..") || !ft_strcmp(name, "."))
+	if (name[0] == '.' && *(char *)vec_get(filter, 0) != '.')
 		return (false);
 	str_filter = vec_to_cstring(filter);
 	if (!str_filter)

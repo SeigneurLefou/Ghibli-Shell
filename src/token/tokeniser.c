@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:50:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:11:37 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,21 +172,6 @@ bool	is_tilde_escape_compatible(char c)
 {
 	return (c == ' ' || c == '/' || c == '\0' || c == '|' || c == '&'
 		|| c == '<' || c == '>');
-}
-
-static void	clear_all_token(t_vec *command)
-{
-	unsigned int	index;
-	t_token			*token;
-
-	index = 0;
-	while (index < command->size)
-	{
-		token = vec_get(command, index);
-		vec_free(&token->data);
-		vec_free(&token->expandable_scopes);
-		index++;
-	}
 }
 
 void	check_tokens_integrity(t_vec *command)

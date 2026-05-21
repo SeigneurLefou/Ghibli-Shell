@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/19 19:06:05 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:00:23 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,29 @@ t_env_variables_manager	env_variables_new(void) {
 }
 
 bool	env_variables_set_raw(t_env_variables_manager *env_variable_manager,
-                           char *line) {
-  char *new;
-  char *key;
-  char *sep;
-  bool exists;
-
-  sep = ft_strchr(line, '=');
-  if (!sep)
-    key = ft_strdup(line);
-  else
-    key = ft_substr(line, 0, sep - line);
-  new = ft_strdup(line);
-  if (!new || !key) {
-    mem_free(key);
-    mem_free(new);
-    return (false);
-  }
-  exists = env_variables_exists(env_variable_manager, key);
-  if (exists && sep)
-    env_variables_unset_key(env_variable_manager, key);
-  mem_free(key);
-  if (!(exists && !sep) &&
-      !list_push_back(&env_variable_manager->variables, new))
-    return (false);
-  return (true);
+		char *line)
+{
+	char	*new;
+	char	*key;
+	char	*sep;
+	bool	exists;
+	
+	sep = ft_strchr(line, '=');
+	if (!sep)
+		key = ft_strdup(line);
+	else
+		key = ft_substr(line, 0, sep - line);
+	new = ft_strdup(line);
+	if (!new || !key)
+		return (false);
+	exists = env_variables_exists(env_variable_manager, key);
+	if (exists && sep)
+		env_variables_unset_key(env_variable_manager, key);
+	mem_free(key);
+	if (!(exists && !sep) && !list_push_back(&env_variable_manager->variables,
+			new))
+		return (false);
+	return (true);
 }
 
 char	*env_variables_get_raw(t_env_variables_manager *env_variable_manager,
