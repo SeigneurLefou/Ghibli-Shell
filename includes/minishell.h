@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 11:43:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 17:02:23 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # include <signal.h>
 # include "tty.h"
 # include "signals.h"
-
+# define MAX_NUMBER_FDS 1024
 extern volatile sig_atomic_t g_signal;
 
 typedef struct s_minishell
@@ -48,6 +48,7 @@ typedef struct s_minishell
 	int						internal_file_recursion;
 	bool					request_exit;
 	int						stdin_save;
+	int						all_fds[MAX_NUMBER_FDS];
 }							t_minishell;
 
 void						handle_prompt(t_minishell *minishell);

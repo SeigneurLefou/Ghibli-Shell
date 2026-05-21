@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_manager.c                                :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/16 13:57:17 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/21 17:05:37 by lchamard         ###   ########.fr       */
+/*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
+/*   Updated: 2026/05/15 23:03:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef BUILTIN_H
+# define BUILTIN_H
 
-void	minishell_init(t_minishell *minishell)
-{
-	minishell->env_variables_manager = env_variables_new();
-	minishell->shell_level = 1;
-	minishell->internal_file_recursion = 0;
-	minishell->request_exit = false;
-	ft_bzero(minishell->all_fds, MAX_NUMBER_FDS * sizeof(int));
-}
+# include "libft.h"
+# include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int	ft_open(const char *pathname, int flags, t_minishell *minishell);
+int	ft_open_mode(const char *pathname, int flags,
+			mode_t mode, t_minishell *minishell);
+
+int ft_close(int fd, t_minishell *minishell);
+int ft_close_all(t_minishell *minishell);
+
+#endif
