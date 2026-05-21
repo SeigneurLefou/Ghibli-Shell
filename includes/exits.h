@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expands.h                                          :+:      :+:    :+:   */
+/*   exits.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/15 23:01:52 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/21 18:16:54 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/05/21 17:54:13 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/05/21 18:21:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANDS_H
-# define EXPANDS_H
+#ifndef EXITS_H
+# define EXITS_H
 
-#include "vec.h"
-# include "minishell.h"
-#include "token.h"
+# include <stdlib.h>
+# include <unistd.h>
 
-typedef struct s_minishell	t_minishell;
-
-bool	expand(t_vec *argv, t_token *token, t_minishell *minishell);
+void	memory_allocation_failed_error_exit(void);
+void	default_error_exit(void *data);
+void	close_single_fd_error_exit(void *fd);
 
 #endif
-

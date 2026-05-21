@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:52:38 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/19 19:18:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:19:17 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "allocator.h"
 # include "libft.h"
 # include "list.h"
-# include "error_manager.h"
+# include "exits.h"
 
 typedef struct s_env_variables_manager
 {

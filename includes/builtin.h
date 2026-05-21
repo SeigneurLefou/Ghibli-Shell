@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 19:34:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:16:13 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "libft.h"
 # include "token.h"
 # include "vec.h"
+# include "minishell.h"
 # include <linux/limits.h>
 # include <stdio.h>
 # include <stdlib.h>
