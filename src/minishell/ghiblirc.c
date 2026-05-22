@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:51:00 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 10:14:41 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:01:18 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ static void	ask_and_setup_ghiblirc(char *config_path)
 	{
 		if (!choice[0] || choice[0] == '1' || choice[0] == '2')
 		{
-			file = open(config_path, O_WRONLY | O_CREAT, 0666);
-			if (!file)
+			file = open(config_path, O_WRONLY | O_CREAT, 0644);
+			printf("grc : %d", file);
+			if (file < 0)
 			{
 				perror("GhibliShell");
 				return ;

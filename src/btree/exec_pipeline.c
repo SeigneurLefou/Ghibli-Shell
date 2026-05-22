@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 14:45:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/22 08:37:02 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	open_io_fds(tree_cpy, files);
+	open_io_fds(tree_cpy, files, tree->minishell);
 	if (tree->node->operator == operator_or && tree->node->wstatus)
 		exec_pipeline(tree_cpy, files, command_pid);
 	else if (tree->node->operator == operator_and && !tree->node->wstatus)
@@ -47,9 +47,9 @@ bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 		pipe(pipe_fd);
 		new_files[1] = pipe_fd[1];
 	}
-	open_io_fds(tree_cpy, new_files);
+	open_io_fds(tree, new_files, tree->minishell);
 	exec_pipeline(tree_cpy, new_files, command_pid);
-	close_new_files(files, new_files);
+	close_new_files(files, new_files, tree->minishell);
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
 	free(tree_cpy);
@@ -60,7 +60,7 @@ bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	exec_right_pipeline(tree, new_files, command_pid);
 	if ((*command_pid).data)
 		vec_expand_and_free(pid_list, command_pid);
-	close_new_files(files, new_files);
+	close_new_files(files, new_files, tree->minishell);
 	return (true);
 }
 

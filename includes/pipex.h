@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 10:59:44 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/22 09:44:04 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <stdio.h>
-# include "btree.h"
+# include "builtin.h"
+# include "minishell.h"
+# include "open_close_fds.h"
 # include "libft.h"
 # include "get_next_line.h"
 # include "cmd.h"
+# include "vec.h"
 # include "builtin.h"
-# include "minishell.h"
+# include "btree.h"
 
 typedef struct s_minishell	t_minishell;
 typedef struct s_btree_node	t_btree_node;
@@ -42,7 +45,7 @@ typedef struct s_pipex
 	int				wstatus;
 }				t_pipex;
 
-void	here_doc_file(char *limiter, int *fd);
+void	here_doc_file(char *limiter, int *fd, t_minishell *minishell);
 int		get_file_while_not_limiter(int fd, char *limiter, char **buffer);
 int		pipe_gestion(t_pipex *pipex_var);
 int		fork_pid(t_pipex *pipex_var, int stdin_pid_copy);
@@ -56,9 +59,5 @@ void	ft_free_path(char **splited_path, int i);
 char	*get_env(char **env, char *var);
 int		wait_all_pid(t_vec *pids);
 int		give_exit_code(int status);
-int		fake_fdin(void);
-bool	open_file(char *file_name, int open_mode, int *fd);
-bool	open_io_fds(t_btree *tree, int fds[2]);
-void	close_new_files(int *old_files, int *new_files);
 
 #endif

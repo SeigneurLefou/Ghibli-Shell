@@ -105,12 +105,12 @@ void	take_child(t_pipex *pipex_var)
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
-		close(pipex_var->fds[0]);
+		ft_close(pipex_var->fds[0], pipex_var->minishell);
 	}
 	if (pipex_var->fds[1] > 2)
 	{
 		dup2(pipex_var->fds[1], 1);
-		close(pipex_var->fds[1]);
+		ft_close(pipex_var->fds[1], pipex_var->minishell);
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
 	{

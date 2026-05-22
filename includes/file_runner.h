@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:35:12 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/01 15:35:34 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/22 08:50:04 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include "minishell.h"
+# include "open_close_fds.h"
 # include "libft.h"
 # include "getopt.h"
 # include "error_manager.h"

@@ -12,15 +12,6 @@
 
 #include "pipex.h"
 
-int	fake_fdin(void)
-{
-	int	fake_pipe[2];
-
-	pipe(fake_pipe);
-	close(fake_pipe[1]);
-	return (fake_pipe[0]);
-}
-
 int	get_file_while_not_limiter(int fd, char *limiter, char **buffer)
 {
 	char	*line;
@@ -37,7 +28,7 @@ int	get_file_while_not_limiter(int fd, char *limiter, char **buffer)
 	return (0);
 }
 
-void	here_doc_file(char *limiter, int *fd)
+void	here_doc_file(char *limiter, int *fd, t_minishell *minishell)
 {
 	int		pipe_fd[2];
 	char	*input_user;
@@ -45,14 +36,14 @@ void	here_doc_file(char *limiter, int *fd)
 
 	limiter_with_enter = ft_strjoin(limiter, "\n");
 	input_user = ft_calloc(1, sizeof(char));
-	pipe(pipe_fd);
+	ft_pipe(pipe_fd, minishell);
 	get_file_while_not_limiter(0, limiter_with_enter, &input_user);
 	write(pipe_fd[1], input_user, ft_strlen(input_user));
-	close(pipe_fd[1]);
+	ft_close(pipe_fd[1], minishell);
 	if (input_user)
 		free(input_user);
 	free(limiter_with_enter);
 	if (*fd > 2)
-		close(*fd);
+		ft_close(*fd, minishell);
 	*fd = pipe_fd[0];
 }

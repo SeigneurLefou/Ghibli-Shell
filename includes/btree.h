@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:02:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/22 08:50:00 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdbool.h>
 # include <stdlib.h>
+# include "minishell.h"
+# include "open_close_fds.h"
 # include "vec.h"
 # include "vec_to_cmd.h"
 # include "token.h"
@@ -22,7 +24,7 @@
 # include "pid.h"
 # include "pipex.h"
 # include "libft.h"
-# include "minishell.h"
+
 
 typedef struct s_pipex	t_pipex;
 typedef struct s_minishell	t_minishell;

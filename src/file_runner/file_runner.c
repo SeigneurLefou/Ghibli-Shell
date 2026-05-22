@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 10:18:08 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:03:06 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ bool execute_file(char *filename, t_minishell *minishell)
 		free(trimmed);
 		free(line);
 	}
-	if (fd > 2)
-		close(fd);
+	close(fd);
 	return (true);
 }
