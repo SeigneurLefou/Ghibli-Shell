@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 18:46:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/22 12:50:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 	exec_binary_tree(tree_cpy, files);
 	tree->node->wstatus = tree_cpy->node->wstatus;
 	mem_free(tree_cpy);
-	return (false);
+	return (true);
 }
 
 bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
