@@ -6,27 +6,25 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 10:14:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:57:11 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static bool	is_valid_key(char *line)
-{
-	unsigned int	i;
+static bool	is_valid_key(char *line) {
+  unsigned int i;
 
-	if (!ft_isalpha(line[0]) && line[0] != '_')
-		return (false);
-	i = 0;
-	while (line[i] && !(line[i] == '=' || (line[i] == '+' && line[i
-				+ 1] == '=')))
-	{
-		if (!ft_isalnum(line[i]) && line[i] != '_')
-			return (false);
-		i++;
-	}
-	return (true);
+  if (!ft_isalpha(line[0]) && line[0] != '_')
+    return (false);
+  i = 0;
+  while (line[i] &&
+         !(line[i] == '=' || (line[i] == '+' && line[i + 1] == '='))) {
+    if (!ft_isalnum(line[i]) && line[i] != '_')
+      return (false);
+    i++;
+  }
+  return (true);
 }
 
 static void	display_env_variables(t_minishell *minishell, int fds[2])
@@ -47,50 +45,43 @@ static void	display_env_variables(t_minishell *minishell, int fds[2])
 	}
 }
 
-static bool	handle_append(char *value, t_minishell *minishell, char *sep)
-{
-	char	*key;
-	char	*var_value;
+static bool	handle_append(char *value, t_minishell *minishell, char *sep) {
+  char *key;
+  char *var_value;
 
-	key = ft_substr(value, 0, sep - value - 1);
-	if (!key)
-		return (false);
-	var_value = env_variables_get_raw(&minishell->env_variables_manager,
-			key);
-	if (!var_value || !ft_strchr(var_value, '='))
-	{
-		if (!env_variables_set(&minishell->env_variables_manager, key, sep + 1))
-			return (false);
-		return (true);
-	}
-	free(key);
-	if (!var_value)
-		return (true);
-	var_value = ft_strjoin(var_value, sep + 1);
-	if (!var_value)
-		return (false);
-	if (!env_variables_set_raw(&minishell->env_variables_manager, var_value))
-	{
-		free(var_value);
-		return (false);
-	}
-	free(var_value);
-	return (true);
+  key = ft_substr(value, 0, sep - value - 1);
+  if (!key)
+    return (false);
+  var_value = env_variables_get_raw(&minishell->env_variables_manager, key);
+  if (!var_value || !ft_strchr(var_value, '=')) {
+    if (!env_variables_set(&minishell->env_variables_manager, key, sep + 1))
+      return (false);
+    return (true);
+  }
+  mem_free(key);
+  if (!var_value)
+    return (true);
+  var_value = ft_strjoin(var_value, sep + 1);
+  if (!var_value)
+    return (false);
+  if (!env_variables_set_raw(&minishell->env_variables_manager, var_value)) {
+    mem_free(var_value);
+    return (false);
+  }
+  mem_free(var_value);
+  return (true);
 }
 
-static bool	handle_setter(char *value, t_minishell *minishell)
-{
-	char	*sep;
+static bool	handle_setter(char *value, t_minishell *minishell) {
+  char *sep;
 
-	sep = ft_strchr(value, '=');
-	if (sep && value != sep && *(sep - 1) == '+')
-	{
-		if (!handle_append(value, minishell, sep))
-			return (false);
-	}
-	else if (!env_variables_set_raw(&minishell->env_variables_manager, value))
-		return (false);
-	return (true);
+  sep = ft_strchr(value, '=');
+  if (sep && value != sep && *(sep - 1) == '+') {
+    if (!handle_append(value, minishell, sep))
+      return (false);
+  } else if (!env_variables_set_raw(&minishell->env_variables_manager, value))
+    return (false);
+  return (true);
 }
 
 int	builtin_export(int argc, char **argv, t_minishell *minishell, int fds[2])

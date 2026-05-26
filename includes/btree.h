@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:02:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:42:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "pipex.h"
 # include "libft.h"
 # include "minishell.h"
+# include "allocator.h"
 
 typedef struct s_pipex	t_pipex;
 typedef struct s_minishell	t_minishell;

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 11:43:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:43:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 # include "file_runner.h"
 # include "get_next_line.h"
 # include "ghiblirc_default.h"
+# include "history.h"
 # include "libft.h"
 # include "list.h"
 # include "pid.h"
 # include "pipex.h"
+# include "signals.h"
 # include "token.h"
-# include "history.h"
+# include "tty.h"
 # include "vec.h"
 # include "vec_to_cmd.h"
 # include <readline/history.h>
@@ -35,9 +37,6 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <signal.h>
-# include "tty.h"
-# include "signals.h"
 
 extern volatile sig_atomic_t g_signal;
 

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 14:31:41 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:09:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	open_io_fds(t_btree	*tree, int fds[2])
 		if (fds[0] < 0 || fds[1] < 0)
 			return (false);
 		i++;
-		free(file_name);
+		mem_free(file_name);
 	}
 	return (true);
 }

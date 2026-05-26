@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 11:57:39 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:43:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);
 	}
 	
-	t_btree_node *root = malloc(2* sizeof(t_btree_node));
+	t_btree_node *root = mem_alloc(2* sizeof(t_btree_node), default_error_exit, NULL, 0b1);
 	if (!root)
 	{
 		display_error_message("Memory allocation Failed!");
@@ -172,20 +172,14 @@ bool	main_token(char *line, t_minishell *minishell)
 	// print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
-	tree = malloc(sizeof(t_btree));
-	if (!tree)
-	{
-		display_error_message("Memory allocation Failed!");
-		free_tokens(&parsed);
-		return (false);
-	}
+	tree = mem_alloc(sizeof(t_btree), default_error_exit, NULL, 0b1);
 	tree->node = root;
 	tree->expr = parsed;
  	tree->minishell = minishell;
 	tree->node->wstatus = 0;
 	exec_binary_tree(tree, files);
-	free(tree);
-	free(root);
+	mem_free(tree);
+	mem_free(root);
 	free_tokens(&parsed);
 	return (true);
 }
@@ -201,9 +195,11 @@ void increment_shell_lvl(t_minishell *minishell)
 	int shell_lvl_num = ft_atoi(shell_lvl);
 	minishell->shell_level = shell_lvl_num + 1;
 	shell_lvl = ft_itoa(minishell->shell_level);
-	if (shell_lvl)
-		env_variables_set(&minishell->env_variables_manager, "SHLVL", shell_lvl);
-	free(shell_lvl);
+	if (!shell_lvl)
+		memory_allocation_failed_error_exit();
+	if (!env_variables_set(&minishell->env_variables_manager, "SHLVL", shell_lvl))
+		memory_allocation_failed_error_exit();
+	mem_free(shell_lvl);
 }
 
 int	main(int argc, char **argv, char *env[])
@@ -232,4 +228,5 @@ int	main(int argc, char **argv, char *env[])
 	else if (argc == 2)
 		execute_file(argv[1], &minishell);
 	env_variables_free(&minishell.env_variables_manager);
+	clear_garbage_collector();
 }
