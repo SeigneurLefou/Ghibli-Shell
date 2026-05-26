@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 20:39:48 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 12:04:33 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int go_home(t_minishell *minishell)
+static int	go_home(t_minishell *minishell)
 {
 	char	*home;
 
@@ -25,10 +25,15 @@ int go_home(t_minishell *minishell)
 			return (127);
 		}
 	}
+	else
+	{
+		write(2, "CD: HOME is not set.\n", 22);
+		return (1);
+	}
 	return (0);
 }
 
-bool update_pwd(t_minishell *minishell)
+static bool	update_pwd(t_minishell *minishell)
 {
 	char	path_buffer[PATH_MAX];
 
@@ -37,13 +42,31 @@ bool update_pwd(t_minishell *minishell)
 		perror("CD");
 		return (false);
 	}
-	env_variables_set(&minishell->env_variables_manager, "PWD", path_buffer);
-	env_variables_set(&minishell->env_variables_manager, "OLDPWD", path_buffer);
+	if (!env_variables_set(&minishell->env_variables_manager, "PWD", path_buffer))
+		return (false);
+	return (true);
+}
+
+/* The behavior of OLDPWD seems undefined in bash when PWD is unset. */
+bool set_old_pwd(t_minishell *minishell)
+{
+	char	*old_pwd;
+
+	old_pwd = env_variables_get(&minishell->env_variables_manager, "PWD");
+	if (old_pwd)
+	{	
+		if (!env_variables_set(&minishell->env_variables_manager, "OLDPWD", old_pwd))
+			return (false);
+	}
+	else
+		env_variables_unset_key(&minishell->env_variables_manager, "OLDPWD");
 	return (true);
 }
 
 int	builtin_cd(int argc, char **argv, t_minishell *minishell)
 {
+	int result;
+
 	if (argc > 2)
 	{
 		write(2, "Too much arguments.\n", 21);
@@ -51,12 +74,13 @@ int	builtin_cd(int argc, char **argv, t_minishell *minishell)
 	}
 	if (argc == 1)
 	{
-		int result = go_home(minishell);
+		result = go_home(minishell);
 		if (result)
 			return (result);
 	}
 	else
 	{
+		set_old_pwd(minishell);
 		if (chdir(argv[1]))
 		{
 			perror("CD");
