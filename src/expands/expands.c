@@ -6,12 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/26 13:49:26 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 18:21:10 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "utils.h"
+#include <dirent.h>
 
 char	*give_variable_content(t_token *token, size_t *i,
 		t_minishell *minishell, size_t max_i)
@@ -158,18 +159,13 @@ bool	file_matches_filter(t_vec *filter, char *name)
 	return (true);
 }
 
-static bool	add_file_on_match(char *path, char *name, t_vec *out)
+static bool	add_file_on_match(char *name, t_vec *out)
 {
-	char	*file_path;
 	t_vec	vec_file_path;
 
-	file_path = path_join(path, name);
-	if (!file_path)
-		return (false);
-	vec_file_path = vec_from_str(file_path);
+	vec_file_path = vec_from_str(name);
 	if (!vec_file_path.failed)
 		vec_append(out, &vec_file_path);
-	mem_free(file_path);
 	return (true);
 }
 
@@ -190,7 +186,7 @@ bool	query_files_in_dir(t_vec *out, char *path, t_vec *filter)
 	{
 		if (file_matches_filter(filter, dir_entry->d_name))
 		{
-			if (!add_file_on_match(path, dir_entry->d_name, out))
+			if (!add_file_on_match(dir_entry->d_name, out))
 			{
 				closedir(dir);
 				return (false);
