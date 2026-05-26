@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:43:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 18:16:13 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:29:20 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int							builtin_source(int argc, char **argv,
 								t_minishell *minishell);
 int							builtin_unset(int argc, char **argv,
 								t_minishell *minishell);
-int							builtin_exit(int argc, t_minishell *minishell);
+int							builtin_exit(int argc, char **argv, t_minishell *minishell);
 int							builtin_env(int argc, t_minishell *minishell, int fds[2]);
 
 #endif

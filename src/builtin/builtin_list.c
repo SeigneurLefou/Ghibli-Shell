@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-/*   Updated: 2026/04/27 06:50:41 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:29:33 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	exec_builtin(t_cmd *cmds, t_minishell *minishell, int fds[2])
 	if (!ft_strcmp(cmds->name, "unset"))
 		result = builtin_unset(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "exit"))
-		result = builtin_exit(cmds->argc, minishell);
+		result = builtin_exit(cmds->argc, cmds->argv, minishell);
 	if (!ft_strcmp(cmds->name, "env"))
 		result = builtin_env(cmds->argc, minishell, fds);
 	return (result);
