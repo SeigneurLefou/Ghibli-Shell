@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:28 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 19:01:52 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:48:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,17 @@ t_vec	vec_from_str(char *line)
 	return (vec);
 }
 
-bool	vec_split(t_vec *vec, char *line, char sep)
+static size_t	word_len_space(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len] && !ft_isspace(s[len]))
+		len++;
+	return (len);
+}
+
+bool	vec_split_space(t_vec *vec, char *line)
 {
 	int		len;
 	t_vec	sub_vec;
@@ -65,9 +75,9 @@ bool	vec_split(t_vec *vec, char *line, char sep)
 	assert((int[]){!vec->failed, 42}, "Attempted to write to a failed vec.");
 	while (line && *line)
 	{
-		while (*line && *line == sep)
+		while (*line && ft_isspace(*line))
 			line++;
-		len = word_len(line, sep);
+		len = word_len_space(line);
 		if (!*line)
 			return (true);
 		vec_init(&sub_vec, sizeof(char), len);

@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/16 19:07:29 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/26 13:46:30 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/05/26 13:45:24 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/05/26 13:46:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "utils.h"
 
-# include <stdbool.h>
-# include <unistd.h>
-# include "libft.h"
-# include <stdlib.h>
-
-typedef int* t_as;
-
-void	assert(int *checks, char *message);
-bool	ft_isspace(char c);
-
-#endif
+bool	ft_isspace(char c)
+{
+	return ((c >= 9 && c <= 12) || c == ' ');
+}
