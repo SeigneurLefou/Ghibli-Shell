@@ -56,7 +56,7 @@ bool	open_io_fds(t_btree	*tree, int fds[2], t_minishell *minishell)
 
 void	close_new_files(int *old_files, int *new_files, t_minishell *minishell)
 {
-	printf("of [%d, %d] and nf [%d, %d]\n", old_files[0], old_files[1], new_files[0], new_files[1]);
+	// printf("of [%d, %d] and nf [%d, %d]\n", old_files[0], old_files[1], new_files[0], new_files[1]);
 	if (new_files[0] > 2 && old_files[0] != new_files[0])
 		ft_close(new_files[0], minishell);
 	if (new_files[1] > 2 && old_files[1] != new_files[1])
