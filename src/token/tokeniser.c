@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 19:11:37 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:03:43 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	parse_token_simple_quote(char *expr, unsigned int *i,
 
 bool	is_tilde_escape_compatible(char c)
 {
-	return (c == ' ' || c == '/' || c == '\0' || c == '|' || c == '&'
+	return (ft_isspace(c) || c == '/' || c == '\0' || c == '|' || c == '&'
 		|| c == '<' || c == '>');
 }
 
@@ -257,7 +257,7 @@ t_tokeniser_error	tokenise(char *expr, t_vec *command)
 			else if (expr[i] == '>' || expr[i] == '<')
 				add_double_token(expr, &i, command, &current_token,
 					token_type_command_delimiter);
-			else if (expr[i] == ' ')
+			else if (ft_isspace(expr[i]))
 				append_token(command, &current_token, token_type_plain);
 			else
 			{
