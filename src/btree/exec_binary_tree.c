@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/22 12:50:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:31:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,12 @@ bool	exec_right_tree(t_btree *tree, int files[2])
 bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_btree	*tree_cpy;
-	char	*status;
-
 	if (tree->node->operator== operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
 		tree->node->wstatus = wait_all_pid(pid_list);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
-		status = ft_itoa(tree->node->wstatus);
-		if (status) // TODO: HANDLE THIS FAIL !!!!!
-			env_variables_set(&tree->minishell->env_variables_manager, "?",
-				status);
+		tree->minishell->last_status = tree->node->wstatus;
 		return (false);
 	}
 	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
@@ -90,6 +85,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 		waitpid(*(pid_t *)vec_get(pid_list, 0), &tree->node->wstatus, 0);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
 	}
+	tree->minishell->last_status = tree->node->wstatus;
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variables_set(&tree->minishell->env_variables_manager, "?",
@@ -100,7 +96,6 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 bool	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
-	char	*status;
 	int		new_files[2];
 
 	new_files[0] = files[0];
@@ -116,9 +111,7 @@ bool	exec_binary_tree(t_btree *tree, int files[2])
 	if (!exec_left_tree(tree, new_files, &pid_list))
 		return (false);
 	exec_right_tree(tree, new_files);
-	status = ft_itoa(tree->node->wstatus);
+	tree->minishell->last_status = tree->node->wstatus;
 	close_new_files(files, new_files);
-	if (status)
-		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
 	return (true);
 }

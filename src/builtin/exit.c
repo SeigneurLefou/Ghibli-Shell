@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/24 12:39:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:41:20 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ int	builtin_exit(int argc, t_minishell *minishell)
 		return (1);
 	}
 	minishell->request_exit = true;
-	return (0);
+	return (minishell->last_status);
 }

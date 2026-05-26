@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 18:30:43 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:44:38 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,5 @@ void	take_child(t_pipex *pipex_var)
 	}
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
-	exit(2);
+	exit(127);
 }

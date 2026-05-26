@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 18:43:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:47:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,11 @@ bool	main_token(char *line, t_minishell *minishell)
 	{
 		free_tokens(&parsed);
 		display_error_message("Unterminated quoted string.");
+		minishell->last_status = 2;
 		return (false);	
 	} else if (result == tokeniser_error_memory_error)
 	{
+		minishell->last_status = 2;
 		display_error_message("Memory allocation failed.");
 		return (false);	
 	}
@@ -148,6 +150,7 @@ bool	main_token(char *line, t_minishell *minishell)
 	if (parser_result.parsing_error != parsing_error_success)
 	{
 		free_tokens(&parsed);
+		minishell->last_status = 2;
 		return (false);
 	}
 	
@@ -202,6 +205,22 @@ void increment_shell_lvl(t_minishell *minishell)
 	mem_free(shell_lvl);
 }
 
+bool setup_minishell(t_minishell *minishell,char *env[])
+{
+	env_variables_add_from_env(&minishell->env_variables_manager, env);
+	increment_shell_lvl(minishell);
+	env_variables_set(&minishell->env_variables_manager, "?", "0");
+	if (minishell->shell_level > 100)
+	{
+		display_error_message("Maximum shell recursion excedded!");
+		env_variables_free(&minishell->env_variables_manager);
+		return (false);
+	}
+	load_config_file(minishell, ".ghiblirc");
+	load_history_file(minishell, ".ghiblistory");
+	return (true);
+}
+
 int	main(int argc, char **argv, char *env[])
 {
 	t_minishell	minishell;
@@ -212,21 +231,13 @@ int	main(int argc, char **argv, char *env[])
 		return (1);
 	}
 	minishell_init(&minishell);
-	env_variables_add_from_env(&minishell.env_variables_manager, env);
-	increment_shell_lvl(&minishell);
-	env_variables_set(&minishell.env_variables_manager, "?", "0");
-	if (minishell.shell_level > 100)
-	{
-		display_error_message("Maximum shell recursion excedded!");
-		env_variables_free(&minishell.env_variables_manager);
+	if (!setup_minishell(&minishell, env))
 		return (1);
-	}
-	load_config_file(&minishell, ".ghiblirc");
-	load_history_file(&minishell, ".ghiblistory");
 	if (argc == 1)
 		handle_prompt(&minishell);
 	else if (argc == 2)
 		execute_file(argv[1], &minishell);
 	env_variables_free(&minishell.env_variables_manager);
 	clear_garbage_collector();
+	return (minishell.last_status);
 }
