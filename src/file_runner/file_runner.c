@@ -30,21 +30,19 @@ bool execute_file(char *filename, t_minishell *minishell)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			{
-				close(fd);
-				return (false);
-			}
-		if (line)
 		{
-			trimmed = ft_strtrim(line, "\r\n \t");
-			if (!trimmed || !main_token(trimmed, minishell))
-			{
-				free(trimmed);
-				free(line);
-				close(fd);
-				return (false);
-			}
+			close(fd);
+			return (false);
 		}
+		trimmed = ft_strtrim(line, "\r\n \t");
+		if (!trimmed || !main_token(trimmed, minishell))
+		{
+			free(trimmed);
+			free(line);
+			close(fd);
+			return (false);
+		}
+		free(trimmed);
 		free(line);
 	}
 	if (fd > 2)

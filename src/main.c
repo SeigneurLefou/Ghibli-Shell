@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 15:34:04 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:42:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,12 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);	
 	}
 
+	if (!parsed.size)
+	{
+		vec_free(&parsed);
+		return (true);
+	}
+
 	/*unsigned int i = 0;
 	while (i < parsed.size)
 	{
@@ -163,7 +169,7 @@ bool	main_token(char *line, t_minishell *minishell)
 		return (false);
 	}
 
-	//print_tree(&parsed, root);
+	// print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
 	tree = malloc(sizeof(t_btree));
@@ -175,9 +181,10 @@ bool	main_token(char *line, t_minishell *minishell)
 	}
 	tree->node = root;
 	tree->expr = parsed;
-	tree->minishell = minishell;
+ 	tree->minishell = minishell;
 	exec_binary_tree(tree, files);
-
+	free(tree);
+	free(root);
 	free_tokens(&parsed);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 15:31:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/06 11:25:54 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_free_path(char **splited_path, int i)
 char	*test_all_path(char *path, t_cmd *cmd)
 {
 	char	*cmd_path;
+	char	*iter_path;
 	char	**splited_path;
 	int		i;
 
@@ -57,14 +58,15 @@ char	*test_all_path(char *path, t_cmd *cmd)
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
 	{
-		cmd_path = ft_strjoin(splited_path[i++], "/");
-		cmd_path = ft_strjoin(cmd_path, cmd->name);
+		iter_path = ft_strjoin(splited_path[i++], "/");
+		cmd_path = ft_strjoin(iter_path, cmd->name);
+		free(iter_path);
 		if (!access(cmd_path, X_OK | F_OK))
 			break ;
 		free(cmd_path);
 		cmd_path = NULL;
 	}
-	ft_free_path(splited_path, i);
+	ft_double_free(splited_path);
 	return (cmd_path);
 }
 
@@ -111,8 +113,12 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
+	{
 		exit(exec_builtin(pipex_var->cmd, pipex_var->minishell,
 					(int[2]){0, 1}));
+		ft_cmdclear(pipex_var->cmd);
+		exit(pipex_var->wstatus);
+	}
 	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
 		env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);

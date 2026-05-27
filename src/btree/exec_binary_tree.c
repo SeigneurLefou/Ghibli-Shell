@@ -16,7 +16,6 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_pipex	pipex_var;
 
-	vec_to_cmd(tree);
 	pipex_var.pid = 0;
 	tree->node->wstatus = 0;
 	pipex_var.minishell = tree->minishell;
@@ -25,6 +24,7 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.fds[1] = files[1];
 	fork_pid(&pipex_var);
 	vec_append(pid_list, &pipex_var.pid);
+	ft_cmdclear(tree->node->cmds);
 }
 
 void	exec_right_tree(t_btree *tree, int files[2])
@@ -34,16 +34,13 @@ void	exec_right_tree(t_btree *tree, int files[2])
 	tree_cpy = malloc(sizeof(t_btree));
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && tree->node->operator == operator_and)
-	{
+	if (!tree->node->wstatus && (tree->node->operator == operator_and
+			|| tree->node->operator == operator_or))
+		{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
-	else if (tree->node->wstatus && tree->node->operator == operator_or)
-	{
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus = tree_cpy->node->wstatus;
-	}
+	free(tree_cpy);
 }
 
 bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
@@ -51,8 +48,6 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 	t_btree	*tree_cpy;
 	char	*status;
 
-	tree_cpy = malloc(sizeof(t_btree));
-	cpy_btree(tree_cpy, tree);
 	if (tree->node->operator == operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
@@ -64,12 +59,12 @@ bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 				status);
 		return (true);
 	}
-	else if (tree->node->left)
-	{
-		tree_cpy->node = tree_cpy->node->left;
-		exec_binary_tree(tree_cpy, files);
-		tree->node->wstatus = tree_cpy->node->wstatus;
-	}
+	tree_cpy = malloc(sizeof(t_btree));
+	cpy_btree(tree_cpy, tree);
+	tree_cpy->node = tree_cpy->node->left;
+	exec_binary_tree(tree_cpy, files);
+	tree->node->wstatus = tree_cpy->node->wstatus;
+	free(tree_cpy);
 	return (false);
 }
 
@@ -78,8 +73,11 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	char	*status;
 
 	vec_to_cmd(tree);
-	if (tree->node->cmds->name && is_command_built_in(tree->node->cmds->name))
+	if (is_command_built_in(tree->node->cmds->name))
+	{
 		setup_and_exec_builtin(tree, files);
+		ft_cmdclear(tree->node->cmds);
+	}
 	else
 	{
 		exec_cmd(tree, files, pid_list);
@@ -88,7 +86,8 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	}
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
+		env_variables_set(&tree->minishell->env_variables_manager, "?",
+			status);
 	return (tree->node->wstatus);
 }
 

@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdclear.c                                      :+:      :+:    :+:   */
+/*   expands.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 11:38:56 by lchamard         ###   ########.fr       */
+/*   Created: 2026/05/15 23:01:52 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/05/15 23:03:46 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
+#ifndef EXPANDS_H
+# define EXPANDS_H
 
-void	ft_cmdclear(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	int		i;
+#include "vec.h"
+#include "minishell.h"
+#include "token.h"
 
-	tmp = cmd;
-	i = 0;
-	while (tmp && tmp->argv && tmp->argv[i])
-	{
-		free(tmp->argv[i]);
-		i++;
-	}
-	if (tmp && tmp->argv)
-		free(tmp->argv);
-	if (tmp && tmp->path)
-		free(tmp->path);
-	if (tmp)
-	{
-		free(tmp);
-		cmd = NULL; 
-	}
-}
+typedef struct s_minishell	t_minishell;
+
+bool	expand(t_vec *argv, t_token *token, t_minishell *minishell);
+
+#endif
+

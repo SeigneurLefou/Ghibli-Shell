@@ -91,7 +91,8 @@ static bool	expand_prompt_custom(t_vec *rendered, char c,
   return (true);
 }
 
-char	*render_prompt(char *base_prompt, t_minishell *minishell) {
+char	*render_prompt(char *base_prompt, t_minishell *minishell)
+{
   unsigned int index;
   t_vec rendered;
   char flag;
