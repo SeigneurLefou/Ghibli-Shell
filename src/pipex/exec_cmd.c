@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/26 14:44:38 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/27 15:32:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,8 @@ void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
 	cmd_path = ft_strdup(cmd->name);
 	if (cmd_path && ft_strchr(cmd_path, '/'))
 	{
-		if (!access(cmd_path, X_OK | F_OK))
-		{
-			cmd->path = cmd_path;
-			return ;
-		}
+		cmd->path = cmd_path;
+		return ;
 	}
 	mem_free(cmd_path);
 	cmd_path = NULL;
@@ -115,16 +112,28 @@ void	take_child(t_pipex *pipex_var)
 	{
 		pipex_var->fds[0] = 0;
 		pipex_var->fds[1] = 1;
-		pipex_var->wstatus = exec_builtin(pipex_var->cmd, pipex_var->minishell, pipex_var->fds);
+		pipex_var->wstatus = exec_builtin(pipex_var->cmd, pipex_var->minishell,
+				pipex_var->fds);
 		ft_cmdclear(pipex_var->cmd);
 		exit(pipex_var->wstatus);
 	}
 	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
-		env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
-		execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
+		if (access(pipex_var->cmd->path, X_OK) == 0) {
+			env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
+			execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
+		}
+		else
+		{
+			write(2, pipex_var->cmd->path, ft_strlen(pipex_var->cmd->path));
+			write(2, ": Permission denied.\n", 22);
+			ft_cmdclear(pipex_var->cmd);
+			clear_garbage_collector();
+			exit(126);
+		}
 	}
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
+	clear_garbage_collector();
 	exit(127);
 }

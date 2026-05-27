@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/26 14:47:57 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/27 15:35:46 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,26 +105,6 @@ bool	main_token(char *line, t_minishell *minishell)
 		vec_free(&parsed);
 		return (true);
 	}
-
-	/*unsigned int i = 0;
-	while (i < parsed.size)
-	{
-		t_token token = *(t_token *)vec_get(&parsed, i);
-		if (token.type == token_type_plain)
-			printf("Plain:     %s<-\n", vec_to_cstring(&token.data));
-		else
-			printf("Delimiter: %s<-\n", vec_to_cstring(&token.data));
-		printf("Expands [");
-		for (unsigned int j = 0; j < token.expandable_scopes.size; j ++)
-		{
-			if (j % 2 == 0)
-				printf("start %d %s, ", ((t_expand_data *)vec_get(&token.expandable_scopes, j))->index, ((t_expand_data *)vec_get(&token.expandable_scopes, j))->allow_split? "allow split": "");
-			else
-				printf("end %d, ", ((t_expand_data *)vec_get(&token.expandable_scopes, j))->index);
-		}
-		printf("]\n");
-		i++;
-	}*/
 
 	t_parsing_checker_result parser_result = check_syntax(&parsed);
 	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
