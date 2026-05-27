@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/27 15:35:46 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/27 17:52:28 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,11 @@ bool	main_token(char *line, t_minishell *minishell)
  	tree->minishell = minishell;
 	tree->node->wstatus = 0;
 	exec_binary_tree(tree, files);
+	tree->minishell->last_status = tree->node->wstatus;
+	char *status = ft_itoa(tree->node->wstatus);
+	if (status)
+		env_variables_set(&tree->minishell->env_variables_manager, "?",
+			status);
 	mem_free(tree);
 	mem_free(root);
 	free_tokens(&parsed);

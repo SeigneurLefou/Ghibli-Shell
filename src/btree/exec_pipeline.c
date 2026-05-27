@@ -6,11 +6,19 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 18:46:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/27 17:55:45 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
+
+static void close_files_if_open(int *files)
+{
+	if (files[0] > 2)
+		close(files[0]);
+	if (files[1] > 2)
+		close(files[1]);
+}
 
 bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 {
@@ -19,7 +27,11 @@ bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	open_io_fds(tree_cpy, files);
+	if (!open_io_fds(tree_cpy, files))
+	{
+		close_files_if_open(files);
+		return (false);
+	}
 	if (tree->node->operator == operator_or && tree->node->wstatus)
 		exec_pipeline(tree_cpy, files, command_pid);
 	else if (tree->node->operator == operator_and && !tree->node->wstatus)
@@ -47,7 +59,12 @@ bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 		pipe(pipe_fd);
 		new_files[1] = pipe_fd[1];
 	}
-	open_io_fds(tree_cpy, new_files);
+	if (!open_io_fds(tree_cpy, new_files))
+	{
+		mem_free(tree_cpy);
+		close_files_if_open(files);
+		return (false);
+	}
 	exec_pipeline(tree_cpy, new_files, command_pid);
 	close_new_files(files, new_files);
 	if ((*command_pid).data)
