@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 09:38:30 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/27 14:56:57 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_strnjoin(char *s1, char *s2, size_t size)
 		i++;
 	}
 	if (s1)
-		free(s1);
+		mem_free(s1);
 	j = 0;
 	while (s2 && s2[j])
 	{

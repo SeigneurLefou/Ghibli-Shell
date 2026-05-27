@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/03/17 09:52:15 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:01:30 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,29 @@ int	get_file_while_not_limiter(int fd, char *limiter, char **buffer)
 		&& ft_strncmp(line, limiter, ft_strlen(limiter)) != 0)
 	{
 		*buffer = ft_strjoin(*buffer, line);
-		free(line);
+		mem_free(line);
 		line = get_next_line(fd);
 	}
-	free(line);
+	mem_free(line);
 	return (0);
 }
 
-int	here_doc_file(char *limiter)
+void	here_doc_file(char *limiter, int *fd)
 {
 	int		pipe_fd[2];
 	char	*input_user;
 	char	*limiter_with_enter;
 
 	limiter_with_enter = ft_strjoin(limiter, "\n");
-	input_user = NULL;
+	input_user = ft_calloc(1, sizeof(char));
 	pipe(pipe_fd);
 	get_file_while_not_limiter(0, limiter_with_enter, &input_user);
 	write(pipe_fd[1], input_user, ft_strlen(input_user));
 	close(pipe_fd[1]);
 	if (input_user)
-		free(input_user);
-	free(limiter_with_enter);
-	return (pipe_fd[0]);
+		mem_free(input_user);
+	mem_free(limiter_with_enter);
+	if (*fd > 2)
+		close(*fd);
+	*fd = pipe_fd[0];
 }

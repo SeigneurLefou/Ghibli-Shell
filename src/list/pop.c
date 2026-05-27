@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:40:15 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 11:40:40 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*list_pop_front(t_list *list)
 	list->first_cell = cell->next;
 	if (list->first_cell)
 		list->first_cell->previous = NULL;
-	free(cell);
+	mem_free(cell);
 	list->size -= 1;
 	if (!list->size)
 		list->last_cell = NULL;
@@ -43,7 +43,7 @@ void	*list_pop_back(t_list *list)
 	list->last_cell = cell->previous;
 	if (list->last_cell)
 		list->last_cell->next = NULL;
-	free(cell);
+	mem_free(cell);
 	list->size -= 1;
 	if (!list->size)
 		list->first_cell = NULL;
@@ -64,7 +64,7 @@ static void	*drop_cell(t_list *list, t_list_cell *cell)
 		list->last_cell = cell->previous;
 	value = cell->value;
 	list->size -= 1;
-	free(cell);
+	mem_free(cell);
 	return (value);
 }
 

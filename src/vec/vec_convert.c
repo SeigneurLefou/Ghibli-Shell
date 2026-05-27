@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:28 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/15 21:58:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:48:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ char	*vec_to_cstring(t_vec *vec)
 	char	*str;
 
 	assert((int[]){vec != NULL, 42}, "Null passed to vec_to_cstring.");
-	assert((int[]){vec->type_size == 1, 42}, "The data in vec is larger than a char.");
+	assert((int[]){vec->type_size == 1, 42},
+		"The data in vec is larger than a char.");
 	assert((int[]){!vec->failed, 42}, "Attempted to read a failed vec.");
-	str = malloc((vec->size + 1) * sizeof(char));
+	str = mem_alloc((vec->size + 1) * sizeof(char), NULL, NULL, 0b1);
 	if (!str)
 		return (NULL);
 	if (vec->data)
@@ -42,8 +43,8 @@ void	str_to_vec_char(t_vec *vec, char *line)
 
 t_vec	vec_from_str(char *line)
 {
-	int	i;
-	t_vec vec;
+	int		i;
+	t_vec	vec;
 
 	vec_init(&vec, sizeof(char), 32);
 	i = 0;
@@ -55,7 +56,17 @@ t_vec	vec_from_str(char *line)
 	return (vec);
 }
 
-bool	vec_split(t_vec *vec, char *line, char sep)
+static size_t	word_len_space(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len] && !ft_isspace(s[len]))
+		len++;
+	return (len);
+}
+
+bool	vec_split_space(t_vec *vec, char *line)
 {
 	int		len;
 	t_vec	sub_vec;
@@ -64,9 +75,9 @@ bool	vec_split(t_vec *vec, char *line, char sep)
 	assert((int[]){!vec->failed, 42}, "Attempted to write to a failed vec.");
 	while (line && *line)
 	{
-		while (*line && *line == sep)
+		while (*line && ft_isspace(*line))
 			line++;
-		len = word_len(line, sep);
+		len = word_len_space(line);
 		if (!*line)
 			return (true);
 		vec_init(&sub_vec, sizeof(char), len);
@@ -88,7 +99,7 @@ char	**vec_vec_char_to_str_array(t_vec *vec)
 	char	**str_array;
 	size_t	i;
 
-	str_array = malloc(sizeof(char *) * (vec->size + 1));
+	str_array = mem_alloc(sizeof(char *) * (vec->size + 1), NULL, NULL, 0b1);
 	if (!str_array)
 		return (NULL);
 	i = 0;
@@ -98,7 +109,7 @@ char	**vec_vec_char_to_str_array(t_vec *vec)
 		if (!str_array[i])
 		{
 			while (i)
-				free(str_array[--i]);
+				mem_free(str_array[--i]);
 			return (NULL);
 		}
 		i++;

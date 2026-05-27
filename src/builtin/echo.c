@@ -48,7 +48,7 @@ int	builtin_echo(int argc, char **argv, int fds[2])
 	newline = true;
 	if (argc >= 2)
 	{
-		if (!ft_strncmp(argv[1], "-n", 2))
+		if (!ft_strncmp(argv[1], "-n\0", 3))
 		{
 			echo_print(argv + 1, fds);
 			newline = false;

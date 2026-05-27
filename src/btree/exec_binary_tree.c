@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 16:00:55 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:31:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
 
-void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
+bool	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_pipex	pipex_var;
 
@@ -22,50 +22,55 @@ void	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
-	fork_pid(&pipex_var);
+	pipex_var.wstatus = 0;
+	fork_pid(&pipex_var, tree->minishell->stdin_save);
 	vec_append(pid_list, &pipex_var.pid);
+<<<<<<< HEAD
 	ft_cmdclear(tree->node->cmds);
+=======
+	return (true);
+>>>>>>> main
 }
 
-void	exec_right_tree(t_btree *tree, int files[2])
+bool	exec_right_tree(t_btree *tree, int files[2])
 {
 	t_btree	*tree_cpy;
 
-	tree_cpy = malloc(sizeof(t_btree));
+	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
-	if (!tree->node->wstatus && (tree->node->operator == operator_and
-			|| tree->node->operator == operator_or))
-		{
+	if (!tree->node->wstatus && tree->node->operator == operator_and)
+	{
 		exec_binary_tree(tree_cpy, files);
 		tree->node->wstatus = tree_cpy->node->wstatus;
 	}
-	free(tree_cpy);
+	else if (tree->node->wstatus && tree->node->operator == operator_or)
+	{
+		exec_binary_tree(tree_cpy, files);
+		tree->node->wstatus = tree_cpy->node->wstatus;
+	}
+	mem_free(tree_cpy);
+	return (true);
 }
 
 bool	exec_left_tree(t_btree *tree, int files[2], t_vec *pid_list)
 {
 	t_btree	*tree_cpy;
-	char	*status;
-
-	if (tree->node->operator == operator_pipe)
+	if (tree->node->operator== operator_pipe)
 	{
 		exec_pipeline(tree, files, pid_list);
 		tree->node->wstatus = wait_all_pid(pid_list);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
-		status = ft_itoa(tree->node->wstatus);
-		if (status) // TODO: HANDLE THIS FAIL !!!!!
-			env_variables_set(&tree->minishell->env_variables_manager, "?",
-				status);
-		return (true);
+		tree->minishell->last_status = tree->node->wstatus;
+		return (false);
 	}
-	tree_cpy = malloc(sizeof(t_btree));
+	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->left;
 	exec_binary_tree(tree_cpy, files);
 	tree->node->wstatus = tree_cpy->node->wstatus;
-	free(tree_cpy);
-	return (false);
+	mem_free(tree_cpy);
+	return (true);
 }
 
 bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
@@ -84,17 +89,17 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 		waitpid(*(pid_t *)vec_get(pid_list, 0), &tree->node->wstatus, 0);
 		tree->node->wstatus = give_exit_code(tree->node->wstatus);
 	}
+	tree->minishell->last_status = tree->node->wstatus;
 	status = ft_itoa(tree->node->wstatus);
 	if (status)
 		env_variables_set(&tree->minishell->env_variables_manager, "?",
 			status);
-	return (tree->node->wstatus);
+	return (true);
 }
 
-int	exec_binary_tree(t_btree *tree, int files[2])
+bool	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
-	char	*status;
 	int		new_files[2];
 
 	new_files[0] = files[0];
@@ -102,19 +107,15 @@ int	exec_binary_tree(t_btree *tree, int files[2])
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	open_io_fds(tree, new_files);
 	if (!tree->node->left && !tree->node->right)
-		return (exec_leaf(tree, new_files, &pid_list));
-	if (exec_left_tree(tree, new_files, &pid_list))
-		return (tree->node->wstatus);
-	if (new_files[0] > 2 && new_files[0] != files[0])
-		close(new_files[0]);
-	new_files[0] = fake_fdin();
+	{
+		exec_leaf(tree, new_files, &pid_list);
+		close_new_files(files, new_files);
+		return (true);
+	}
+	if (!exec_left_tree(tree, new_files, &pid_list))
+		return (false);
 	exec_right_tree(tree, new_files);
-	status = ft_itoa(tree->node->wstatus);
-	if (status)
-		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
-	if (new_files[0] > 2 && new_files[0] != files[0])
-		close(new_files[0]);
-	if (new_files[1] > 2 && new_files[1] != files[1])
-		close(new_files[1]);
-	return (tree->node->wstatus);
+	tree->minishell->last_status = tree->node->wstatus;
+	close_new_files(files, new_files);
+	return (true);
 }

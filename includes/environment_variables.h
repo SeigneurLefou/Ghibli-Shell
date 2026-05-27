@@ -6,15 +6,17 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:52:38 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/12 15:32:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:42:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVIRONMENT_VARIABLES_H
 # define EVIRONMENT_VARIABLES_H
 
+# include "allocator.h"
 # include "libft.h"
 # include "list.h"
+# include "exits.h"
 
 typedef struct s_env_variables_manager
 {
@@ -32,7 +34,7 @@ bool					env_variables_set(t_env_variables_manager *env_variable_manager,
 bool					env_variables_unset_key(t_env_variables_manager *env_variable_manager,
 							char *key);
 void					env_variables_free(t_env_variables_manager *env_variable_manager);
-bool					env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
+void					env_variables_add_from_env(t_env_variables_manager *env_variable_manager,
 							char **env);
 bool					env_variables_exists(t_env_variables_manager *env_variable_manager,
 							char *key);

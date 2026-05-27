@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/11 18:23:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:04:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	builtin_env(int argc, t_minishell *minishell, int fds[2])
 	while (index < minishell->env_variables_manager.variables.size)
 	{
 		element = iterator_next(&it);
-		if (ft_strchr(element, '='))
+		if (ft_strchr(element, '=') && element[0] != '?')
 		{
 			write(fds[1], element, ft_strlen(element));
 			write(fds[1], "\n", 1);

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 17:44:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:38:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ void	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 bool	vec_truncate(t_vec *vec)
 {
 	char	*new_data;
-	
+
 	assert((int[]){vec != NULL, 42}, "Null passed to vec_truncate.");
 	assert((int[]){!vec->failed, 42}, "Attempted to read a failed vec.");
-	new_data = malloc(vec->size * vec->type_size);
+	new_data = mem_alloc(vec->size * vec->type_size, NULL, NULL, 0b1);
 	if (!new_data)
 		return (false);
 	if (vec->data)
 		ft_memcpy(new_data, vec->data, vec->size * vec->type_size);
 	vec->allocated_size = vec->size;
-	free(vec->data);
+	mem_free(vec->data);
 	vec->data = new_data;
 	return (true);
 }
@@ -43,7 +43,7 @@ bool	vec_truncate(t_vec *vec)
 void	vec_free(t_vec *vec)
 {
 	assert((int[]){vec != NULL, 42}, "Null passed to vec_free.");
-	free(vec->data);
+	mem_free(vec->data);
 }
 
 bool	vec_clone(t_vec *new, t_vec *old)
@@ -51,7 +51,7 @@ bool	vec_clone(t_vec *new, t_vec *old)
 	assert((int[]){new != NULL, old != NULL, 42}, "Null passed to vec_clone.");
 	assert((int[]){!old->failed, 42}, "Attempted to read a failed vec.");
 	if (new->data)
-		new->data = malloc(old->size * old->type_size);
+		new->data = mem_alloc(old->size * old->type_size, NULL, NULL, 0b1);
 	else
 		new->data = NULL;
 	if (!new->data)

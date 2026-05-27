@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 17:56:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:23:46 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 # include "file_runner.h"
 # include "get_next_line.h"
 # include "ghiblirc_default.h"
+# include "history.h"
 # include "libft.h"
 # include "list.h"
 # include "pid.h"
 # include "pipex.h"
+# include "signals.h"
 # include "token.h"
-# include "history.h"
+# include "tty.h"
 # include "vec.h"
 # include "vec_to_cmd.h"
 # include <readline/history.h>
@@ -35,10 +37,8 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "tty.h"
-# include "signals.h"
 
-extern int g_signal;
+extern volatile sig_atomic_t g_signal;
 
 typedef struct s_minishell
 {
@@ -46,6 +46,8 @@ typedef struct s_minishell
 	int						shell_level;
 	int						internal_file_recursion;
 	bool					request_exit;
+	int						stdin_save;
+	int						last_status;
 }							t_minishell;
 
 void						handle_prompt(t_minishell *minishell);

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/06 11:25:54 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:44:38 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ char	*get_env(char **env, char *var)
 		i++;
 	if (!env[i])
 		return (NULL);
-	var_content = ft_calloc(sizeof(char), ft_strlen(env[i])
-			- len_var_name);
+	var_content = ft_calloc(sizeof(char), ft_strlen(env[i]) - len_var_name);
 	var_content = ft_strcpy(var_content, &env[i][len_var_name + 1]);
 	return (var_content);
 }
@@ -34,7 +33,7 @@ void	ft_free_path(char **splited_path, int i)
 {
 	if (splited_path && !splited_path[i])
 	{
-		free(splited_path);
+		mem_free(splited_path);
 		return ;
 	}
 	ft_double_free_start(splited_path, i);
@@ -49,24 +48,24 @@ char	*test_all_path(char *path, t_cmd *cmd)
 
 	if (!path || !path[0])
 	{
-		free(path);
+		mem_free(path);
 		return (NULL);
 	}
 	splited_path = ft_split(path, ':');
-	free(path);
+	mem_free(path);
 	i = 0;
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
 	{
 		iter_path = ft_strjoin(splited_path[i++], "/");
 		cmd_path = ft_strjoin(iter_path, cmd->name);
-		free(iter_path);
+		mem_free(iter_path);
 		if (!access(cmd_path, X_OK | F_OK))
 			break ;
-		free(cmd_path);
+		mem_free(cmd_path);
 		cmd_path = NULL;
 	}
-	ft_double_free(splited_path);
+	ft_double_mem_free(splited_path);
 	return (cmd_path);
 }
 
@@ -90,7 +89,7 @@ void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
 			return ;
 		}
 	}
-	free(cmd_path);
+	mem_free(cmd_path);
 	cmd_path = NULL;
 	path = ft_strdup(env_variables_get(&minishell->env_variables_manager,
 				"PATH"));
@@ -114,8 +113,9 @@ void	take_child(t_pipex *pipex_var)
 	}
 	if (is_command_built_in(pipex_var->cmd->name))
 	{
-		exit(exec_builtin(pipex_var->cmd, pipex_var->minishell,
-					(int[2]){0, 1}));
+		pipex_var->fds[0] = 0;
+		pipex_var->fds[1] = 1;
+		pipex_var->wstatus = exec_builtin(pipex_var->cmd, pipex_var->minishell, pipex_var->fds);
 		ft_cmdclear(pipex_var->cmd);
 		exit(pipex_var->wstatus);
 	}
@@ -126,5 +126,5 @@ void	take_child(t_pipex *pipex_var)
 	}
 	perror(pipex_var->cmd->name);
 	ft_cmdclear(pipex_var->cmd);
-	exit(2);
+	exit(127);
 }

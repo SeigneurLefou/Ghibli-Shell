@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 15:08:15 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/04 11:30:48 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ bool	add_file_to_history(char *line, int fd)
 		trimmed = ft_strtrim(line, " \n\r\t");
 		if (!trimmed)
 		{
-			free(trimmed);
-			free(line);
+			mem_free(trimmed);
+			mem_free(line);
 			close(fd);
 			return (false);
 		}
 		add_history(trimmed);
-		free(trimmed);
-		free(line);
+		mem_free(trimmed);
+		mem_free(line);
 	}
 	close(fd);
 	return (true);
@@ -71,7 +71,7 @@ void	load_history_file(t_minishell *minishell, char *filename)
 			close(fd);
 		}
 	}
-	free(config_path);
+	mem_free(config_path);
 }
 
 void	add_to_history_file(t_minishell *minishell, char *filename, char *line)
@@ -92,5 +92,5 @@ void	add_to_history_file(t_minishell *minishell, char *filename, char *line)
 			fd = open(config_path, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		close(fd);
 	}
-	free(config_path);
+	mem_free(config_path);
 }

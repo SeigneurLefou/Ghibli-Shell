@@ -19,7 +19,7 @@ We gived the name of Ghibli's characters to the project's modules.
 | TTY                   | Arietty                 | Her name contains "TTY".                                      |
 | Tokeniser             | Shizuku                 | She is a raw stone waiting to be polished.                    |
 | Parser                | Haru                    | The story is the polished stone.                              |
-| Executor              | Miyasaki                | He is the movie director.                                     |
+| Executor              | Miyazaki                | He is the movie director.                                     |
 | Expander              | Ponyo                   | She reconciles and merge the humans' world and the sea.       |
 | Error manager         | Ursula                  | She's an artist.                                              |
 | Built-in              | Sheeta                  | The levitation stone is magic like the built-in commands.     |
@@ -85,6 +85,8 @@ We mainly used the man of the commands for documentation. The ascii arts animati
 The Little Totoro dot art is from [emojicombos.com](https://emojicombos.com/totoro-dot-art).
 
 The catbus dot arts was made by *yben-dje* using a mix of image processing, automated tools and manual drawing. The frames are directly based of the film.
+
+We used an [online tutorial about signals](https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction/).
 
 What? You just said I-I ? Oh no, "AI"? I don't know what that means. Well... ok... I do know what "AI" is. BUT DO YOU KNOW WHO YOU'RE TALKING TO? GET OUT OF THERE! WE DO NOT USE IA HERE! **USING AI IS A SKILL ISSUE AND WE ARE GIGA CHADS. SO STOP TALKING TO US ABOUT AI!**
 

@@ -6,13 +6,62 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/12 15:31:10 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:00:59 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
+
+/* Based on the examples given at https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction */
+bool	setup_sig_handler(void)
+{
+	struct sigaction	sa;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = handle_signal_default;
+	if (sigemptyset(&sa.sa_mask) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGTERM, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	return (true);
+}
+
+bool	disable_sig_handler(void)
+{
+	struct sigaction	sa;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = SIG_IGN;
+	if (sigemptyset(&sa.sa_mask) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGTERM, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("GhibliShell");
+		return (false);
+	}
+	return (true);
+}
 
 static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		bool *first_sigint)
@@ -22,7 +71,9 @@ static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		*first_sigint = true;
 		add_history(trimmed);
 		add_to_history_file(minishell, ".ghiblistory", trimmed);
+		disable_sig_handler();
 		main_token(trimmed, minishell);
+		setup_sig_handler();
 	}
 }
 
@@ -32,27 +83,25 @@ void	handle_prompt(t_minishell *minishell)
 	char	*prompt_line;
 	char	*trimmed;
 	bool	first_sigint;
-	int		stdin_save;
 
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_signal);
-	stdin_save = dup(0);
+	minishell->stdin_save = dup(0);
 	first_sigint = true;
 	while (1)
 	{
+		setup_sig_handler();
 		prompt_line = get_prompt_line(minishell);
 		line = NULL;
 		if (prompt_line)
 		{
 			line = readline(prompt_line);
-			free(prompt_line);
+			mem_free(prompt_line);
 		}
 		else
-			line = readline("$>");
+			line = readline("$> ");
 		if (ft_strlen(line) > 32768)
 		{
 			display_error_message("The input line is too long. Max is 32768.");
-			free(line);
+			mem_free(line);
 			continue ;
 		}
 		if (!line)
@@ -60,7 +109,7 @@ void	handle_prompt(t_minishell *minishell)
 			if (g_signal > 0)
 			{
 				g_signal = -1;
-				dup2(stdin_save, 0);
+				dup2(minishell->stdin_save, 0);
 				rl_replace_line("", 1);
 				env_variables_set(&minishell->env_variables_manager, "?",
 					"130");
@@ -80,6 +129,6 @@ void	handle_prompt(t_minishell *minishell)
 		if (minishell->request_exit)
 			break ;
 	}
-	close(stdin_save);
+	close(minishell->stdin_save);
 	rl_clear_history();
 }
