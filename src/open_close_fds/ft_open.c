@@ -60,7 +60,7 @@ int	ft_pipe(int pipefd[2], t_minishell *minishell)
 	int	return_value;
 
 	return_value = pipe(pipefd);
-	if (!append_fd(pipefd[0], minishell) || !append_fd(pipefd[1], minishell))
+	if (return_value < 0 || !append_fd(pipefd[0], minishell) || !append_fd(pipefd[1], minishell))
 		return (-1);
 	return (0);
 }

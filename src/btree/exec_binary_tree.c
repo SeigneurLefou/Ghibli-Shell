@@ -6,11 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/05/22 08:41:40 by lchamard         ###   ########.fr       */
-=======
 /*   Updated: 2026/05/26 14:31:35 by yben-dje         ###   ########.fr       */
->>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +112,6 @@ bool	exec_binary_tree(t_btree *tree, int files[2])
 		return (false);
 	exec_right_tree(tree, new_files);
 	tree->minishell->last_status = tree->node->wstatus;
-	close_new_files(files, new_files);
+	close_new_files(files, new_files, tree->minishell);
 	return (true);
 }
