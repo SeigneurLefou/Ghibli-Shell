@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 10:14:14 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:21:26 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,22 @@ static bool	handle_append(char *value, t_minishell *minishell, char *sep)
 	key = ft_substr(value, 0, sep - value - 1);
 	if (!key)
 		return (false);
-	var_value = env_variables_get_raw(&minishell->env_variables_manager,
-			key);
+	var_value = env_variables_get_raw(&minishell->env_variables_manager, key);
 	if (!var_value || !ft_strchr(var_value, '='))
 	{
 		if (!env_variables_set(&minishell->env_variables_manager, key, sep + 1))
 			return (false);
 		return (true);
 	}
-	free(key);
+	mem_free(key);
 	if (!var_value)
 		return (true);
 	var_value = ft_strjoin(var_value, sep + 1);
 	if (!var_value)
 		return (false);
 	if (!env_variables_set_raw(&minishell->env_variables_manager, var_value))
-	{
-		free(var_value);
 		return (false);
-	}
-	free(var_value);
+	mem_free(var_value);
 	return (true);
 }
 
@@ -95,22 +91,27 @@ static bool	handle_setter(char *value, t_minishell *minishell)
 
 int	builtin_export(int argc, char **argv, t_minishell *minishell, int fds[2])
 {
-	if (argc > 2)
-	{
-		write(2, "Export needs no more than one argument <value>.\n", 49);
-		return (1);
-	}
+	int got_error;
+
 	if (argc == 1)
 	{
 		display_env_variables(minishell, fds);
 		return (0);
 	}
-	if (!is_valid_key(argv[1]))
+	got_error = 0;
+	int index = 1;
+	while (index < argc)
 	{
-		write(2, "Export: not a valid identifier\n", 32);
-		return (1);
+		if (!is_valid_key(argv[index]))
+		{
+			write(2, "Export: not a valid identifier\n", 32);
+			index++;
+			got_error = 1;
+			continue ;
+		}
+		if (!handle_setter(argv[index], minishell))
+			return (1);
+		index++;
 	}
-	if (!handle_setter(argv[1], minishell))
-		return (1);
-	return (0);
+	return (got_error);
 }

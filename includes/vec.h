@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/15 23:10:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:47:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "utils.h"
 # include <stdbool.h>
 # include <stdlib.h>
+# include "allocator.h"
 
 typedef struct s_vec
 {
@@ -31,7 +32,7 @@ typedef struct s_vec
 void				vec_init(t_vec *vec, size_t type_size,
 						unsigned int buff_size);
 void				*vec_get(t_vec *vec, unsigned int index);
-void				vec_append(t_vec *vec, void *data);
+bool				vec_append(t_vec *vec, void *data);
 bool				vec_truncate(t_vec *vec);
 void				vec_free(t_vec *vec);
 bool				vec_clone(t_vec *new, t_vec *old);
@@ -41,7 +42,7 @@ void				vec_expand(t_vec *vec, t_vec *other);
 void				vec_null(t_vec *vec);
 char				*vec_to_cstring(t_vec *vec);
 bool				vec_substr(t_vec *vec, char *line, int start, int len);
-bool				vec_split(t_vec *vec, char *line, char sep);
+bool				vec_split_space(t_vec *vec, char *line);
 char				**vec_vec_char_to_str_array(t_vec *vec);
 void				vec_set(t_vec *vec, unsigned int index, void *data);
 t_vec				vec_from_str(char *line);

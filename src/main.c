@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/23 20:13:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:47:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,11 @@ bool	main_token(char *line, t_minishell *minishell)
 	{
 		free_tokens(&parsed);
 		display_error_message("Unterminated quoted string.");
+		minishell->last_status = 2;
 		return (false);	
 	} else if (result == tokeniser_error_memory_error)
 	{
+		minishell->last_status = 2;
 		display_error_message("Memory allocation failed.");
 		return (false);	
 	}
@@ -148,10 +150,11 @@ bool	main_token(char *line, t_minishell *minishell)
 	if (parser_result.parsing_error != parsing_error_success)
 	{
 		free_tokens(&parsed);
+		minishell->last_status = 2;
 		return (false);
 	}
 	
-	t_btree_node *root = malloc(2* sizeof(t_btree_node));
+	t_btree_node *root = mem_alloc(2* sizeof(t_btree_node), default_error_exit, NULL, 0b1);
 	if (!root)
 	{
 		display_error_message("Memory allocation Failed!");
@@ -172,21 +175,14 @@ bool	main_token(char *line, t_minishell *minishell)
 	// print_tree(&parsed, root);
 	int files[2] = {0, 1};
 	t_btree	*tree;
-	tree = malloc(sizeof(t_btree));
-	if (!tree)
-	{
-		display_error_message("Memory allocation Failed!");
-		free_tokens(&parsed);
-		return (false);
-	}
+	tree = mem_alloc(sizeof(t_btree), default_error_exit, NULL, 0b1);
 	tree->node = root;
 	tree->expr = parsed;
  	tree->minishell = minishell;
 	tree->node->wstatus = 0;
 	exec_binary_tree(tree, files);
-	// show_open_fds(minishell);
-	free(tree);
-	free(root);
+	mem_free(tree);
+	mem_free(root);
 	free_tokens(&parsed);
 	return (true);
 }
@@ -202,9 +198,27 @@ void increment_shell_lvl(t_minishell *minishell)
 	int shell_lvl_num = ft_atoi(shell_lvl);
 	minishell->shell_level = shell_lvl_num + 1;
 	shell_lvl = ft_itoa(minishell->shell_level);
-	if (shell_lvl)
-		env_variables_set(&minishell->env_variables_manager, "SHLVL", shell_lvl);
-	free(shell_lvl);
+	if (!shell_lvl)
+		memory_allocation_failed_error_exit();
+	if (!env_variables_set(&minishell->env_variables_manager, "SHLVL", shell_lvl))
+		memory_allocation_failed_error_exit();
+	mem_free(shell_lvl);
+}
+
+bool setup_minishell(t_minishell *minishell,char *env[])
+{
+	env_variables_add_from_env(&minishell->env_variables_manager, env);
+	increment_shell_lvl(minishell);
+	env_variables_set(&minishell->env_variables_manager, "?", "0");
+	if (minishell->shell_level > 100)
+	{
+		display_error_message("Maximum shell recursion excedded!");
+		env_variables_free(&minishell->env_variables_manager);
+		return (false);
+	}
+	load_config_file(minishell, ".ghiblirc");
+	load_history_file(minishell, ".ghiblistory");
+	return (true);
 }
 
 int	main(int argc, char **argv, char *env[])
@@ -217,20 +231,13 @@ int	main(int argc, char **argv, char *env[])
 		return (1);
 	}
 	minishell_init(&minishell);
-	env_variables_add_from_env(&minishell.env_variables_manager, env);
-	increment_shell_lvl(&minishell);
-	env_variables_set(&minishell.env_variables_manager, "?", "0");
-	if (minishell.shell_level > 100)
-	{
-		display_error_message("Maximum shell recursion excedded!");
-		env_variables_free(&minishell.env_variables_manager);
+	if (!setup_minishell(&minishell, env))
 		return (1);
-	}
-	load_config_file(&minishell, ".ghiblirc");
-	load_history_file(&minishell, ".ghiblistory");
 	if (argc == 1)
 		handle_prompt(&minishell);
 	else if (argc == 2)
 		execute_file(argv[1], &minishell);
 	env_variables_free(&minishell.env_variables_manager);
+	clear_garbage_collector();
+	return (minishell.last_status);
 }

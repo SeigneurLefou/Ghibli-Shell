@@ -6,12 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 09:17:27 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 10:19:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:02:01 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec_to_cmd.h"
 #include "builtin.h"
+#include "vec_to_cmd.h"
 
 size_t	ft_array_strlen(char **array_str)
 {
@@ -47,35 +47,7 @@ void	append_str_to_array_str(char ***dest, const char *src)
 	*dest = new_array;
 }
 
-void	expand_str(char ***dest, char **src)
-{
-	size_t	len;
-	char	**new_array;
-	size_t	i;
-	size_t	j;
-
-	new_array = malloc((ft_array_strlen(*dest) + ft_array_strlen(src) + 1));
-	len = ft_array_strlen(*dest);
-	i = 0;
-	while (i < len)
-	{
-		new_array[i] = (*dest)[i];
-		i++;
-	}
-	len = ft_array_strlen(src);
-	j = 0;
-	while (j < len)
-	{
-		new_array[i] = src[j];
-		i++;
-		j++;
-	}
-	new_array[i] = NULL;
-	free(*dest);
-	*dest = new_array;
-}
-
-void	vec_vec_free(t_vec *vec)
+void	vec_vec_mem_free(t_vec *vec)
 {
 	unsigned int	i;
 
@@ -110,7 +82,7 @@ void	vec_to_cmd(t_btree *tree)
 	new_cmd->argc = argv.size;
 	new_cmd->argv = vec_vec_char_to_str_array(&argv);
 	new_cmd->name = new_cmd->argv[0];
-	vec_vec_free(&argv);
+	vec_vec_mem_free(&argv);
 	if (!is_command_built_in(new_cmd->name))
 		get_cmd_path(new_cmd, tree->minishell);
 	tree->node->cmds = new_cmd;

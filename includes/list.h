@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:58:03 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/21 18:23:10 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:28:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 # include <stdlib.h>
+# include "allocator.h"
 
 typedef struct s_list_cell	t_list_cell;
 typedef struct s_list		t_list;

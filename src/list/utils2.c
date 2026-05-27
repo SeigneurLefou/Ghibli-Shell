@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:44:20 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/21 18:24:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*list_to_flat_array(t_list *list, void *(*memcpy_func)(void *,
 	while (index < list->size)
 		size += size_func(list_get_at_index(list, index++));
 	index = 0;
-	dest = malloc(size + 1);
+	dest = mem_alloc(size + 1, NULL, NULL, 0b1);
 	if (!dest)
 		return (NULL);
 	cursor = 0;
@@ -89,7 +89,7 @@ void	*list_as_array(t_list *list)
 	t_u32		index;
 	t_iterator	iterator;
 
-	array = malloc((list->size + 1) * sizeof(void **));
+	array = mem_alloc((list->size + 1) * sizeof(void **), NULL, NULL, 0b1);
 	if (!array)
 		return (NULL);
 	iterator = iterator_new(list, 0);

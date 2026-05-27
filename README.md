@@ -19,7 +19,7 @@ We gived the name of Ghibli's characters to the project's modules.
 | TTY                   | Arietty                 | Her name contains "TTY".                                      |
 | Tokeniser             | Shizuku                 | She is a raw stone waiting to be polished.                    |
 | Parser                | Haru                    | The story is the polished stone.                              |
-| Executor              | Miyasaki                | He is the movie director.                                     |
+| Executor              | Miyazaki                | He is the movie director.                                     |
 | Expander              | Ponyo                   | She reconciles and merge the humans' world and the sea.       |
 | Error manager         | Ursula                  | She's an artist.                                              |
 | Built-in              | Sheeta                  | The levitation stone is magic like the built-in commands.     |

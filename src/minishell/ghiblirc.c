@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:51:00 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/22 10:01:18 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/21 19:00:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	ask_and_setup_ghiblirc(char *config_path)
 	}
 	else
 		display_error_message("Invalid choice!");
-	free(choice);
+	mem_free(choice);
 }
 
 char	*get_config_file_path(t_minishell *minishell, char *config_file)
@@ -58,7 +58,7 @@ char	*get_config_file_path(t_minishell *minishell, char *config_file)
 	if (!home_path)
 		return (NULL);
 	complete_path = ft_strjoin(home_path, config_file);
-	free(home_path);
+	mem_free(home_path);
 	return (complete_path);
 }
 
@@ -76,6 +76,6 @@ void	load_config_file(t_minishell *minishell, char *config_file)
 			ask_and_setup_ghiblirc(config_path);
 			execute_file(config_path, minishell);
 		}
-		free(config_path);
+		mem_free(config_path);
 	}
 }

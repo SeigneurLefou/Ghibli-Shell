@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 12:51:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/14 11:59:24 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ t_list	list_new(void)
 	return (new);
 }
 
-bool	list_from_null_term_array(t_list *list, void **array, void (*free_func)(void *))
+bool	list_from_null_term_array(t_list *list, void **array,
+		void (*free_func)(void *))
 {
 	t_u32	i;
 	t_list	new;
@@ -47,7 +48,7 @@ bool	list_push_back(t_list *list, void *value)
 	t_list_cell	*last;
 	t_list_cell	*new;
 
-	new = malloc(sizeof(t_list_cell));
+	new = mem_alloc(sizeof(t_list_cell), NULL, NULL, 0b1);
 	if (new)
 	{
 		new->next = NULL;
@@ -75,7 +76,7 @@ bool	list_push_front(t_list *list, void *value)
 	t_list_cell	*new;
 	t_list_cell	*previous;
 
-	new = malloc(sizeof(t_list_cell));
+	new = mem_alloc(sizeof(t_list_cell), NULL, NULL, 0b1);
 	if (new)
 	{
 		new->value = value;

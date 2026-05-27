@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 11:16:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/23 17:54:41 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:29:05 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <malloc.h>
 # include <stddef.h>
 # include <unistd.h>
+# include "allocator.h"
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -34,8 +35,7 @@ char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strrchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strnstr(const char *big, const char *little,
-			size_t len);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strnjoin(char *s1, char *s2, size_t n);
 
@@ -67,7 +67,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
-void	ft_double_free(char **double_list);
+void	ft_double_mem_free(char **double_list);
 void	ft_double_free_start(char **double_list, int start);
 
 #endif
