@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/27 15:32:21 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/27 18:20:58 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,15 @@ void	take_child(t_pipex *pipex_var)
 		ft_cmdclear(pipex_var->cmd);
 		exit(pipex_var->wstatus);
 	}
-	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
+	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1 && !access(pipex_var->cmd->path, F_OK))
 	{
-		if (access(pipex_var->cmd->path, X_OK) == 0) {
+		if (!access(pipex_var->cmd->path, X_OK)) {
 			env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
 			execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
 		}
 		else
 		{
-			write(2, pipex_var->cmd->path, ft_strlen(pipex_var->cmd->path));
-			write(2, ": Permission denied.\n", 22);
+			perror(pipex_var->cmd->name);
 			ft_cmdclear(pipex_var->cmd);
 			clear_garbage_collector();
 			exit(126);
