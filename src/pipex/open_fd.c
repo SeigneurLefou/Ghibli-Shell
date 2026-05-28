@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/27 18:15:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 11:05:40 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,12 @@ void	close_new_files(int *old_files, int *new_files)
 		close(new_files[0]);
 	if (new_files[1] > 2 && old_files[1] != new_files[1])
 		close(new_files[1]);
+}
+
+void close_files_if_open(int *files)
+{
+	if (files[0] > 2)
+		close(files[0]);
+	if (files[1] > 2)
+		close(files[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/27 17:28:00 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 11:04:52 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,6 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	return (true);
 }
 
-static void close_files_if_open(int *files)
-{
-	if (files[0] > 2)
-			close(files[0]);
-	if (files[1] > 2)
-		close(files[1]);
-}
-
 bool	exec_binary_tree(t_btree *tree, int files[2])
 {
 	t_vec	pid_list;
@@ -114,7 +106,7 @@ bool	exec_binary_tree(t_btree *tree, int files[2])
 	vec_init(&pid_list, sizeof(pid_t), 10);
 	if (!open_io_fds(tree, new_files))
 	{
-		close_files_if_open(new_files);
+		close_new_files(files, new_files);
 		return (false);
 	}
 	if (!tree->node->left && !tree->node->right)

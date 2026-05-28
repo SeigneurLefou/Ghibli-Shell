@@ -6,19 +6,11 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/27 17:55:45 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 11:06:23 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
-
-static void close_files_if_open(int *files)
-{
-	if (files[0] > 2)
-		close(files[0]);
-	if (files[1] > 2)
-		close(files[1]);
-}
 
 bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 {
