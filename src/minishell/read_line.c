@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 19:00:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 14:53:51 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool	setup_sig_handler(void)
 		perror("GhibliShell");
 		return (false);
 	}
+	signal(SIGQUIT, SIG_IGN);
 	return (true);
 }
 
