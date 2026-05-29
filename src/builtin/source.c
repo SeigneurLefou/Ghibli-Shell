@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/04/20 20:09:47 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 12:17:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	builtin_source(int argc, char **argv, t_minishell *minishell)
 	minishell->internal_file_recursion++;
 	if (minishell->internal_file_recursion > 100)
 	{
-		display_error_message("Max file recursion limit reachead!");
+		display_error_message("Max file recursion limit reached!");
 		return (1);
 	}
 	result = execute_file(argv[1], minishell);

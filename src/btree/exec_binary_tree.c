@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/26 14:31:35 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 11:04:52 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ bool	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
 	pipex_var.wstatus = 0;
-	fork_pid(&pipex_var, tree->minishell->stdin_save);
-	vec_append(pid_list, &pipex_var.pid);
+	if (pipex_var.cmd->name && pipex_var.cmd->name[0])
+	{
+		fork_pid(&pipex_var, tree->minishell->stdin_save);
+		vec_append(pid_list, &pipex_var.pid);
+	}
 	return (true);
 }
 
@@ -101,7 +104,11 @@ bool	exec_binary_tree(t_btree *tree, int files[2])
 	new_files[0] = files[0];
 	new_files[1] = files[1];
 	vec_init(&pid_list, sizeof(pid_t), 10);
-	open_io_fds(tree, new_files);
+	if (!open_io_fds(tree, new_files))
+	{
+		close_new_files(files, new_files);
+		return (false);
+	}
 	if (!tree->node->left && !tree->node->right)
 	{
 		exec_leaf(tree, new_files, &pid_list);
