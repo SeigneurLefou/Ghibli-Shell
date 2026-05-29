@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 12:39:29 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 20:41:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-bool	open_file(char *file_name, int open_mode, int *fd, t_btree	*tree)
+bool	open_file(char *file_name, int open_mode, int *fd, t_btree *tree)
 {
 	if (*fd > 2)
 		close(*fd);
@@ -27,13 +27,14 @@ bool	open_file(char *file_name, int open_mode, int *fd, t_btree	*tree)
 	return (true);
 }
 
-static char *get_expanded_io_file_name(t_btree	*tree, t_io_file	*io_file)
+static char	*get_expanded_io_file_name(t_btree *tree, t_io_file *io_file)
 {
-	char		*file_name;
-	t_vec expanded;
+	char	*file_name;
+	t_vec	expanded;
 
 	vec_init(&expanded, sizeof(t_token), 2);
-	expand(&expanded, vec_get(&tree->expr, io_file->file_name_token_index), tree->minishell);
+	expand(&expanded, vec_get(&tree->expr, io_file->file_name_token_index),
+		tree->minishell);
 	if (expanded.size != 1)
 	{
 		display_error_message("Ambiguous IO file.");
@@ -46,7 +47,7 @@ static char *get_expanded_io_file_name(t_btree	*tree, t_io_file	*io_file)
 	return (file_name);
 }
 
-bool	open_io_fds(t_btree	*tree, int fds[2])
+bool	open_io_fds(t_btree *tree, int fds[2])
 {
 	size_t		i;
 	t_io_file	*io_file;
@@ -62,7 +63,7 @@ bool	open_io_fds(t_btree	*tree, int fds[2])
 		if (io_file->type == io_type_infile)
 			open_file(file_name, O_RDONLY, &fds[0], tree);
 		else if (io_file->type == io_type_heredoc)
-			here_doc_file(file_name, &fds[0]);
+			here_doc_file(file_name, &fds[0], tree);
 		else if (io_file->type == io_type_outfile)
 			open_file(file_name, O_CREAT | O_WRONLY | O_TRUNC, &fds[1], tree);
 		else if (io_file->type == io_type_append_file)
@@ -83,7 +84,7 @@ void	close_new_files(int *old_files, int *new_files)
 		close(new_files[1]);
 }
 
-void close_files_if_open(int *files)
+void	close_files_if_open(int *files)
 {
 	if (files[0] > 2)
 		close(files[0]);
