@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 17:23:03 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static bool	is_flag_active(char flag, t_minishell *minishell)
 {
 	char	*home;
 	char	*pwd;
-	char	*status;
 
 	if (flag == 'h')
 	{
@@ -25,10 +24,7 @@ static bool	is_flag_active(char flag, t_minishell *minishell)
 		return (pwd && home && !ft_strncmp(home, pwd, ft_strlen(home)));
 	}
 	if (flag == 's')
-	{
-		status = env_variables_get(&minishell->env_variables_manager, "?");
-		return (!ft_strcmp(status, "0"));
-	}
+		return (!minishell->last_status);
 	return (false);
 }
 
