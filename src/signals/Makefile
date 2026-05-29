@@ -1,4 +1,0 @@
-SIGNALS_PATH = src/signals
-
-SRC += $(SIGNALS_PATH)/signals.c
-OUT_DIRS += $(OUTPUT_DIR)/$(SIGNALS_PATH)
