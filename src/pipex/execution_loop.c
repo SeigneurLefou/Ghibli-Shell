@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:57:48 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/17 19:06:43 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/28 14:54:21 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	fork_pid(t_pipex *pipex_var, int stdin_pid_copy)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGTERM, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		close(stdin_pid_copy);
 		take_child(pipex_var);
 	}
