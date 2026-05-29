@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/26 18:21:10 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 14:57:07 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,22 @@ char	*path_join(char *a, char *b)
 	return (path);
 }
 
+static unsigned int	get_check_start(char *name, char *wildcard,
+		char *str_filter)
+{
+	unsigned int	check_start;
+
+	check_start = ft_strlen(name) - ft_strlen(wildcard + 1);
+	if (check_start < wildcard - str_filter)
+		check_start = wildcard - str_filter;
+	return (check_start);
+}
+
 bool	file_matches_filter(t_vec *filter, char *name)
 {
-	char	*wildcard;
-	char	*str_filter;
+	char			*wildcard;
+	char			*str_filter;
+	unsigned int	check_start;
 
 	if (name[0] == '.' && *(char *)vec_get(filter, 0) != '.')
 		return (false);
@@ -142,15 +154,15 @@ bool	file_matches_filter(t_vec *filter, char *name)
 	if (!str_filter)
 		return (false);
 	wildcard = ft_strchr(str_filter, '*');
-	if (!wildcard)
-		return (false); // Shizuku has a biiiiig problem if this happens
 	if (ft_strncmp(str_filter, name, wildcard - str_filter))
 	{
 		mem_free(str_filter);
 		return (false);
 	}
-	if (ft_strcmp(wildcard + 1, name + ft_strlen(name) - ft_strlen(wildcard
-				+ 1)))
+	if (ft_strlen(name) < ft_strlen(wildcard + 1))
+		return (false);
+	check_start = get_check_start(name, wildcard, str_filter);
+	if (ft_strcmp(wildcard + 1, name + check_start))
 	{
 		mem_free(str_filter);
 		return (false);
