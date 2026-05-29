@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/28 11:05:40 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 12:39:29 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,25 @@ bool	open_file(char *file_name, int open_mode, int *fd, t_btree	*tree)
 	return (true);
 }
 
+static char *get_expanded_io_file_name(t_btree	*tree, t_io_file	*io_file)
+{
+	char		*file_name;
+	t_vec expanded;
+
+	vec_init(&expanded, sizeof(t_token), 2);
+	expand(&expanded, vec_get(&tree->expr, io_file->file_name_token_index), tree->minishell);
+	if (expanded.size != 1)
+	{
+		display_error_message("Ambiguous IO file.");
+		tree->minishell->last_status = 1;
+		tree->node->wstatus = 1;
+		vec_free(&expanded);
+		return (NULL);
+	}
+	file_name = vec_to_cstring(vec_get(&expanded, 0));
+	return (file_name);
+}
+
 bool	open_io_fds(t_btree	*tree, int fds[2])
 {
 	size_t		i;
@@ -37,8 +56,9 @@ bool	open_io_fds(t_btree	*tree, int fds[2])
 	while (i < tree->node->io_files.size)
 	{
 		io_file = vec_get(&tree->node->io_files, i);
-		file_name = vec_to_cstring(vec_get(&tree->expr,
-					io_file->file_name_token_index));
+		file_name = get_expanded_io_file_name(tree, io_file);
+		if (!file_name)
+			return (false);
 		if (io_file->type == io_type_infile)
 			open_file(file_name, O_RDONLY, &fds[0], tree);
 		else if (io_file->type == io_type_heredoc)
