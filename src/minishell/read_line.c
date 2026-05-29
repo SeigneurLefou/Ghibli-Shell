@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 19:00:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 11:03:34 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ bool	disable_sig_handler(void)
 static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		bool *first_sigint)
 {
-	if (line && trimmed && trimmed[0])
+	if (!trimmed)
+	{
+		free(line);
+		default_error_exit(NULL);
+	}
+	if (trimmed[0])
 	{
 		*first_sigint = true;
 		add_history(trimmed);
@@ -101,7 +106,7 @@ void	handle_prompt(t_minishell *minishell)
 		if (ft_strlen(line) > 32768)
 		{
 			display_error_message("The input line is too long. Max is 32768.");
-			mem_free(line);
+			free(line);
 			continue ;
 		}
 		if (!line)
@@ -123,9 +128,10 @@ void	handle_prompt(t_minishell *minishell)
 				minishell->request_exit = true;
 		}
 		else
+		{
 			trimmed = ft_strtrim(line, "\r\n \t");
-		if (line)
 			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
+		}
 		if (minishell->request_exit)
 			break ;
 	}

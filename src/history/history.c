@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 15:08:15 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 11:05:37 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ bool	add_file_to_history(char *line, int fd)
 		trimmed = ft_strtrim(line, " \n\r\t");
 		if (!trimmed)
 		{
+			default_error_exit(NULL);
 			mem_free(trimmed);
 			mem_free(line);
 			close(fd);
