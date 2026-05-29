@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/28 11:06:23 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 15:42:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,20 @@ bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 		pipe(pipe_fd);
 		new_files[1] = pipe_fd[1];
 	}
-	if (!open_io_fds(tree_cpy, new_files))
+	if (open_io_fds(tree_cpy, new_files))
 	{
-		mem_free(tree_cpy);
+		exec_pipeline(tree_cpy, new_files, command_pid);
 		close_new_files(files, new_files);
-		return (false);
+		if (command_pid->data)
+			vec_expand_and_free(pid_list, command_pid);
+		mem_free(tree_cpy);
 	}
-	exec_pipeline(tree_cpy, new_files, command_pid);
-	close_new_files(files, new_files);
-	if ((*command_pid).data)
-		vec_expand_and_free(pid_list, command_pid);
-	mem_free(tree_cpy);
 	vec_init(command_pid, sizeof(pid_t), 5);
 	if (tree->node->operator == operator_pipe)
 		new_files[0] = pipe_fd[0];
 	new_files[1] = files[1];
 	exec_right_pipeline(tree, new_files, command_pid);
-	if ((*command_pid).data)
+	if (command_pid->data)
 		vec_expand_and_free(pid_list, command_pid);
 	close_new_files(files, new_files);
 	return (true);
