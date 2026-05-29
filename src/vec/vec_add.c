@@ -6,11 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:20 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:45:54 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:24:52 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec.h"
+#include "exits.h"
 
 bool	vec_append(t_vec *vec, void *data)
 {
@@ -23,7 +24,7 @@ bool	vec_append(t_vec *vec, void *data)
 	if (!vec->data || vec->size >= vec->allocated_size)
 	{
 		new_data = mem_alloc((vec->allocated_size + vec->buff_size)
-				* vec->type_size, NULL, NULL, 0b1);
+				* vec->type_size, default_error_exit, NULL, 0b1);
 		if (!new_data)
 		{
 			vec->failed = true;
@@ -55,7 +56,7 @@ void	vec_expand_and_free(t_vec *vec, t_vec *other)
 	if (vec->failed)
 		return ;
 	alloc_size = (vec->size + other->size + vec->buff_size) * vec->type_size;
-	new_data = mem_alloc(alloc_size, NULL, NULL, 0b1);
+	new_data = mem_alloc(alloc_size, default_error_exit, NULL, 0b1);
 	if (!new_data)
 	{
 		vec->failed = true;
@@ -84,7 +85,7 @@ void	vec_expand(t_vec *vec, t_vec *other)
 	if (vec->failed)
 		return ;
 	alloc_size = (vec->size + other->size + vec->buff_size) * vec->type_size;
-	new_data = mem_alloc(alloc_size, NULL, NULL, 0b1);
+	new_data = mem_alloc(alloc_size, default_error_exit, NULL, 0b1);
 	if (!new_data)
 		return ;
 	if (vec->data)

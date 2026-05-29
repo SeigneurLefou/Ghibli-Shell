@@ -1,4 +1,5 @@
 #include "allocator.h"
+#include "exits.h"
 
 void	*mem_alloc(size_t size, void (*fail_callback)(void *),
 		void *fail_callback_args, unsigned int tags)
@@ -56,7 +57,7 @@ bool	mem_free_tags(unsigned int mask)
 	t_smart_pointer	*smart_pointer;
 	void			*ptr;
 
-	ptr = mem_alloc(0, NULL, NULL, 0);
+	ptr = mem_alloc(0, default_error_exit, NULL, 0);
 	if (!ptr)
 		return (false);
 	smart_pointer = ptr - sizeof(t_smart_pointer);

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "exits.h"
 
 int	take_remaining(char **str, int index, char **line)
 {
@@ -20,7 +21,7 @@ int	take_remaining(char **str, int index, char **line)
 	remaining_index = 0;
 	while ((*str)[remaining_index + index])
 		remaining_index++;
-	remaining = mem_alloc(remaining_index + 1, NULL, NULL, 0b1);
+	remaining = mem_alloc(remaining_index + 1, default_error_exit, NULL, 0b1);
 	if (!remaining)
 	{
 		safe_free(line);
@@ -45,7 +46,7 @@ char	*take_line(char **str)
 	size = 0;
 	while ((*str)[size] && (*str)[size] != '\n')
 		size++;
-	line = mem_alloc(size + 1 + ((*str)[size] == '\n'), NULL, NULL, 0b1);
+	line = mem_alloc(size + 1 + ((*str)[size] == '\n'), default_error_exit, NULL, 0b1);
 	if (!line)
 	{
 		safe_free(str);
@@ -101,7 +102,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > 1023)
 		return (NULL);
-	buf = mem_alloc(BUFFER_SIZE + 1, NULL, NULL, 0b1);
+	buf = mem_alloc(BUFFER_SIZE + 1, default_error_exit, NULL, 0b1);
 	if (!buf)
 		return (NULL);
 	line = NULL;
