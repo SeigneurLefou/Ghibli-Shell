@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 18:00:50 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:10:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 			waitpid(*(pid_t *)vec_get(pid_list, 0), &tree->node->wstatus, 0);
 			tree->node->wstatus = give_exit_code(tree->node->wstatus);
 		}
-		else
+		else if (tree->node->cmds->name)
 			tree->node->wstatus = 127;
 	}
 	tree->minishell->last_status = tree->node->wstatus;
