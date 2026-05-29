@@ -82,7 +82,7 @@ The catbus dot arts was made by *yben-dje* using a mix of image processing, auto
 
 We used an [online tutorial about signals](https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction/).
 
-What? You just said I-I ? Oh no, "AI"? I don't know what that means. Well... ok... I do know what "AI" is. BUT DO YOU KNOW WHO YOU'RE TALKING TO? GET OUT OF THERE! WE DO NOT USE IA HERE! **USING AI IS A SKILL ISSUE AND WE ARE GIGA CHADS. SO STOP TALKING TO US ABOUT AI!**
+What? You just said I-I ? Oh no, "AI"? I don't know what that means. Well... ok... I do know what "AI" is. BUT DO YOU KNOW WHO YOU'RE TALKING TO? GET OUT OF THERE! WE DO NOT USE AI HERE! **USING AI IS A SKILL ISSUE AND WE ARE GIGA CHADS. SO STOP TALKING TO US ABOUT AI!**
 
 Hum... How are you today 🤗?
 
