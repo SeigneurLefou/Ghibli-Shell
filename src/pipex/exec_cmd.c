@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/28 14:41:52 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 16:47:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,8 @@ char	*test_all_path(char *path, t_cmd *cmd)
 	int		i;
 
 	if (!path || !path[0])
-	{
-		mem_free(path);
 		return (NULL);
-	}
 	splited_path = ft_split(path, ':');
-	mem_free(path);
 	i = 0;
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
@@ -88,8 +84,12 @@ void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
 	}
 	mem_free(cmd_path);
 	cmd_path = NULL;
-	path = ft_strdup(env_variables_get(&minishell->env_variables_manager,
-				"PATH"));
+	path = env_variables_get(&minishell->env_variables_manager,
+				"PATH");
+	if (!path)
+		cmd->path = NULL;
+	if (!path)
+		return ;
 	cmd_path = test_all_path(path, cmd);
 	cmd->path = cmd_path;
 }
