@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/28 14:41:52 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 17:49:02 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,8 @@ char	*test_all_path(char *path, t_cmd *cmd)
 	int		i;
 
 	if (!path || !path[0])
-	{
-		mem_free(path);
 		return (NULL);
-	}
 	splited_path = ft_split(path, ':');
-	mem_free(path);
 	i = 0;
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
@@ -60,7 +56,7 @@ char	*test_all_path(char *path, t_cmd *cmd)
 		iter_path = ft_strjoin(splited_path[i++], "/");
 		cmd_path = ft_strjoin(iter_path, cmd->name);
 		mem_free(iter_path);
-		if (!access(cmd_path, X_OK | F_OK))
+		if (!access(cmd_path, X_OK | F_OK)) // TODO: I think that we must not test for X_OK here
 			break ;
 		mem_free(cmd_path);
 		cmd_path = NULL;
@@ -88,8 +84,12 @@ void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
 	}
 	mem_free(cmd_path);
 	cmd_path = NULL;
-	path = ft_strdup(env_variables_get(&minishell->env_variables_manager,
-				"PATH"));
+	path = env_variables_get(&minishell->env_variables_manager,
+				"PATH");
+	if (!path)
+		cmd->path = NULL;
+	if (!path)
+		return ;
 	cmd_path = test_all_path(path, cmd);
 	cmd->path = cmd_path;
 }
@@ -118,23 +118,30 @@ void	take_child(t_pipex *pipex_var)
 		clear_garbage_collector();
 		exit(pipex_var->wstatus);
 	}
-	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1
-		&& !access(pipex_var->cmd->path, F_OK))
+	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
-		if (!access(pipex_var->cmd->path, X_OK))
+		if (!access(pipex_var->cmd->path, F_OK))
 		{
-			env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
-			execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
+			if (!access(pipex_var->cmd->path, X_OK))
+			{
+				env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
+				execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
+			}
+			else
+			{
+				perror(pipex_var->cmd->name);
+				ft_cmdclear(pipex_var->cmd);
+				clear_garbage_collector();
+				exit(126);
+			}
 		}
-		else
-		{
-			perror(pipex_var->cmd->name);
-			ft_cmdclear(pipex_var->cmd);
-			clear_garbage_collector();
-			exit(126);
-		}
+		perror(pipex_var->cmd->name);
+		ft_cmdclear(pipex_var->cmd);
+		clear_garbage_collector();
+		exit(127);
 	}
-	perror(pipex_var->cmd->name);
+	write(2, pipex_var->cmd->name, ft_strlen(pipex_var->cmd->name));
+	write(2, ": Command not found.\n", 22);
 	ft_cmdclear(pipex_var->cmd);
 	clear_garbage_collector();
 	exit(127);
