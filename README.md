@@ -4,13 +4,6 @@
 ## Description
 You like **Ghibli**? You like **Bash**? If this is the case for you (I hope), this project is made for you! This project is a partial remake of bash bringing Ghibli magic to your terminal ✨.
 
-## Roadmap
-- [X] Execute built-ins before searching the binaries in the PATH
-- [ ] Fix the io FDs in exec pipexline
-- [ ] Fix waitpid in exec pipexline
-- [ ] Add a command history file
-- [ ] Handle the mallocs in the parser (and everywhere) 😅
-
 ### Module names (Warning spoil)
 We gived the name of Ghibli's characters to the project's modules.
 
@@ -26,6 +19,7 @@ We gived the name of Ghibli's characters to the project's modules.
 | File runner           | Jiro                    | He creates planes.                                            |
 | Env variable manager  | Totoro                  | Because he cares about the Environment.                       |
 | Signals handler       | Umi                     | She can send messages with flags.                             |
+| Allocator             | Marnie                  |                                                               |
 
 Open a discussion thread if you want more info about the choices.
 
@@ -88,7 +82,7 @@ The catbus dot arts was made by *yben-dje* using a mix of image processing, auto
 
 We used an [online tutorial about signals](https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction/).
 
-What? You just said I-I ? Oh no, "AI"? I don't know what that means. Well... ok... I do know what "AI" is. BUT DO YOU KNOW WHO YOU'RE TALKING TO? GET OUT OF THERE! WE DO NOT USE IA HERE! **USING AI IS A SKILL ISSUE AND WE ARE GIGA CHADS. SO STOP TALKING TO US ABOUT AI!**
+What? You just said I-I ? Oh no, "AI"? I don't know what that means. Well... ok... I do know what "AI" is. BUT DO YOU KNOW WHO YOU'RE TALKING TO? GET OUT OF THERE! WE DO NOT USE AI HERE! **USING AI IS A SKILL ISSUE AND WE ARE GIGA CHADS. SO STOP TALKING TO US ABOUT AI!**
 
 Hum... How are you today 🤗?
 
