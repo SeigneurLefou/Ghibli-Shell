@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/28 11:04:52 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:10:18 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ bool	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	{
 		fork_pid(&pipex_var, tree->minishell->stdin_save);
 		vec_append(pid_list, &pipex_var.pid);
+		return (true);
 	}
-	return (true);
+	return (false);
 }
 
 bool	exec_right_tree(t_btree *tree, int files[2])
@@ -84,9 +85,13 @@ bool	exec_leaf(t_btree *tree, int files[2], t_vec *pid_list)
 	}
 	else
 	{
-		exec_cmd(tree, files, pid_list);
-		waitpid(*(pid_t *)vec_get(pid_list, 0), &tree->node->wstatus, 0);
-		tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		if (exec_cmd(tree, files, pid_list))
+		{
+			waitpid(*(pid_t *)vec_get(pid_list, 0), &tree->node->wstatus, 0);
+			tree->node->wstatus = give_exit_code(tree->node->wstatus);
+		}
+		else if (tree->node->cmds->name)
+			tree->node->wstatus = 127;
 	}
 	tree->minishell->last_status = tree->node->wstatus;
 	status = ft_itoa(tree->node->wstatus);
