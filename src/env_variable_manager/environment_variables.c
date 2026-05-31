@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:34:44 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/21 19:00:23 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:19:41 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static char	*env_variables_manager_create_line(char *key, char *value) {
 
   key_size = ft_strlen(key);
   value_size = ft_strlen(value);
-  line = mem_alloc(key_size + value_size + 2, NULL, NULL, 0b1);
+  line = mem_alloc(key_size + value_size + 2, default_error_exit, NULL, 0b1);
   if (!line)
     return (NULL);
   ft_memcpy(line, key, key_size);
@@ -99,7 +99,7 @@ char	**env_variables_get_env(t_env_variables_manager *env_variable_manager) {
   unsigned int index;
 
   env = mem_alloc(sizeof(char *) * (env_variable_manager->variables.size + 1),
-                  NULL, NULL, 0b1);
+                  default_error_exit, NULL, 0b1);
   if (!env)
     return (NULL);
   env[env_variable_manager->variables.size] = NULL;

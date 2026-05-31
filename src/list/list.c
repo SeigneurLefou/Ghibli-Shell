@@ -6,11 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 12:51:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/19 12:25:15 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:21:36 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
+#include "exits.h"
 
 t_list	list_new(void)
 {
@@ -48,7 +49,7 @@ bool	list_push_back(t_list *list, void *value)
 	t_list_cell	*last;
 	t_list_cell	*new;
 
-	new = mem_alloc(sizeof(t_list_cell), NULL, NULL, 0b1);
+	new = mem_alloc(sizeof(t_list_cell), default_error_exit, NULL, 0b1);
 	if (new)
 	{
 		new->next = NULL;
@@ -76,7 +77,7 @@ bool	list_push_front(t_list *list, void *value)
 	t_list_cell	*new;
 	t_list_cell	*previous;
 
-	new = mem_alloc(sizeof(t_list_cell), NULL, NULL, 0b1);
+	new = mem_alloc(sizeof(t_list_cell), default_error_exit, NULL, 0b1);
 	if (new)
 	{
 		new->value = value;

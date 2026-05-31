@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 15:42:18 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:19:41 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 
 	new_files[0] = files[0];
 	new_files[1] = files[1];
-	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
+	tree_cpy = mem_alloc(sizeof(t_btree), default_error_exit, NULL, 0b1);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->right;
 	if (!open_io_fds(tree_cpy, new_files))
@@ -45,7 +45,7 @@ bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	int		pipe_fd[2];
 	int		new_files[2];
 
-	tree_cpy = mem_alloc(sizeof(t_btree), NULL, NULL, 0b1);
+	tree_cpy = mem_alloc(sizeof(t_btree), default_error_exit, NULL, 0b1);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->left;
 	new_files[0] = files[0];

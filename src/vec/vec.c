@@ -6,11 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/19 18:38:34 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/05/29 18:24:58 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec.h"
+#include "exits.h"
 
 void	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 {
@@ -29,7 +30,7 @@ bool	vec_truncate(t_vec *vec)
 
 	assert((int[]){vec != NULL, 42}, "Null passed to vec_truncate.");
 	assert((int[]){!vec->failed, 42}, "Attempted to read a failed vec.");
-	new_data = mem_alloc(vec->size * vec->type_size, NULL, NULL, 0b1);
+	new_data = mem_alloc(vec->size * vec->type_size, default_error_exit, NULL, 0b1);
 	if (!new_data)
 		return (false);
 	if (vec->data)
@@ -51,7 +52,7 @@ bool	vec_clone(t_vec *new, t_vec *old)
 	assert((int[]){new != NULL, old != NULL, 42}, "Null passed to vec_clone.");
 	assert((int[]){!old->failed, 42}, "Attempted to read a failed vec.");
 	if (new->data)
-		new->data = mem_alloc(old->size * old->type_size, NULL, NULL, 0b1);
+		new->data = mem_alloc(old->size * old->type_size, default_error_exit, NULL, 0b1);
 	else
 		new->data = NULL;
 	if (!new->data)
