@@ -6,12 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:52:38 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/21 18:42:53 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:25:55 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EVIRONMENT_VARIABLES_H
-# define EVIRONMENT_VARIABLES_H
+#ifndef ENVIRONMENT_VARIABLES_H
+# define ENVIRONMENT_VARIABLES_H
 
 # include "allocator.h"
 # include "libft.h"

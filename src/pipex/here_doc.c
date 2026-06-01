@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 20:46:11 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:00:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	get_file_while_not_limiter(int fd, char *limiter, char **buffer)
 	return (0);
 }
 
-static bool write_buffer_to_pipe(int		pipe_fd[2], char *limiter, int *fd, t_btree *tree)
+static bool	write_buffer_to_pipe(int pipe_fd[2], char *limiter, int *fd,
+		t_btree *tree)
 {
 	char	*input_user;
 
