@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 18:19:41 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:02:39 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,34 +38,38 @@ bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 	return (true);
 }
 
-bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
-		t_vec *command_pid)
+bool	exec_left_pipeline(t_btree *tree, int files[2], t_vec *command_pid)
 {
 	t_btree	*tree_cpy;
-	int		pipe_fd[2];
 	int		new_files[2];
 
+	new_files[0] = files[0];
+	new_files[1] = files[1];
 	tree_cpy = mem_alloc(sizeof(t_btree), default_error_exit, NULL, 0b1);
 	cpy_btree(tree_cpy, tree);
 	tree_cpy->node = tree_cpy->node->left;
-	new_files[0] = files[0];
-	new_files[1] = files[1];
-	if (tree->node->operator == operator_pipe)
-	{
-		pipe(pipe_fd);
-		new_files[1] = pipe_fd[1];
-	}
 	if (open_io_fds(tree_cpy, new_files))
-	{
 		exec_pipeline(tree_cpy, new_files, command_pid);
-		close_new_files(files, new_files);
-		if (command_pid->data)
-			vec_expand_and_free(pid_list, command_pid);
-		mem_free(tree_cpy);
-	}
+	mem_free(tree_cpy);
+	close_new_files(files, new_files);
+	return (true);
+}
+
+bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
+		t_vec *command_pid)
+{
+	int		pipe_fd[2];
+	int		new_files[2];
+
+	pipe(pipe_fd);
+	new_files[0] = files[0];
+	new_files[1] = pipe_fd[1];
+	exec_left_pipeline(tree, new_files, command_pid);
+	if (command_pid->data)
+		vec_expand_and_free(pid_list, command_pid);
 	vec_init(command_pid, sizeof(pid_t), 5);
-	if (tree->node->operator == operator_pipe)
-		new_files[0] = pipe_fd[0];
+	close_new_files(files, new_files);
+	new_files[0] = pipe_fd[0];
 	new_files[1] = files[1];
 	exec_right_pipeline(tree, new_files, command_pid);
 	if (command_pid->data)
