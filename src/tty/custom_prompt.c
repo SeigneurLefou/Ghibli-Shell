@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/29 17:23:03 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:18:44 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,13 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 					if (base_prompt[index + 1] && base_prompt[index] == '\\')
 					{
 						if (base_prompt[index + 1] == ';' || base_prompt[index
-							+ 1] == '@' || base_prompt[index + 1] == '\\')
+								+ 1] == '@' || base_prompt[index + 1] == '\\')
 							c = base_prompt[++index];
 						else
 							c = parse_escape(base_prompt[++index]);
 					}
-					else if (base_prompt[index] == '@' && base_prompt[index
-						+ 1])
+					else if (base_prompt[index] == '@'
+						&& base_prompt[index + 1])
 					{
 						index++;
 						expand_prompt_custom(&rendered, base_prompt[index],
@@ -153,7 +153,7 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 				while (base_prompt[index] && base_prompt[index] != ';')
 				{
 					if (base_prompt[index] == '\\' && (base_prompt[index
-							+ 1] == ';' || base_prompt[index + 1] == '@'
+								+ 1] == ';' || base_prompt[index + 1] == '@'
 							|| base_prompt[index + 1] == '\\'))
 						index++;
 					index++;
@@ -162,7 +162,7 @@ char	*render_prompt(char *base_prompt, t_minishell *minishell)
 		}
 		else if (base_prompt[index] == '\\' && (base_prompt[index + 1] == '%'
 				|| base_prompt[index + 1] == '!' || base_prompt[index
-				+ 1] == '@' || base_prompt[index + 1] == '\\'))
+					+ 1] == '@' || base_prompt[index + 1] == '\\'))
 		{
 			vec_append(&rendered, &base_prompt[++index]);
 		}

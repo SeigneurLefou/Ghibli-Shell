@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   allocator_api.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/01 15:16:38 by lchamard          #+#    #+#             */
+/*   Updated: 2026/06/01 15:16:56 by lchamard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "allocator.h"
 #include "exits.h"
 
@@ -8,7 +20,7 @@ void	*mem_alloc(size_t size, void (*fail_callback)(void *),
 	static t_smart_pointer	*first_mem_ptr = NULL;
 	static t_smart_pointer	*last_mem_ptr = NULL;
 	static bool				failed = false;
-	
+
 	if (failed)
 		return (NULL);
 	clean_freed_pointers(first_mem_ptr, &first_mem_ptr, &last_mem_ptr);

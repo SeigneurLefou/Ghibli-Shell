@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 11:36:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:15:29 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 volatile sig_atomic_t	g_signal = 0;
 
-/* Based on the examples given at https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction */
+/* Based on the examples given at
+https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction */
 bool	setup_sig_handler(void)
 {
 	struct sigaction	sa;
