@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:40:15 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:13:35 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*list_pop_front(t_list *list)
 {
 	t_list_cell	*cell;
-	void	*value;
+	void		*value;
 
 	cell = list->first_cell;
 	if (!cell)
@@ -34,7 +34,7 @@ void	*list_pop_front(t_list *list)
 void	*list_pop_back(t_list *list)
 {
 	t_list_cell	*cell;
-	void	*value;
+	void		*value;
 
 	cell = list->last_cell;
 	if (!cell)
@@ -70,9 +70,9 @@ static void	*drop_cell(t_list *list, t_list_cell *cell)
 
 void	*list_pop_at_index(t_list *list, t_u32 index)
 {
-	t_u32	i;
+	t_u32		i;
 	t_list_cell	*cell;
-	void	*value;
+	void		*value;
 
 	if (!list->first_cell)
 		return (NULL);

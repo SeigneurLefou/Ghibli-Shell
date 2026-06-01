@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:44:20 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/29 18:21:40 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:13:51 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ void	*list_as_array(t_list *list)
 	t_u32		index;
 	t_iterator	iterator;
 
-	array = mem_alloc((list->size + 1) * sizeof(void **), default_error_exit, NULL, 0b1);
+	array = mem_alloc((list->size + 1) * sizeof(void **), default_error_exit,
+			NULL, 0b1);
 	if (!array)
 		return (NULL);
 	iterator = iterator_new(list, 0);

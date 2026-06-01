@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:24:04 by marvin            #+#    #+#             */
-/*   Updated: 2026/05/29 11:02:00 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:12:37 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	*ft_calloc2(size_t nmemb, size_t size)
 	to_alloc = nmemb * size;
 	if (nmemb != to_alloc / size)
 		return (NULL);
-	array = mem_alloc(to_alloc, NULL, NULL, 0b1); // DO NOT EXIT OR LEAKS WILL OCCUR
+	array = mem_alloc(to_alloc, NULL, NULL, 0b1);
+	// DO NOT EXIT OR LEAKS WILL OCCUR
 	if (!array)
 		return (NULL);
 	ft_bzero(array, to_alloc);
