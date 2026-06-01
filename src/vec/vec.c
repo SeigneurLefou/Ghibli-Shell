@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 10:04:45 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 18:24:58 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:24:22 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	vec_init(t_vec *vec, size_t type_size, unsigned int buffering_size)
 {
-	assert((int[]){vec != NULL, 42}, "Cannot create vec with given data.");
+	assert((int[]) {vec != NULL, 42}, "Cannot create vec with given data.");
 	vec->buff_size = buffering_size;
 	vec->size = 0;
 	vec->failed = false;
@@ -28,8 +28,8 @@ bool	vec_truncate(t_vec *vec)
 {
 	char	*new_data;
 
-	assert((int[]){vec != NULL, 42}, "Null passed to vec_truncate.");
-	assert((int[]){!vec->failed, 42}, "Attempted to read a failed vec.");
+	assert((int[]) {vec != NULL, 42}, "Null passed to vec_truncate.");
+	assert((int[]) {!vec->failed, 42}, "Attempted to read a failed vec.");
 	new_data = mem_alloc(vec->size * vec->type_size, default_error_exit, NULL, 0b1);
 	if (!new_data)
 		return (false);
