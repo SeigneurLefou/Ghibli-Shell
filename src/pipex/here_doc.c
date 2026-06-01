@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 18:16:00 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:32:22 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ static char	*get_variable_content(char *start, t_minishell *minishell)
 	return (value);
 }
 
+static void add_expand(unsigned int *index, char *line, t_vec *expanded, t_minishell *minishell)
+{
+	(*index)++;
+	char *data = get_variable_content(line + (*index), minishell);
+	vec_expand_from_str(expanded, data);
+	(*index) += get_variable_name_len(line + (*index));
+}
+
 char	*expand_str(char *line, t_minishell *minishell)
 {
 	t_vec			expanded;
@@ -68,14 +76,12 @@ char	*expand_str(char *line, t_minishell *minishell)
 	while (index < line_size)
 	{
 		if (line[index] == '\\' && line[index + 1] == '$')
-			index += 2;
-		else if (line[index] == '$' && is_valid_expand_char(line[index + 1]))
 		{
-			index++;
-			char *data = get_variable_content(line + index, minishell);
-			vec_expand_from_str(&expanded, data);
-			index += get_variable_name_len(line + index);
+			vec_append(&expanded, "$");
+			index += 2;
 		}
+		else if (line[index] == '$' && is_valid_expand_char(line[index + 1]))
+			add_expand(&index, line, &expanded, minishell);
 		else
 			vec_append(&expanded, &line[index++]);
 	}
