@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:03:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 19:15:24 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:02:16 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	ft_cmdclear(t_cmd *cmd)
 	if (tmp)
 	{
 		mem_free(tmp);
-		cmd = NULL; 
+		cmd = NULL;
 	}
 }
