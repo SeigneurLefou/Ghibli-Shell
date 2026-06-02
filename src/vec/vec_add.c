@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:20 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 18:24:52 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 13:13:57 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,17 @@ void	vec_expand(t_vec *vec, t_vec *other)
 			other->size * other->type_size);
 	vec->size += other->size;
 	vec->data = new_data;
+}
+
+/* Could be optimized but hey! Blackhole is comming!*/
+void	vec_expand_from_str(t_vec *vec, char *str)
+{
+	unsigned int index;
+
+	index = 0;
+	while (str[index])
+	{
+		vec_append(vec, &str[index]);
+		index++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 15:45:13 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/18 19:28:57 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:27:30 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_cmd
 	char			**argv;
 	int				argc;
 	struct s_cmd	*next;
-}			t_cmd;
+}				t_cmd;
 
 t_cmd	*ft_cmdnew(void);
 void	ft_cmdadd_front(t_cmd **cmd, t_cmd **new);

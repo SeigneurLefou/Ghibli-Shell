@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 17:54:13 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/29 18:24:04 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:32:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@
 
 void	memory_allocation_failed_error_exit(void);
 void	default_error_exit(void *data);
-void close_all_fds();
+void	close_all_fds(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 18:24:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:55:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*test_all_path(char *path, t_cmd *cmd)
 		iter_path = ft_strjoin(splited_path[i++], "/");
 		cmd_path = ft_strjoin(iter_path, cmd->name);
 		mem_free(iter_path);
-		if (!access(cmd_path, X_OK | F_OK)) // TODO: I think that we must not test for X_OK here
+		if (!access(cmd_path, F_OK))
 			break ;
 		mem_free(cmd_path);
 		cmd_path = NULL;
@@ -85,7 +85,7 @@ void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
 	mem_free(cmd_path);
 	cmd_path = NULL;
 	path = env_variables_get(&minishell->env_variables_manager,
-				"PATH");
+			"PATH");
 	if (!path)
 		cmd->path = NULL;
 	if (!path)

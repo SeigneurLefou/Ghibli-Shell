@@ -6,12 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 16:12:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/19 19:17:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:28:56 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#ifndef ERROR_MANAGER_H
+# define ERROR_MANAGER_H
 
 # include "libft.h"
 # include "token.h"

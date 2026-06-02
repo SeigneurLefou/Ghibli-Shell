@@ -120,6 +120,7 @@ void	handle_prompt(t_minishell *minishell)
 				rl_replace_line("", 1);
 				env_variables_set(&minishell->env_variables_manager, "?",
 					"130");
+				minishell->last_status = 130;
 				if (first_sigint)
 					write(1, "\n", 1);
 				rl_on_new_line();
