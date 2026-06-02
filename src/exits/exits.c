@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exits.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/01 14:04:20 by lchamard          #+#    #+#             */
+/*   Updated: 2026/06/01 14:04:34 by lchamard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exits.h"
-# include "error_manager.h"
+#include "error_manager.h"
 #include <unistd.h>
 #include <sys/stat.h>
 
@@ -21,6 +33,7 @@ void close_all_fds()
 void	memory_allocation_failed_error_exit(void)
 {
 	display_error_message("Memory allocation failed!");
+	rl_clear_history();
 	close_all_fds();
 	exit(1);
 }

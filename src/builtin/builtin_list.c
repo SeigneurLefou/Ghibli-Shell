@@ -6,17 +6,18 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 09:38:42 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/26 16:29:33 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:11:26 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-bool is_command_built_in(char *name)
+bool	is_command_built_in(char *name)
 {
-	const char *builtins[] = {"echo", "cd", "pwd", "export", "source", "unset", "exit", "env", NULL};
-	unsigned int index;
-	
+	const char		*builtins[] = {"echo", "cd", "pwd", "export",
+		"source", "unset", "exit", "env", NULL};
+	unsigned int	index;
+
 	index = 0;
 	if (!name)
 		return (false);
@@ -31,7 +32,7 @@ bool is_command_built_in(char *name)
 
 int	exec_builtin(t_cmd *cmds, t_minishell *minishell, int fds[2])
 {
-	int result;
+	int	result;
 
 	result = -1;
 	if (!ft_strcmp(cmds->name, "echo"))
@@ -63,7 +64,7 @@ bool	setup_and_exec_builtin(t_btree *tree, int files[2])
 	pipex_var.cmd = tree->node->cmds;
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
-	tree->node->wstatus = exec_builtin(pipex_var.cmd, tree->minishell, pipex_var.fds);
+	tree->node->wstatus = exec_builtin(pipex_var.cmd, tree->minishell,
+			pipex_var.fds);
 	return (false);
 }
-
