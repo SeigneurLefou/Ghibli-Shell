@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 11:36:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 12:38:16 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	handle_prompt(t_minishell *minishell)
 				rl_replace_line("", 1);
 				env_variables_set(&minishell->env_variables_manager, "?",
 					"130");
+				minishell->last_status = 130;
 				if (first_sigint)
 					write(1, "\n", 1);
 				rl_on_new_line();

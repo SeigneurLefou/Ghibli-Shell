@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 17:11:01 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/26 16:21:26 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:14:22 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static bool	is_valid_key(char *line)
 	if (!ft_isalpha(line[0]) && line[0] != '_')
 		return (false);
 	i = 0;
-	while (line[i] && !(line[i] == '=' || (line[i] == '+' && line[i
-				+ 1] == '=')))
+	while (line[i] && !(line[i] == '=' || (line[i] == '+'
+				&& line[i + 1] == '=')))
 	{
 		if (!ft_isalnum(line[i]) && line[i] != '_')
 			return (false);
@@ -91,7 +91,8 @@ static bool	handle_setter(char *value, t_minishell *minishell)
 
 int	builtin_export(int argc, char **argv, t_minishell *minishell, int fds[2])
 {
-	int got_error;
+	int	got_error;
+	int	index;
 
 	if (argc == 1)
 	{
@@ -99,7 +100,7 @@ int	builtin_export(int argc, char **argv, t_minishell *minishell, int fds[2])
 		return (0);
 	}
 	got_error = 0;
-	int index = 1;
+	index = 1;
 	while (index < argc)
 	{
 		if (!is_valid_key(argv[index]))

@@ -6,12 +6,12 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 11:46:47 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/18 20:28:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:30:44 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include "libft.h"
 # include <fcntl.h>

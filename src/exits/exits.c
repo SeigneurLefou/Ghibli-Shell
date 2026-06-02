@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "exits.h"
-# include "error_manager.h"
+#include "error_manager.h"
 #include <unistd.h>
 #include <sys/stat.h>
 
@@ -32,6 +32,7 @@ void	close_all_fds(void)
 void	memory_allocation_failed_error_exit(void)
 {
 	display_error_message("Memory allocation failed!");
+	rl_clear_history();
 	close_all_fds();
 	exit(1);
 }
