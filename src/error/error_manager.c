@@ -6,7 +6,7 @@
 /*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 15:03:00 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 15:05:39 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/02 11:11:09 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ unsigned int	underline_error(t_vec *expr, unsigned int token_index,
 	unsigned int	index;
 	t_token			*token;
 
-	index = char_index;
 	char_index = get_char_pos(expr, token_index) - current_index;
+	index = char_index;
 	while (index--)
 		write(2, " ", 1);
 	token = vec_get(expr, token_index);
