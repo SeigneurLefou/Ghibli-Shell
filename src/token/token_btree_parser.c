@@ -196,7 +196,7 @@ void	parse_leaf(t_vec *expr, t_btree_node *node)
 			continue ;
 		}
 		index++;
-		file.file_name_token_index = index;
+		file.filename_token_i = index;
 		vec_append(&node->io_files, &file);
 		index++;
 	}
@@ -227,7 +227,7 @@ void	grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop,
 			&& token->data.data[1] == '<')
 			file.type = io_type_heredoc;
 		index++;
-		file.file_name_token_index = index;
+		file.filename_token_i = index;
 		vec_append(&node->io_files, &file);
 		index++;
 	}
