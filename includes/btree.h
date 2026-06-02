@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/21 18:42:50 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:40:02 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef enum e_io_type
 typedef struct s_io_file
 {
 	t_io_type		type;
-	unsigned int	file_name_token_index;
+	unsigned int	filename_token_i;
 }		t_io_file;
 
 typedef struct s_btree_node
