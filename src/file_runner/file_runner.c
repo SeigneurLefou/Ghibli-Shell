@@ -6,18 +6,17 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 15:34:43 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/29 11:06:01 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:09:46 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "file_runner.h"
 
-
-bool execute_file(char *filename, t_minishell *minishell)
+bool	execute_file(char *filename, t_minishell *minishell)
 {
-	char *line;
-	int fd;
-	char *trimmed;
+	char	*line;
+	int		fd;
+	char	*trimmed;
 
 	line = (char *)1;
 	fd = open(filename, O_RDONLY);

@@ -6,13 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:51:00 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/29 11:09:20 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:15:11 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void ignore_signals()
+static void	ignore_signals(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
@@ -27,7 +27,8 @@ static void	ask_and_setup_ghiblirc(char *config_path)
 	ignore_signals();
 	printf("%s", GHIBLIRC_SETUP_PROMPT);
 	choice = readline("Your choice ([1]/2/3): ");
-	if (choice && (!choice[0] || choice[0] == '1' || choice[0] == '2' || choice[0] == '3'))
+	if (choice && (!choice[0] || choice[0] == '1'
+			|| choice[0] == '2' || choice[0] == '3'))
 	{
 		if (!choice[0] || choice[0] == '1' || choice[0] == '2')
 		{

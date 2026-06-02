@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 10:28:20 by yben-dje          #+#    #+#             */
-/*   Updated: 2025/12/04 19:43:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:11:55 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ char	*take_line(char **str)
 	size = 0;
 	while ((*str)[size] && (*str)[size] != '\n')
 		size++;
-	line = mem_alloc(size + 1 + ((*str)[size] == '\n'), default_error_exit, NULL, 0b1);
+	line = mem_alloc(size + 1 + ((*str)[size] == '\n'), default_error_exit,
+			NULL, 0b1);
 	if (!line)
 	{
 		safe_free(str);

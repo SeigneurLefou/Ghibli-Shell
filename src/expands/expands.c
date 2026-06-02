@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 14:57:07 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:09:04 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,6 @@ static bool	add_file_on_match(char *name, t_vec *out)
 		vec_append(out, &vec_file_path);
 	return (true);
 }
-
-#include <dirent.h>
 
 bool	query_files_in_dir(t_vec *out, char *path, t_vec *filter)
 {
