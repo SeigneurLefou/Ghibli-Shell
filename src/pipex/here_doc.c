@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 15:00:46 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/02 20:46:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static char *get_file_while_not_limiter(int fd, char *limiter, t_minishell *mini
 	return (buffer);
 }
 
-static bool	write_buffer_to_pipe(int pipe_fd[2], char *limiter, int *fd,
+static bool	write_buffer_to_pipe(int pipe_fd[2], char *limiter, bool can_expand,
 		t_btree *tree)
 {
 	char	*input_user;
