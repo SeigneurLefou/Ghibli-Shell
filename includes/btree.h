@@ -25,7 +25,7 @@
 # include "minishell.h"
 # include "allocator.h"
 
-typedef struct s_pipex	t_pipex;
+typedef struct s_pipex		t_pipex;
 typedef struct s_minishell	t_minishell;
 
 typedef enum e_operator
@@ -72,7 +72,7 @@ typedef struct s_btree
 
 bool	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
 bool	exec_right_left_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
-		t_vec *command_pid);
+			t_vec *command_pid);
 bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);
 
 bool	exec_binary_tree(t_btree *tree, int files[2]);
