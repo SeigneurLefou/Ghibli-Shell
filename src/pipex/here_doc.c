@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 19:32:22 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/02 12:35:51 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static char *get_file_while_not_limiter(int fd, char *limiter, t_minishell *mini
 	char *buffer;
 
 	buffer = ft_calloc(1, sizeof(char));
-	write(1, "> ", 2);
+	write(2, "> ", 2);
 	limiter_len = ft_strlen(limiter);
 	line = get_next_line(fd);
 	while (line && limiter && !(!ft_strncmp(line, limiter, limiter_len)
@@ -112,7 +112,7 @@ static char *get_file_while_not_limiter(int fd, char *limiter, t_minishell *mini
 		else
 			buffer = ft_strjoin(buffer, line);
 		mem_free(line);
-		write(1, "> ", 2);
+		write(2, "> ", 2);
 		line = get_next_line(fd);
 	}
 	mem_free(line);
