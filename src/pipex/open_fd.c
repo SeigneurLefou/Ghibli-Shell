@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 17:24:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 13:35:52 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/01 17:37:41 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ static char	*get_expanded_io_file_name(t_btree *tree, t_io_file *io_file)
 {
 	char	*file_name;
 	t_vec	expanded;
+	char	*name_token;
 
+	if (io_file->type == io_type_heredoc)
+	{
+		name_token = vec_to_cstring(vec_get(&tree->expr,
+					io_file->filename_token_i));
+		return (name_token);
+	}
 	vec_init(&expanded, sizeof(t_token), 2);
-	expand(&expanded, vec_get(&tree->expr, io_file->file_name_token_index),
+	expand(&expanded, vec_get(&tree->expr, io_file->filename_token_i),
 		tree->minishell);
 	if (expanded.size != 1)
 	{
@@ -63,15 +70,15 @@ bool	open_io_fds(t_btree *tree, int fds[2])
 		if (io_file->type == io_type_infile)
 			open_file(file_name, O_RDONLY, &fds[0], tree);
 		else if (io_file->type == io_type_heredoc)
-			here_doc_file(file_name, &fds[0], tree);
+			here_doc_file(file_name, &fds[0], tree, io_file->filename_token_i);
 		else if (io_file->type == io_type_outfile)
 			open_file(file_name, O_CREAT | O_WRONLY | O_TRUNC, &fds[1], tree);
 		else if (io_file->type == io_type_append_file)
 			open_file(file_name, O_CREAT | O_WRONLY | O_APPEND, &fds[1], tree);
+		mem_free(file_name);
 		if (fds[0] < 0 || fds[1] < 0)
 			return (false);
 		i++;
-		mem_free(file_name);
 	}
 	return (true);
 }

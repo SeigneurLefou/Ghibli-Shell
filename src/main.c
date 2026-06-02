@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/27 17:52:28 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:33:29 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void print_tree(t_vec *expr, t_btree_node *node)
 		{
 			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
 
-			t_token		*name = (t_token *)vec_get(expr, file->file_name_token_index);
+			t_token		*name = (t_token *)vec_get(expr, file->filename_token_i);
 			write(1, name->data.data, name->data.size);
 			if (file->type == io_type_infile)
 				write(1, ": infile, ", 11);
@@ -59,7 +59,7 @@ void print_tree(t_vec *expr, t_btree_node *node)
 		{
 			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
 
-			t_token		*name = (t_token *)vec_get(expr, file->file_name_token_index);
+			t_token		*name = (t_token *)vec_get(expr, file->filename_token_i);
 			write(1, name->data.data, name->data.size);
 			if (file->type == io_type_infile)
 				write(1, ": infile, ", 11);
