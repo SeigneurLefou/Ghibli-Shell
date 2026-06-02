@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/02 12:35:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/02 14:58:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static void add_expand(unsigned int *index, char *line, t_vec *expanded, t_minis
 {
 	(*index)++;
 	char *data = get_variable_content(line + (*index), minishell);
-	vec_expand_from_str(expanded, data);
+	if (data)
+		vec_expand_from_str(expanded, data);
 	(*index) += get_variable_name_len(line + (*index));
 }
 
