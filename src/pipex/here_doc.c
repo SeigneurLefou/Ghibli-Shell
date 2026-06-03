@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/02 20:46:44 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 13:51:54 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ int	fake_fdin(void)
 	pipe(fake_pipe);
 	close(fake_pipe[1]);
 	return (fake_pipe[0]);
-}
-
-static bool	is_valid_expand_char(char c)
-{
-	return (ft_isalnum(c) || c == '_');
 }
 
 static unsigned int	get_variable_name_len(char *start)

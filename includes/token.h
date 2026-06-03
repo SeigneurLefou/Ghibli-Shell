@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:21:22 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 14:21:23 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/03 14:04:14 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,43 @@ t_tokeniser_error			tokenise(char *expr, t_vec *command);
 bool						parse_token_btree(t_vec *expr, t_btree_node *node,
 								unsigned int depth);
 t_parsing_checker_result	check_syntax(t_vec *expr);
+
+char						get_escape(char escaped_char);
+char						is_escape(char escaped_char, char quote);
+bool						is_valid_expand_char(char c);
+bool						is_tilde_escape_compatible(char c);
+void						finish_tokeniser(t_token *current_token,
+								t_vec *command);
+void						setup_token(unsigned int *i, char *quote_char,
+								t_token *current_token, t_vec *command);
+bool						tokenise_check_quotes(char *expr, unsigned int *i,
+								t_token *current_token, char *quote_char);
+bool						tokenise_check_expands(char *expr, unsigned int *i,
+								t_token *current_token);
+bool						tokenise_check_delimiters(char *expr,
+								unsigned int *i, t_token *current_token,
+								t_vec *command);
+void						set_expand(t_token *current_token, bool state,
+								bool allow_split);
+void						append_token(t_vec *command, t_token *token,
+								t_token_type type);
+void						push_char(t_token *token, char c);
+void						push_simple_char(char *expr, unsigned int *i,
+								t_token *current_token);
+void						parse_token_double_quote_no_escape(char *expr,
+								unsigned int *i, t_token *current_token,
+								char *quote_char);
+void						parse_token_double_quote(char *expr,
+								unsigned int *i, t_token *current_token,
+								char *quote_char);
+void						parse_token_simple_quote(char *expr,
+								unsigned int *i, t_token *current_token,
+								char *quote_char);
+void						add_simple_token(char *expr, unsigned int i,
+								t_vec *command, t_token *current_token);
+
+void						add_double_token(char *expr, unsigned int *i,
+								t_vec *command, t_token *current_token,
+								t_token_type token_type);
 
 #endif
