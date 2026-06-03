@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_btree_parser.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/03 18:46:29 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/06/03 18:48:24 by yben-dje         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "token.h"
 
 bool	is_a_delimiter(t_token *token, bool match_all, bool match_pipe)
@@ -71,11 +83,13 @@ int	get_next_delimiter(t_vec *expr, unsigned int index)
 	return (index);
 }
 
-bool	check_closing_parentheses(t_vec *expr, unsigned int end, unsigned int index)
+bool	check_closing_parentheses(t_vec *expr, unsigned int end,
+		unsigned int index)
 {
 	t_token	*token;
+	int		count;
 
-	int count = 0;
+	count = 0;
 	while (index < end)
 	{
 		token = (t_token *)vec_get(expr, index);
@@ -127,7 +141,6 @@ bool	contains_scope_delimiter(t_vec *expr, t_btree_node *node,
 	int				parenthese_count;
 
 	parenthese_count = 0;
-	// TODO: Maybe remove the parenthese counter? IDK if it's usefull.
 	index = node->expr_start;
 	while (index <= node->expr_end)
 	{
@@ -153,7 +166,6 @@ bool	contains_non_pipe_delimiter(t_vec *expr, unsigned int start,
 	int				parenthese_count;
 
 	parenthese_count = 0;
-	// TODO: Maybe remove the parenthese counter? IDK if it's usefull.
 	index = start;
 	while (index <= stop)
 	{
@@ -171,26 +183,26 @@ bool	contains_non_pipe_delimiter(t_vec *expr, unsigned int start,
 	return (false);
 }
 
-bool set_io_delimiters_type(t_token			*token, t_io_file		*file)
+bool	set_io_delimiters_type(t_token *token, t_io_file *file)
 {
 	if (token->type == token_type_command_delimiter
 		&& token->data.data[0] == '<' && token->data.size == 1)
-		{
-			file->type = io_type_infile;
-			return (true);
-		}
+	{
+		file->type = io_type_infile;
+		return (true);
+	}
 	else if (token->type == token_type_command_delimiter
 		&& token->data.data[0] == '>' && token->data.size == 1)
-		{
-			file->type = io_type_outfile;
-			return (true);
-		}
+	{
+		file->type = io_type_outfile;
+		return (true);
+	}
 	else if (token->type == token_type_command_delimiter
 		&& token->data.data[1] == '>')
-		{
-			file->type = io_type_append_file;
-			return (true);
-		}
+	{
+		file->type = io_type_append_file;
+		return (true);
+	}
 	else if (token->type == token_type_command_delimiter
 		&& token->data.data[1] == '<')
 	{
@@ -226,7 +238,7 @@ void	parse_leaf(t_vec *expr, t_btree_node *node)
 }
 
 void	grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop,
-		unsigned index)
+		unsigned int index)
 {
 	t_token		*token;
 	t_io_file	file;
@@ -255,30 +267,28 @@ void	grab_io_files(t_vec *expr, t_btree_node *node, unsigned int stop,
 	}
 }
 
-// Parsing goal : ./minishell "((echo a && echo b) > out1>out2|| echo c; echo u) < file || (< in echo u && echo b && echo c) << vaaaa"
-// (echo b && echo aaa) << in
-
-void set_leaf(t_vec *expr, t_btree_node *node)
+void	set_leaf(t_vec *expr, t_btree_node *node)
 {
 	node->expr_start = node->expr_start;
 	node->expr_end = node->expr_end;
-	node->operator= operator_none;
+	node->operator = operator_none;
 	node->left = NULL;
 	node->right = NULL;
 	parse_leaf(expr, node);
 }
 
-void enter_parenthese(t_vec *expr, t_btree_node *node)
+void	enter_parenthese(t_vec *expr, t_btree_node *node)
 {
 	unsigned int	old_stop;
-	
+
 	old_stop = node->expr_end;
 	node->expr_end = get_next_parenthese(expr, node->expr_end) - 1;
 	node->expr_start++;
 	grab_io_files(expr, node, old_stop, node->expr_end + 2);
 }
 
-unsigned int capture_scope(t_vec *expr, t_btree_node	*btree_b, t_btree_node *node, unsigned int	expr_end)
+unsigned int	capture_scope(t_vec *expr, t_btree_node *btree_b,
+		t_btree_node *node, unsigned int expr_end)
 {
 	t_token			*token;
 	unsigned int	operator_index;
@@ -307,7 +317,8 @@ unsigned int capture_scope(t_vec *expr, t_btree_node	*btree_b, t_btree_node *nod
 	return (operator_index);
 }
 
-bool	create_children_nodes(t_vec *expr, t_btree_node *node, unsigned int	*operator_index, unsigned int depth)
+bool	create_children_nodes(t_vec *expr, t_btree_node *node,
+		unsigned int *operator_index, unsigned int depth)
 {
 	t_btree_node	*btree_a;
 	t_btree_node	*btree_b;
@@ -331,29 +342,27 @@ bool	create_children_nodes(t_vec *expr, t_btree_node *node, unsigned int	*operat
 	return (true);
 }
 
-void set_node_operator(t_vec *expr, t_btree_node *node, unsigned int operator_index)
+void	set_node_operator(t_vec *expr, t_btree_node *node,
+		unsigned int operator_index)
 {
-	t_token			*token;
+	t_token	*token;
 
 	token = (t_token *)vec_get(expr, operator_index);
 	if (token->type == token_type_scope_delimiter && token->data.data[0] == '&')
-		node->operator= operator_and;
+		node->operator = operator_and;
 	else if (token->type == token_type_scope_delimiter
 		&& token->data.data[0] == '|' && token->data.size == 2)
-		node->operator= operator_or;
+		node->operator = operator_or;
 	else if (token->type == token_type_scope_delimiter
 		&& token->data.data[0] == ';')
-		node->operator= operator_semicolon;
+		node->operator = operator_semicolon;
 	else if (token->type == token_type_scope_delimiter
 		&& token->data.data[0] == '|')
-		node->operator= operator_pipe;
+		node->operator = operator_pipe;
 }
 
 bool	parse_token_btree(t_vec *expr, t_btree_node *node, unsigned int depth)
 {
-	t_btree_node	*btree_a;
-	t_btree_node	*btree_b;
-	t_token			*token;
 	unsigned int	operator_index;
 
 	if (depth > 1024)
