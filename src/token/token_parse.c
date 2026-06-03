@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:47:41 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/03 13:50:30 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 14:09:43 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	parse_token_double_quote_no_escape(char *expr, unsigned int *i,
 		t_token *current_token, char *quote_char)
 {
 	if (expr[*i] == '$' && (is_valid_expand_char(expr[(*i) + 1]) || expr[(*i)
-			+ 1] == '?'))
+				+ 1] == '?'))
 	{
 		push_char(current_token, expr[*i]);
 		set_expand(current_token, true, false);

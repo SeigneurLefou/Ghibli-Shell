@@ -6,15 +6,21 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/03 14:05:31 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 14:21:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
 void	add_double_token(char *expr, unsigned int *i, t_vec *command,
-		t_token *current_token, t_token_type token_type)
+		t_token *current_token)
 {
+	t_token_type	token_type;
+
+	if (expr[*i] == '>' || expr[*i] == '<')
+		token_type = token_type_command_delimiter;
+	else
+		token_type = token_type_scope_delimiter;
 	set_expand(current_token, false, false);
 	if (expr[(*i) + 1] == expr[*i])
 	{

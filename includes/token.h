@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:21:22 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/03 14:04:14 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 14:17:19 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void						add_simple_token(char *expr, unsigned int i,
 								t_vec *command, t_token *current_token);
 
 void						add_double_token(char *expr, unsigned int *i,
-								t_vec *command, t_token *current_token,
-								t_token_type token_type);
+								t_vec *command, t_token *current_token);
 
 #endif
