@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:52:38 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/01 14:25:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:51:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define ENVIRONMENT_VARIABLES_H
 
 # include "allocator.h"
+# include "exits.h"
 # include "libft.h"
 # include "list.h"
-# include "exits.h"
 
 typedef struct s_env_variables_manager
 {
@@ -42,5 +42,7 @@ bool					env_variables_set_raw(t_env_variables_manager *env_variable_manager,
 							char *line);
 char					*env_variables_get_raw(t_env_variables_manager *env_variable_manager,
 							char *key);
+char					*env_variables_manager_create_line(char *key,
+							char *value);
 
 #endif
