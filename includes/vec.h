@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:38:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/01 16:40:24 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 17:24:52 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void				vec_expand(t_vec *vec, t_vec *other);
 // Bro, this function is useful. Trust me
 void				vec_null(t_vec *vec);
 char				*vec_to_cstring(t_vec *vec);
-bool				vec_substr(t_vec *vec, char *line, int start, int len);
 bool				vec_split_space(t_vec *vec, char *line);
 char				**vec_vec_char_to_str_array(t_vec *vec);
 void				vec_set(t_vec *vec, unsigned int index, void *data);

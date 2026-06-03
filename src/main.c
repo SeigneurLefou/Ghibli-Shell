@@ -6,75 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 16:33:29 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 16:53:47 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_tree(t_vec *expr, t_btree_node *node)
-{
-	if (node->operator == operator_none)
-	{
-		for (unsigned int i = node->expr_start; i <= node->expr_end; i++)
-		{
-			t_token *token = (t_token *)vec_get(expr, i);
-			write(1, token->data.data, token->data.size);
-			write(1, " ", 1);
-		}
-		write(1, "{", 1);
-		for (unsigned int index = 0; index < node->io_files.size; index++)
-		{
-			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
-
-			t_token		*name = (t_token *)vec_get(expr, file->filename_token_i);
-			write(1, name->data.data, name->data.size);
-			if (file->type == io_type_infile)
-				write(1, ": infile, ", 11);
-			if (file->type == io_type_outfile)
-				write(1, ": outfile, ", 12);
-			if (file->type == io_type_append_file)
-				write(1, ": append, ", 11);
-			if (file->type == io_type_heredoc)
-				write(1, ": heredoc, ", 12);
-		}
-		write(1, "} ", 2);
-	}
-	else
-	{
-		write(1, "(", 1);
-		print_tree(expr, node->left);
-		if (node->operator == operator_and)
-			write(1, "and ", 4);
-		if (node->operator == operator_or)
-			write(1, "or ", 3);
-		if (node->operator == operator_semicolon)
-			write(1, " semicolon ", 12);
-		if (node->operator == operator_pipe)
-			write(1, " pipe ", 7);
-		print_tree(expr, node->right);
-		write(1, ")", 1);
-		write(1, "{", 1);
-		for (unsigned int index = 0; index < node->io_files.size; index++)
-		{
-			t_io_file *file = (t_io_file *)vec_get(&node->io_files, index);
-
-			t_token		*name = (t_token *)vec_get(expr, file->filename_token_i);
-			write(1, name->data.data, name->data.size);
-			if (file->type == io_type_infile)
-				write(1, ": infile, ", 11);
-			if (file->type == io_type_outfile)
-				write(1, ": outfile, ", 12);
-			if (file->type == io_type_append_file)
-				write(1, ": append, ", 11);
-			if (file->type == io_type_heredoc)
-				write(1, ": heredoc, ", 12);
-		}
-		write(1, "} ", 2);
-	}
-}
-
-void free_tokens(t_vec *expr)
+void	free_tokens(t_vec *expr)
 {
 	for (unsigned int i = 0; i < expr->size; i++)
 	{
@@ -85,63 +23,79 @@ void free_tokens(t_vec *expr)
 
 bool	main_token(char *line, t_minishell *minishell)
 {
-	t_vec parsed;
-	t_tokeniser_error result = tokenise(line, &parsed);
+	t_vec					parsed;
+	t_tokeniser_error		result;
+	t_parsing_check_result	parser_result;
+	t_btree_node			*root;
+	int						files[2] = {0, 1};
+	t_btree					*tree;
+	char					*status;
+
+	result = tokenise(line, &parsed);
 	if (result == tokeniser_error_unterminated_quoted_string)
 	{
 		free_tokens(&parsed);
 		display_error_message("Unterminated quoted string.");
 		minishell->last_status = 2;
-		return (false);	
-	} else if (result == tokeniser_error_memory_error)
+		return (false);
+	}
+	else if (result == tokeniser_error_memory_error)
 	{
 		minishell->last_status = 2;
 		display_error_message("Memory allocation failed.");
-		return (false);	
+		return (false);
 	}
-
 	if (!parsed.size)
 	{
 		vec_free(&parsed);
 		return (true);
 	}
-
-	t_parsing_checker_result parser_result = check_syntax(&parsed);
-	if (parser_result.parsing_error == parsing_error_unmatching_parentheses)
-		show_error(&parsed, "Parser Error: Unmatching parenthesis!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_unsupported_arithmetic)
-		show_error(&parsed, "Parser Error: Unsupported arithmetic detected!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_empty_parentheses)
-		show_error(&parsed, "Parser Error: Empty parentheses!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_incorrect_right_operand)
-		show_error(&parsed, "Parser Error: Wrong right operand needed by operator!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_incorrect_left_operand)
-		show_error(&parsed, "Parser Error: Wrong left operand needed by operator!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_no_operator_left_parenthese)
-		show_error(&parsed, "Parser Error: No operator before parenthese!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_no_operator_right_parenthese)
-		show_error(&parsed, "Parser Error: No operator after parenthese!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_invalide_io_file_after_parentheses)
-		show_error(&parsed, "Parser Error: Invalid IO file after parenthese!", parser_result.index1, parser_result.index2);
-	else if (parser_result.parsing_error == parsing_error_invalide_io_file)
-		show_error(&parsed, "Parser Error: Invalid IO file!", parser_result.index1, -1);
-	else if (parser_result.parsing_error == parsing_error_unsupported_operator)
-		show_error(&parsed, "Parser Error: Unsupported operator!", parser_result.index1, -1);
-	if (parser_result.parsing_error != parsing_error_success)
+	parser_result = check_syntax(&parsed);
+	if (parser_result.parsing_error == parse_err_unmatching_parentheses)
+		show_error(&parsed, "Parser Error: Unmatching parenthesis!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_unsupported_arithmetic)
+		show_error(&parsed, "Parser Error: Unsupported arithmetic detected!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_empty_parentheses)
+		show_error(&parsed, "Parser Error: Empty parentheses!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_bad_right_operand)
+		show_error(&parsed,
+			"Parser Error: Wrong right operand needed by operator!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_bad_left_operand)
+		show_error(&parsed,
+			"Parser Error: Wrong left operand needed by operator!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_no_operator_left_parenthese)
+		show_error(&parsed, "Parser Error: No operator before parenthese!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_no_operator_right_parenthese)
+		show_error(&parsed, "Parser Error: No operator after parenthese!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_invalide_io_file_after_parentheses)
+		show_error(&parsed, "Parser Error: Invalid IO file after parenthese!",
+			parser_result.index1, parser_result.index2);
+	else if (parser_result.parsing_error == parse_err_invalide_io_file)
+		show_error(&parsed, "Parser Error: Invalid IO file!",
+			parser_result.index1, -1);
+	else if (parser_result.parsing_error == parse_err_unsupported_operator)
+		show_error(&parsed, "Parser Error: Unsupported operator!",
+			parser_result.index1, -1);
+	if (parser_result.parsing_error != parse_err_success)
 	{
 		free_tokens(&parsed);
 		minishell->last_status = 2;
 		return (false);
 	}
-	
-	t_btree_node *root = mem_alloc(2* sizeof(t_btree_node), default_error_exit, NULL, 0b1);
+	root = mem_alloc(2 * sizeof(t_btree_node), default_error_exit, NULL, 0b1);
 	if (!root)
 	{
 		display_error_message("Memory allocation Failed!");
 		free_tokens(&parsed);
 		return (false);
 	}
-
 	root->expr_start = 0;
 	root->expr_end = parsed.size - 1;
 	root->cmds = NULL;
@@ -151,46 +105,46 @@ bool	main_token(char *line, t_minishell *minishell)
 		display_error_message("Memory allocation failed or max recursion limit reached!");
 		return (false);
 	}
-
 	// print_tree(&parsed, root);
-	int files[2] = {0, 1};
-	t_btree	*tree;
 	tree = mem_alloc(sizeof(t_btree), default_error_exit, NULL, 0b1);
 	tree->node = root;
 	tree->expr = parsed;
- 	tree->minishell = minishell;
+	tree->minishell = minishell;
 	tree->node->wstatus = 0;
 	exec_binary_tree(tree, files);
 	tree->minishell->last_status = tree->node->wstatus;
-	char *status = ft_itoa(tree->node->wstatus);
+	status = ft_itoa(tree->node->wstatus);
 	if (status)
-		env_variables_set(&tree->minishell->env_variables_manager, "?",
-			status);
+		env_variables_set(&tree->minishell->env_variables_manager, "?", status);
 	mem_free(tree);
 	mem_free(root);
 	free_tokens(&parsed);
 	return (true);
 }
 
-void increment_shell_lvl(t_minishell *minishell)
+void	increment_shell_lvl(t_minishell *minishell)
 {
-	char *shell_lvl = env_variables_get(&minishell->env_variables_manager, "SHLVL");
+	char	*shell_lvl;
+	int		shell_lvl_num;
+
+	shell_lvl = env_variables_get(&minishell->env_variables_manager, "SHLVL");
 	if (!shell_lvl)
 	{
 		minishell->shell_level = 1;
 		return ;
 	}
-	int shell_lvl_num = ft_atoi(shell_lvl);
+	shell_lvl_num = ft_atoi(shell_lvl);
 	minishell->shell_level = shell_lvl_num + 1;
 	shell_lvl = ft_itoa(minishell->shell_level);
 	if (!shell_lvl)
 		memory_allocation_failed_error_exit();
-	if (!env_variables_set(&minishell->env_variables_manager, "SHLVL", shell_lvl))
+	if (!env_variables_set(&minishell->env_variables_manager, "SHLVL",
+			shell_lvl))
 		memory_allocation_failed_error_exit();
 	mem_free(shell_lvl);
 }
 
-bool setup_minishell(t_minishell *minishell,char *env[])
+bool	setup_minishell(t_minishell *minishell, char *env[])
 {
 	env_variables_add_from_env(&minishell->env_variables_manager, env);
 	increment_shell_lvl(minishell);
@@ -209,7 +163,7 @@ bool setup_minishell(t_minishell *minishell,char *env[])
 int	main(int argc, char **argv, char *env[])
 {
 	t_minishell	minishell;
-	
+
 	if (argc > 2)
 	{
 		display_error_message("Too many arguments!");

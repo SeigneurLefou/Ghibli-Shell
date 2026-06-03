@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:21:22 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/03 14:17:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 17:12:14 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ typedef enum e_tokeniser_error
 
 typedef enum e_parsing_error_type
 {
-	parsing_error_success,
-	parsing_error_unmatching_parentheses,
-	parsing_error_incorrect_left_operand,
-	parsing_error_incorrect_right_operand,
-	parsing_error_empty_parentheses,
-	parsing_error_unsupported_arithmetic,
-	parsing_error_no_operator_left_parenthese,
-	parsing_error_no_operator_right_parenthese,
-	parsing_error_invalide_io_file_after_parentheses,
-	parsing_error_invalide_io_file,
-	parsing_error_unsupported_operator,
+	parse_err_success,
+	parse_err_unmatching_parentheses,
+	parse_err_bad_left_operand,
+	parse_err_bad_right_operand,
+	parse_err_empty_parentheses,
+	parse_err_unsupported_arithmetic,
+	parse_err_no_operator_left_parenthese,
+	parse_err_no_operator_right_parenthese,
+	parse_err_invalide_io_file_after_parentheses,
+	parse_err_invalide_io_file,
+	parse_err_unsupported_operator,
 }							t_parsing_error_type;
 
 typedef struct s_parsing_checker_result
@@ -72,13 +72,14 @@ typedef struct s_parsing_checker_result
 	t_parsing_error_type	parsing_error;
 	int						index1;
 	int						index2;
-}							t_parsing_checker_result;
+}							t_parsing_check_result;
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);
 bool						parse_token_btree(t_vec *expr, t_btree_node *node,
 								unsigned int depth);
-t_parsing_checker_result	check_syntax(t_vec *expr);
+t_parsing_check_result		check_syntax(t_vec *expr);
 
+/* Tokeniser*/
 char						get_escape(char escaped_char);
 char						is_escape(char escaped_char, char quote);
 bool						is_valid_expand_char(char c);
@@ -116,4 +117,16 @@ void						add_simple_token(char *expr, unsigned int i,
 void						add_double_token(char *expr, unsigned int *i,
 								t_vec *command, t_token *current_token);
 
+/* Syntax checker */
+t_parsing_check_result		check_missing_operand(t_vec *expr);
+t_parsing_check_result		check_no_operator_parentheses(t_vec *expr);
+t_parsing_check_result		check_io_files_after_parentheses(t_vec *expr);
+t_parsing_check_result		check_io_files(t_vec *expr);
+t_parsing_check_result		check_matching_parentheses(t_vec *expr);
+t_parsing_check_result		check_unsuported_arithmetic(t_vec *expr);
+t_parsing_check_result		check_empty_parentheses(t_vec *expr);
+bool						is_char_delimiter(t_token *token);
+t_parsing_check_result		check_unsuported_operators(t_vec *expr);
+t_parsing_check_result		check_syntax_first(t_vec *expr);
+t_parsing_check_result		check_syntax(t_vec *expr);
 #endif
