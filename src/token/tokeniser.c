@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 14:28:21 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 12:54:36 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 13:34:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,19 @@ char	is_escape(char escaped_char, char quote)
 		return (false);
 }
 
+bool	is_valid_expand_char(char c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
+
+bool	is_tilde_escape_compatible(char c)
+{
+	return (ft_isspace(c) || c == '/' || c == '\0' || c == '|' || c == '&'
+		|| c == '<' || c == '>');
+}
+
+
+
 void	add_double_token(char *expr, unsigned int *i, t_vec *command,
 		t_token *current_token, t_token_type token_type)
 {
@@ -113,9 +126,28 @@ void	add_simple_token(char *expr, unsigned int i, t_vec *command,
 	append_token(command, current_token, token_type_scope_delimiter);
 }
 
-bool	is_valid_expand_char(char c)
+void	parse_token_double_quote_no_escape(char *expr, unsigned int *i,
+		t_token *current_token, char *quote_char)
 {
-	return (ft_isalnum(c) || c == '_');
+	if (expr[*i] == '$' && (is_valid_expand_char(expr[(*i) + 1]) || expr[(*i)
+			+ 1] == '?'))
+	{
+		push_char(current_token, expr[*i]);
+		set_expand(current_token, true, false);
+	}
+	else if (expr[*i] == '"')
+	{
+		(*quote_char) = 0;
+		set_expand(current_token, false, false);
+	}
+	else
+	{
+		if (current_token->is_expand && expr[(*i) - 1] == '?')
+			set_expand(current_token, false, false);
+		else if (!is_valid_expand_char(expr[*i]) && expr[*i] != '?')
+			set_expand(current_token, false, false);
+		push_char(current_token, expr[*i]);
+	}
 }
 
 void	parse_token_double_quote(char *expr, unsigned int *i,
@@ -138,25 +170,8 @@ void	parse_token_double_quote(char *expr, unsigned int *i,
 			push_char(current_token, expr[*i]);
 		}
 	}
-	else if (expr[*i] == '$' && (is_valid_expand_char(expr[(*i) + 1])
-			|| expr[(*i) + 1] == '?'))
-	{
-		push_char(current_token, expr[*i]);
-		set_expand(current_token, true, false);
-	}
-	else if (expr[*i] == '"')
-	{
-		(*quote_char) = 0;
-		set_expand(current_token, false, false);
-	}
 	else
-	{
-		if (current_token->is_expand && expr[(*i) - 1] == '?')
-			set_expand(current_token, false, false);
-		else if (!is_valid_expand_char(expr[*i]) && expr[*i] != '?')
-			set_expand(current_token, false, false);
-		push_char(current_token, expr[*i]);
-	}
+		parse_token_double_quote_no_escape(expr, i, current_token, quote_char);
 }
 
 void	parse_token_simple_quote(char *expr, unsigned int *i,
@@ -168,27 +183,116 @@ void	parse_token_simple_quote(char *expr, unsigned int *i,
 		push_char(current_token, expr[*i]);
 }
 
-bool	is_tilde_escape_compatible(char c)
+bool	tokenise_check_quotes(char *expr, unsigned int *i,
+		t_token *current_token, char *quote_char)
 {
-	return (ft_isspace(c) || c == '/' || c == '\0' || c == '|' || c == '&'
-		|| c == '<' || c == '>');
+	if (expr[*i] == '\\' && expr[*i + 1])
+	{
+		set_expand(current_token, false, false);
+		push_char(current_token, expr[++*i]);
+		return (true);
+	}
+	else if (expr[*i] == '"')
+	{
+		push_char(current_token, 0);
+		*quote_char = '"';
+		current_token->no_skip = true;
+		set_expand(current_token, false, false);
+		return (true);
+	}
+	else if (expr[*i] == '\'')
+	{
+		push_char(current_token, 0);
+		*quote_char = '\'';
+		current_token->no_skip = true;
+		set_expand(current_token, false, false);
+		return (true);
+	}
+	return (false);
 }
 
-void	check_tokens_integrity(t_vec *command)
+bool	tokenise_check_expands(char *expr, unsigned int *i,
+		t_token *current_token, char *quote_char)
 {
-	unsigned int	index;
-	t_token			*token;
-
-	index = 0;
-	if (command->failed)
-		memory_allocation_failed_error_exit();
-	while (index < command->size)
+	if (expr[*i] == '*')
 	{
-		token = vec_get(command, index);
-		if (token->data.failed || token->expandable_scopes.failed)
-			memory_allocation_failed_error_exit();
-		index++;
+		push_char(current_token, expr[*i]);
+		set_expand(current_token, true, false);
+		set_expand(current_token, false, false);
+		return (true);
 	}
+	else if (expr[*i] == '$' && (is_valid_expand_char(expr[*i + 1]) || expr[*i
+			+ 1] == '?'))
+	{
+		push_char(current_token, expr[*i]);
+		set_expand(current_token, true, true);
+		return (true);
+	}
+	else if (expr[*i] == '~' && current_token->type == token_type_void
+		&& is_tilde_escape_compatible(expr[*i + 1]))
+	{
+		push_char(current_token, expr[*i]);
+		set_expand(current_token, true, false);
+		set_expand(current_token, false, false);
+		return (true);
+	}
+	return (false);
+}
+
+bool	tokenise_check_delimiters(char *expr, unsigned int *i,
+		t_token *current_token, t_vec *command)
+{
+	if (expr[*i] == '(' || expr[*i] == ')' || expr[*i] == ';')
+	{
+		add_simple_token(expr, *i, command, current_token);
+		return (true);
+	}
+	else if (expr[*i] == '&' || expr[*i] == '|')
+	{
+		add_double_token(expr, i, command, current_token,
+			token_type_scope_delimiter);
+		return (true);
+	}
+	else if (expr[*i] == '>' || expr[*i] == '<')
+	{
+		add_double_token(expr, i, command, current_token,
+			token_type_command_delimiter);
+		return (true);
+	}
+	else if (ft_isspace(expr[*i]))
+	{
+		append_token(command, current_token, token_type_plain);
+		return (true);
+	}
+	return (false);
+}
+
+static void	setup_token(unsigned int *i, char *quote_char,
+		t_token *current_token, t_vec *command)
+{
+	vec_init(command, sizeof(t_token), 4);
+	*i = 0;
+	*quote_char = 0;
+	current_token->type = token_type_void;
+	current_token->is_expand = false;
+	current_token->no_skip = false;
+}
+
+static void	push_simple_char(char *expr, unsigned int *i,
+		t_token *current_token, char *quote_char)
+{
+	if (current_token->is_expand && expr[*i - 1] == '?')
+		set_expand(current_token, false, false);
+	else if (!is_valid_expand_char(expr[*i]) && expr[*i] != '?')
+		set_expand(current_token, false, false);
+	push_char(current_token, expr[*i]);
+}
+
+static void	finish_tokeniser(t_token *current_token, t_vec *command)
+{
+	set_expand(current_token, false, false);
+	if (current_token->type != token_type_void)
+		vec_append(command, current_token);
 }
 
 t_tokeniser_error	tokenise(char *expr, t_vec *command)
@@ -197,12 +301,7 @@ t_tokeniser_error	tokenise(char *expr, t_vec *command)
 	char			quote_char;
 	t_token			current_token;
 
-	vec_init(command, sizeof(t_token), 4);
-	i = 0;
-	quote_char = 0;
-	current_token.type = token_type_void;
-	current_token.is_expand = false;
-	current_token.no_skip = false;
+	setup_token(&i, &quote_char, &current_token, command);
 	while (expr[i])
 	{
 		if (quote_char == '"')
@@ -211,69 +310,15 @@ t_tokeniser_error	tokenise(char *expr, t_vec *command)
 			parse_token_simple_quote(expr, &i, &current_token, &quote_char);
 		else
 		{
-			if (expr[i] == '\\' && expr[i + 1])
-			{
-				set_expand(&current_token, false, false);
-				push_char(&current_token, expr[++i]);
-			}
-			else if (expr[i] == '"')
-			{
-				push_char(&current_token, 0);
-				quote_char = '"';
-				current_token.no_skip = true;
-				set_expand(&current_token, false, false);
-			}
-			else if (expr[i] == '\'')
-			{
-				push_char(&current_token, 0);
-				quote_char = '\'';
-				current_token.no_skip = true;
-				set_expand(&current_token, false, false);
-			}
-			else if (expr[i] == '*')
-			{
-				push_char(&current_token, expr[i]);
-				set_expand(&current_token, true, false);
-				set_expand(&current_token, false, false);
-			}
-			else if (expr[i] == '$' && (is_valid_expand_char(expr[i + 1])
-					|| expr[i + 1] == '?'))
-			{
-				push_char(&current_token, expr[i]);
-				set_expand(&current_token, true, true);
-			}
-			else if (expr[i] == '~' && current_token.type == token_type_void
-				&& is_tilde_escape_compatible(expr[i + 1]))
-			{
-				push_char(&current_token, expr[i]);
-				set_expand(&current_token, true, false);
-				set_expand(&current_token, false, false);
-			}
-			else if (expr[i] == '(' || expr[i] == ')' || expr[i] == ';')
-				add_simple_token(expr, i, command, &current_token);
-			else if (expr[i] == '&' || expr[i] == '|')
-				add_double_token(expr, &i, command, &current_token,
-					token_type_scope_delimiter);
-			else if (expr[i] == '>' || expr[i] == '<')
-				add_double_token(expr, &i, command, &current_token,
-					token_type_command_delimiter);
-			else if (ft_isspace(expr[i]))
-				append_token(command, &current_token, token_type_plain);
-			else
-			{
-				if (current_token.is_expand && expr[i - 1] == '?')
-					set_expand(&current_token, false, false);
-				else if (!is_valid_expand_char(expr[i]) && expr[i] != '?')
-					set_expand(&current_token, false, false);
-				push_char(&current_token, expr[i]);
-			}
+			if (!(tokenise_check_quotes(expr, &i, &current_token, &quote_char)
+					|| tokenise_check_expands(expr, &i, &current_token,
+						&quote_char) || tokenise_check_delimiters(expr, &i,
+						&current_token, command)))
+				push_simple_char(expr, &i, &current_token, &quote_char);
 		}
 		i++;
 	}
-	set_expand(&current_token, false, false);
-	if (current_token.type != token_type_void)
-		vec_append(command, &current_token);
-	check_tokens_integrity(command);
+	finish_tokeniser(&current_token, command);
 	if (quote_char != 0)
 		return (tokeniser_error_unterminated_quoted_string);
 	return (tokeniser_error_succes);
