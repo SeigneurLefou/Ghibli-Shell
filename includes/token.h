@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:21:22 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/03 17:12:14 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:16:04 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 
 typedef struct s_btree_node	t_btree_node;
+typedef struct s_io_file t_io_file;
 
 typedef enum e_token_type
 {
@@ -75,8 +76,6 @@ typedef struct s_parsing_checker_result
 }							t_parsing_check_result;
 
 t_tokeniser_error			tokenise(char *expr, t_vec *command);
-bool						parse_token_btree(t_vec *expr, t_btree_node *node,
-								unsigned int depth);
 t_parsing_check_result		check_syntax(t_vec *expr);
 
 /* Tokeniser*/
@@ -117,7 +116,8 @@ void						add_simple_token(char *expr, unsigned int i,
 void						add_double_token(char *expr, unsigned int *i,
 								t_vec *command, t_token *current_token);
 
-/* Syntax checker */
+/* Shizuku - tokeniser*/
+bool						is_char_delimiter(t_token *token);
 t_parsing_check_result		check_missing_operand(t_vec *expr);
 t_parsing_check_result		check_no_operator_parentheses(t_vec *expr);
 t_parsing_check_result		check_io_files_after_parentheses(t_vec *expr);
@@ -125,8 +125,44 @@ t_parsing_check_result		check_io_files(t_vec *expr);
 t_parsing_check_result		check_matching_parentheses(t_vec *expr);
 t_parsing_check_result		check_unsuported_arithmetic(t_vec *expr);
 t_parsing_check_result		check_empty_parentheses(t_vec *expr);
-bool						is_char_delimiter(t_token *token);
 t_parsing_check_result		check_unsuported_operators(t_vec *expr);
 t_parsing_check_result		check_syntax_first(t_vec *expr);
 t_parsing_check_result		check_syntax(t_vec *expr);
+
+/* Haru - parser (Bro writing this parts was hell on hearth...
+It was like the Seven Days of Fire)*/
+bool						parse_token_btree(t_vec *expr, t_btree_node *node,
+								unsigned int depth);
+
+bool						is_a_delimiter(t_token *token, bool match_all,
+								bool match_pipe);
+int							get_matching_parenthese(t_vec *expr,
+								unsigned int index);
+int							get_next_parenthese(t_vec *expr,
+								unsigned int index);
+int							get_next_delimiter(t_vec *expr, unsigned int index);
+bool						check_closing_parentheses(t_vec *expr,
+								unsigned int end, unsigned int index);
+bool						is_in_parentheses(t_vec *expr, unsigned int index,
+								unsigned int end);
+bool						contains_scope_delimiter(t_vec *expr,
+								t_btree_node *node, bool match_all);
+bool						contains_non_pipe_delimiter(t_vec *expr,
+								unsigned int start, unsigned int stop);
+unsigned int				capture_scope(t_vec *expr, t_btree_node *btree_b,
+								t_btree_node *node, unsigned int expr_end);
+void						enter_parenthese(t_vec *expr, t_btree_node *node);
+bool						create_children_nodes(t_vec *expr,
+								t_btree_node *node,
+								unsigned int *operator_index,
+								unsigned int depth);
+void						set_node_operator(t_vec *expr, t_btree_node *node,
+								unsigned int operator_index);
+bool						set_io_delimiters_type(t_token *token,
+								t_io_file *file);
+void						grab_io_files(t_vec *expr, t_btree_node *node,
+								unsigned int stop, unsigned int index);
+void						parse_leaf(t_vec *expr, t_btree_node *node);
+void						set_leaf(t_vec *expr, t_btree_node *node);
+
 #endif
