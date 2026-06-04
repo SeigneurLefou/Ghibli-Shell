@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/04 12:31:16 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/04 19:57:55 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ char	*give_variable_content(t_token *token, size_t *i,
 		return (NULL);
 	}
 	key = vec_to_cstring(&var_name);
-	if (!key)
-		return (NULL);
 	var_content = env_variables_get(&minishell->env_variables_manager, key);
 	if (!var_content)
 		return (NULL);
@@ -77,6 +75,17 @@ bool	add_str_to_vec_char(t_vec *expanded_token, char *var_content)
 	}
 	return (!expanded_token->failed);
 }
+bool	setup_expand_split(char *var_content, t_vec *var_split,
+		t_vec *expanded_token)
+{
+	vec_init(var_split, sizeof(t_vec), 5);
+	vec_split_space(var_split, var_content);
+	if (!var_split->size)
+		return (false);
+	if (!ft_isspace(var_content[0]))
+		vec_expand(expanded_token, vec_get(var_split, 0));
+	return (true);
+}
 
 bool	expand_split(t_vec *argv, t_vec *expanded_token, char *var_content,
 		bool *can_skip_token)
@@ -87,12 +96,8 @@ bool	expand_split(t_vec *argv, t_vec *expanded_token, char *var_content,
 
 	if (!var_content)
 		return (true);
-	vec_init(&var_split, sizeof(t_vec), 5);
-	vec_split_space(&var_split, var_content);
-	if (!var_split.size || var_split.failed)
+	if (!setup_expand_split(var_content, &var_split, expanded_token))
 		return (false);
-	if (!ft_isspace(var_content[0]))
-		vec_expand(expanded_token, vec_get(&var_split, 0));
 	split_at_end = ft_isspace(var_content[ft_strlen(var_content) - 1]);
 	*can_skip_token = split_at_end;
 	if (var_split.size > 1)
@@ -102,10 +107,7 @@ bool	expand_split(t_vec *argv, t_vec *expanded_token, char *var_content,
 		vec_init(expanded_token, sizeof(char), 20);
 		j = !ft_isspace(var_content[0]);
 		while (j < var_split.size - !split_at_end)
-		{
-			vec_append(argv, vec_get(&var_split, j));
-			j++;
-		}
+			vec_append(argv, vec_get(&var_split, j++));
 		if (!split_at_end)
 			vec_expand(expanded_token, vec_get(&var_split, j));
 	}
@@ -233,70 +235,83 @@ static bool	handle_wildcard(t_vec *argv, t_token *token, t_minishell *minishell)
 	return (false);
 }
 
-bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
+struct				s_expander_data
 {
-	size_t			char_index;
-	t_vec			expanded_token;
+	t_token			*token;
+	t_expand_data	*expand_data;
 	char			*var_content;
 	size_t			exp_data_i;
-	t_expand_data	*expand_data;
-	bool			can_skip_token;
+	size_t			char_index;
+	bool			skip_token;
+	t_vec			expanded_token;
+};
 
-	if (handle_wildcard(argv, token, minishell))
-		return (true);
-	char_index = 0;
-	var_content = NULL;
-	vec_init(&expanded_token, sizeof(char), 48);
-	exp_data_i = 0;
-	token->is_expand = false;
-	can_skip_token = false;
-	while (char_index < token->data.size)
+bool	expand_variable(struct s_expander_data *data, t_vec *argv,
+		t_minishell *minishell, t_token *token)
+{
+	data->exp_data_i++;
+	if (*(char *)vec_get(&token->data, data->expand_data->index) != '*')
 	{
-		expand_data = vec_get(&token->expandable_scopes, exp_data_i);
-		if (exp_data_i < token->expandable_scopes.size
-			&& char_index == expand_data->index)
+		data->expand_data = vec_get(&token->expandable_scopes,
+				data->exp_data_i);
+		data->var_content = expand_tild(token, &data->char_index, minishell);
+		if (!data->var_content)
+			data->var_content = give_variable_content(token, &data->char_index,
+					minishell, data->expand_data->index);
+		data->expand_data = vec_get(&token->expandable_scopes, data->exp_data_i
+				- 1);
+		if (!data->var_content && data->expand_data->allow_split)
+			return (true);
+		else if (data->expand_data->allow_split && !expand_split(argv,
+				&data->expanded_token, data->var_content, &data->skip_token))
+			return (false);
+		else if (!data->expand_data->allow_split)
+			add_str_to_vec_char(&data->expanded_token, data->var_content);
+		mem_free(data->var_content);
+	}
+	else
+		vec_append(&data->expanded_token, vec_get(&token->data,
+				data->char_index++));
+	return (true);
+}
+
+bool	setup_expander(struct s_expander_data *exp_data, t_vec *argv,
+		t_token *token, t_minishell *minishell)
+{
+	if (handle_wildcard(argv, token, minishell))
+		return (false);
+	exp_data->char_index = 0;
+	exp_data->var_content = NULL;
+	vec_init(&exp_data->expanded_token, sizeof(char), 48);
+	exp_data->exp_data_i = 0;
+	token->is_expand = false;
+	exp_data->skip_token = false;
+	return (true);
+}
+
+bool	expand(t_vec *argv, t_token *token, t_minishell *minishell)
+{
+	struct s_expander_data	exp_data;
+
+	if (!setup_expander(&exp_data, argv, token, minishell))
+		return (true);
+	while (exp_data.char_index < token->data.size)
+	{
+		exp_data.expand_data = vec_get(&token->expandable_scopes,
+				exp_data.exp_data_i);
+		if (exp_data.exp_data_i < token->expandable_scopes.size
+			&& exp_data.char_index == exp_data.expand_data->index)
 		{
-			exp_data_i++;
-			if (*(char *)vec_get(&token->data, expand_data->index) != '*')
-			{
-				expand_data = vec_get(&token->expandable_scopes, exp_data_i);
-				var_content = expand_tild(token, &char_index, minishell);
-				if (!var_content)
-					var_content = give_variable_content(token, &char_index,
-							minishell, expand_data->index);
-				expand_data = vec_get(&token->expandable_scopes, exp_data_i
-						- 1);
-				if (!var_content && expand_data->allow_split)
-				{
-					mem_free(var_content);
-					exp_data_i++;
-					continue ;
-				}
-				if (expand_data->allow_split)
-				{
-					if (!expand_split(argv, &expanded_token, var_content,
-							&can_skip_token))
-						return (false);
-				}
-				else
-					add_str_to_vec_char(&expanded_token, var_content);
-				mem_free(var_content);
-			}
-			else
-			{
-				vec_append(&expanded_token, vec_get(&token->data, char_index));
-				char_index++;
-			}
-			exp_data_i++;
+			if (!expand_variable(&exp_data, argv, minishell, token))
+				return (false);
+			exp_data.exp_data_i++;
 		}
 		else
-		{
-			vec_append(&expanded_token, vec_get(&token->data, char_index));
-			char_index++;
-		}
+			vec_append(&exp_data.expanded_token, vec_get(&token->data,
+					exp_data.char_index++));
 	}
-	if (((var_content || expanded_token.size) && !can_skip_token)
-		|| token->no_skip)
-		vec_append(argv, &expanded_token);
+	if (((exp_data.var_content || exp_data.expanded_token.size)
+			&& !exp_data.skip_token) || token->no_skip)
+		vec_append(argv, &exp_data.expanded_token);
 	return (true);
 }
