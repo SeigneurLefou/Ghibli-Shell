@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 06:45:58 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 15:09:04 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/04 12:31:16 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ bool	expand_split(t_vec *argv, t_vec *expanded_token, char *var_content,
 	*can_skip_token = split_at_end;
 	if (var_split.size > 1)
 	{
-		if (!ft_isspace(var_content[0]))
+		if (expanded_token->size)
 			vec_append(argv, expanded_token);
 		vec_init(expanded_token, sizeof(char), 20);
 		j = !ft_isspace(var_content[0]);
