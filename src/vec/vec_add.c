@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 17:16:20 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 13:13:57 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/06/04 09:54:35 by lchamard          #+#    #+#             */
+/*   Updated: 2026/06/04 09:54:59 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	vec_append(t_vec *vec, void *data)
 {
 	char	*new_data;
 
-	assert((int[]){vec != NULL, data != NULL, 42},
+	assert((int[]) {vec != NULL, data != NULL, 42},
 		"Null passed to vec_append.");
 	if (vec->failed)
 		return (false);
