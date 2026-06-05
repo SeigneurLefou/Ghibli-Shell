@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/02 21:10:19 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 15:17:09 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	ft_free_path(char **splited_path, int i)
 char	*test_all_path(char *path, t_cmd *cmd)
 {
 	char	*cmd_path;
-	char	*iter_path;
 	char	**splited_path;
 	int		i;
 
@@ -53,9 +52,7 @@ char	*test_all_path(char *path, t_cmd *cmd)
 	cmd_path = NULL;
 	while (splited_path && splited_path[i])
 	{
-		iter_path = ft_strjoin(splited_path[i++], "/");
-		cmd_path = ft_strjoin(iter_path, cmd->name);
-		mem_free(iter_path);
+		cmd_path = path_join(splited_path[i++], cmd->name);
 		if (!access(cmd_path, F_OK))
 			break ;
 		mem_free(cmd_path);
