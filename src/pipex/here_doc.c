@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 16:34:27 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:53:12 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static char	*get_file_while_not_limiter(int fd, char *limiter,
 	char			*line;
 	unsigned int	limiter_len;
 	char			*buffer;
-	char			*expanded;
 
 	buffer = ft_calloc(1, sizeof(char));
 	write(2, "> ", 2);
