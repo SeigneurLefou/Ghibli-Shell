@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 16:59:23 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 18:41:36 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	handle_prompt(t_minishell *minishell)
 		}
 		else
 		{
-			trimmed = ft_strtrim(line, "\r\n \t");
+			trimmed = ft_strtrim(line, "\r\n \t\v\f");
 			trimmed_line_exec(line, trimmed, minishell, &first_sigint);
 		}
 		if (minishell->request_exit)
