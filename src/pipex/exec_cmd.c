@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 15:17:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:20:14 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,10 @@ void	take_child(t_pipex *pipex_var)
 	{
 		if (!access(pipex_var->cmd->path, F_OK))
 		{
-		if (!access(pipex_var->cmd->path, X_OK | F_OK))
+			if (!access(pipex_var->cmd->path, X_OK | F_OK))
 			{
-				env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
+				env = env_variables_get_env(
+						&pipex_var->minishell->env_variables_manager);
 				execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
 			}
 			else

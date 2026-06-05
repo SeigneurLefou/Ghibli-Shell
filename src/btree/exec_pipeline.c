@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/02 14:56:00 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:18:51 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ bool	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list)
 		return (return_value);
 	}
 	if (tree->node-> operator == operator_pipe)
-		return_value = exec_left_right_pipeline(tree, files, pid_list, &command_pid);
+		return_value = exec_left_right_pipeline(tree, files, pid_list,
+				&command_pid);
 	else
 	{
 		return_value = exec_binary_tree(tree, files);
