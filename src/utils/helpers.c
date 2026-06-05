@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 13:45:24 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/01 18:22:45 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 14:59:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,22 @@ int	ft_atol_check_overflow(const char *nptr, bool *overflow)
 	if (negat)
 		return (-num);
 	return (num);
+}
+
+char	*path_join(char *a, char *b)
+{
+	unsigned int	a_size;
+	char			*path;
+
+	a_size = ft_strlen(a);
+	if (a[a_size - 1] == '/')
+		path = ft_strjoin(a, b);
+	else
+	{
+		path = ft_strjoin(a, "/");
+		if (!path)
+			return (false);
+		path = ft_strjoin(path, b);
+	}
+	return (path);
 }
