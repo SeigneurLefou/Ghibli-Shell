@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:51:00 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/01 15:15:11 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:18:43 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ static void	ask_and_setup_ghiblirc(char *config_path)
 		{
 			file = open(config_path, O_WRONLY | O_CREAT, 0666);
 			if (!file)
-			{
 				perror("GhibliShell");
+			if (!file)
 				return ;
-			}
 			if (!choice[0] || choice[0] == '1')
 				write(file, GHIBLIRC_DEFAULT, ft_strlen(GHIBLIRC_DEFAULT));
 			write(1, "Your .ghiblirc file is now ready to use!\n", 42);

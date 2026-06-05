@@ -6,65 +6,13 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 15:53:04 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:14:06 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_signal = 0;
-
-/* Based on the examples given at
-https://circuitlabs.net/signal-handling-catching-signals-w-signal-sigaction */
-bool	setup_sig_handler(void)
-{
-	struct sigaction	sa;
-
-	memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = handle_signal_default;
-	if (sigemptyset(&sa.sa_mask) == -1)
-	{
-		perror("GhibliShell");
-		return (false);
-	}
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-		perror("GhibliShell");
-		return (false);
-	}
-	if (sigaction(SIGTERM, &sa, NULL) == -1)
-	{
-		perror("GhibliShell");
-		return (false);
-	}
-	signal(SIGQUIT, SIG_IGN);
-	return (true);
-}
-
-bool	disable_sig_handler(void)
-{
-	struct sigaction	sa;
-
-	memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = handle_signal_disabled;
-	if (sigemptyset(&sa.sa_mask) == -1)
-	{
-		perror("GhibliShell");
-		return (false);
-	}
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-	{
-		perror("GhibliShell");
-		return (false);
-	}
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-		perror("GhibliShell");
-		return (false);
-	}
-	signal(SIGTERM, SIG_IGN);
-	return (true);
-}
 
 static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		bool *first_sigint)
@@ -85,15 +33,14 @@ static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 	}
 }
 
-bool handle_null_line(t_minishell *minishell, bool *first_sigint)
+bool	handle_null_line(t_minishell *minishell, bool *first_sigint)
 {
-		if (g_signal > 0)
+	if (g_signal > 0)
 	{
 		g_signal = -1;
 		dup2(minishell->stdin_save, 0);
 		rl_replace_line("", 1);
-		env_variables_set(&minishell->env_variables_manager, "?",
-			"130");
+		env_variables_set(&minishell->env_variables_manager, "?", "130");
 		minishell->last_status = 130;
 		if (*first_sigint)
 			write(1, "\n", 1);
@@ -109,10 +56,32 @@ bool handle_null_line(t_minishell *minishell, bool *first_sigint)
 	return (true);
 }
 
+bool	read_prompt_line(char **line, t_minishell *minishell)
+{
+	char	*prompt_line;
+
+	setup_sig_handler();
+	prompt_line = get_prompt_line(minishell);
+	*line = NULL;
+	if (prompt_line)
+	{
+		*line = readline(prompt_line);
+		mem_free(prompt_line);
+	}
+	else
+		*line = readline("$> ");
+	if (ft_strlen(*line) > 32768)
+	{
+		display_error_message("The input line is too long. Max is 32768.");
+		free(*line);
+		return (false);
+	}
+	return (true);
+}
+
 void	handle_prompt(t_minishell *minishell)
 {
 	char	*line;
-	char	*prompt_line;
 	char	*trimmed;
 	bool	first_sigint;
 
@@ -120,26 +89,12 @@ void	handle_prompt(t_minishell *minishell)
 	first_sigint = true;
 	while (1)
 	{
-		setup_sig_handler();
-		prompt_line = get_prompt_line(minishell);
-		line = NULL;
-		if (prompt_line)
-		{
-			line = readline(prompt_line);
-			mem_free(prompt_line);
-		}
-		else
-			line = readline("$> ");
-		if (ft_strlen(line) > 32768)
-		{
-			display_error_message("The input line is too long. Max is 32768.");
-			free(line);
+		if (!read_prompt_line(&line, minishell))
 			continue ;
-		}
 		if (!line)
 		{
 			if (!handle_null_line(minishell, &first_sigint))
-				continue;
+				continue ;
 		}
 		else
 		{

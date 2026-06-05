@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/05/29 20:10:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:14:44 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,5 @@ void							minishell_init(t_minishell *minishell);
 void							increment_shell_lvl(t_minishell *minishell);
 void							load_config_file(t_minishell *minishell,
 									char *config_file);
-
-bool							setup_sig_handler(void);
-bool							disable_sig_handler(void);
 
 #endif
