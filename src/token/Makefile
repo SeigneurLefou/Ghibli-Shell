@@ -14,6 +14,7 @@ SRC += $(PARSER_PATH)/tokeniser.c \
 	   $(PARSER_PATH)/parser_io.c \
 	   $(PARSER_PATH)/parser_scops_helpers.c\
 	   $(PARSER_PATH)/parser_leaf.c \
-	   $(PARSER_PATH)/parser.c
+	   $(PARSER_PATH)/parser.c \
+	   $(PARSER_PATH)/errors.c
 
 OUT_DIRS += $(OUTPUT_DIR)/$(PARSER_PATH)

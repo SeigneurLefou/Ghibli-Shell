@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 16:14:44 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:57:39 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,9 @@ void							minishell_init(t_minishell *minishell);
 void							increment_shell_lvl(t_minishell *minishell);
 void							load_config_file(t_minishell *minishell,
 									char *config_file);
+
+void							increment_shell_lvl(t_minishell *minishell);
+bool							setup_minishell(t_minishell *minishell,
+									char *env[]);
 
 #endif
