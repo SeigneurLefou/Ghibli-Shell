@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_operation.c                                    :+:      :+:    :+:   */
+/*   here_doc_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 17:16:31 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 16:27:27 by yben-dje         ###   ########.fr       */
+/*   Created: 2026/06/05 16:32:37 by yben-dje          #+#    #+#             */
+/*   Updated: 2026/06/05 16:34:31 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec.h"
+#include "pipex.h"
 
-void	*vec_get(t_vec *vec, unsigned int index)
+int	fake_fdin(void)
 {
-	if (index >= vec->size)
-		return (NULL);
-	return (vec->data + index * vec->type_size);
+	int	fake_pipe[2];
+
+	pipe(fake_pipe);
+	close(fake_pipe[1]);
+	return (fake_pipe[0]);
 }
 
-void	vec_set(t_vec *vec, unsigned int index, void *data)
+unsigned int	get_variable_name_len(char *start)
 {
-	ft_memcpy(vec->data + index * vec->type_size, data, vec->type_size);
+	unsigned int	size;
+
+	size = 0;
+	while (is_valid_expand_char(start[size]))
+		size++;
+	return (size);
 }
