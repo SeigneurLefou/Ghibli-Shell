@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 15:30:28 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/05 15:48:36 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:12:06 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,4 @@ void	handle_signal_disabled(int sig)
 		write(2, "Quit\n", 6);
 	else
 		write(2, "\n", 1);
-	close(0);
 }
