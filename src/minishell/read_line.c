@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 15:34:23 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 15:53:04 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ bool	disable_sig_handler(void)
 	struct sigaction	sa;
 
 	memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = SIG_IGN;
+	sa.sa_handler = handle_signal_disabled;
 	if (sigemptyset(&sa.sa_mask) == -1)
 	{
 		perror("GhibliShell");
 		return (false);
 	}
-	if (sigaction(SIGTERM, &sa, NULL) == -1)
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 	{
 		perror("GhibliShell");
 		return (false);
@@ -62,6 +62,7 @@ bool	disable_sig_handler(void)
 		perror("GhibliShell");
 		return (false);
 	}
+	signal(SIGTERM, SIG_IGN);
 	return (true);
 }
 
@@ -82,6 +83,30 @@ static void	trimmed_line_exec(char *line, char *trimmed, t_minishell *minishell,
 		main_token(trimmed, minishell);
 		setup_sig_handler();
 	}
+}
+
+bool handle_null_line(t_minishell *minishell, bool *first_sigint)
+{
+		if (g_signal > 0)
+	{
+		g_signal = -1;
+		dup2(minishell->stdin_save, 0);
+		rl_replace_line("", 1);
+		env_variables_set(&minishell->env_variables_manager, "?",
+			"130");
+		minishell->last_status = 130;
+		if (*first_sigint)
+			write(1, "\n", 1);
+		rl_on_new_line();
+		*first_sigint = false;
+		return (false);
+	}
+	else
+	{
+		minishell->request_exit = true;
+		write(2, "exit\n", 6);
+	}
+	return (true);
 }
 
 void	handle_prompt(t_minishell *minishell)
@@ -113,25 +138,8 @@ void	handle_prompt(t_minishell *minishell)
 		}
 		if (!line)
 		{
-			if (g_signal > 0)
-			{
-				g_signal = -1;
-				dup2(minishell->stdin_save, 0);
-				rl_replace_line("", 1);
-				env_variables_set(&minishell->env_variables_manager, "?",
-					"130");
-				minishell->last_status = 130;
-				if (first_sigint)
-					write(1, "\n", 1);
-				rl_on_new_line();
-				first_sigint = false;
-				continue ;
-			}
-			else
-			{
-				minishell->request_exit = true;
-				write(2, "exit\n", 6);
-			}
+			if (!handle_null_line(minishell, &first_sigint))
+				continue;
 		}
 		else
 		{
