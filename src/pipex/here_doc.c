@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 16:53:12 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:10:32 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static char	*get_file_while_not_limiter(int fd, char *limiter,
 		line = get_next_line(fd);
 	}
 	mem_free(line);
+	if (!line)
+		write(2, "\n", 1);
 	return (buffer);
 }
 
@@ -90,7 +92,7 @@ void	here_doc_file(char *limiter, int *fd, t_btree *tree,
 		*fd = -2;
 		tree->minishell->last_status = 130;
 		tree->node->wstatus = 130;
-		write(1, "\n", 1);
+		write(2, "\n", 1);
 		close(pipe_fd[0]);
 	}
 	disable_sig_handler();
