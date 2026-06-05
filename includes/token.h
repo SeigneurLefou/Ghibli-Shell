@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:21:22 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/03 19:16:04 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:56:07 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 
 typedef struct s_btree_node	t_btree_node;
-typedef struct s_io_file t_io_file;
+typedef struct s_io_file	t_io_file;
 
 typedef enum e_token_type
 {
@@ -164,5 +164,11 @@ void						grab_io_files(t_vec *expr, t_btree_node *node,
 								unsigned int stop, unsigned int index);
 void						parse_leaf(t_vec *expr, t_btree_node *node);
 void						set_leaf(t_vec *expr, t_btree_node *node);
+
+/* Errors*/
+void						check_result1(t_parsing_check_result parser_result,
+								t_vec *parsed);
+void						check_result2(t_parsing_check_result parser_result,
+								t_vec *parsed);
 
 #endif
