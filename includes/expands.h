@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 23:01:52 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/05 15:06:59 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:00:32 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "token.h"
 # include "vec.h"
 
+typedef struct s_expand_data t_expand_data;
 typedef struct s_minishell	t_minishell;
 struct						s_expander_data
 {
