@@ -6,95 +6,14 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 15:17:09 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 20:22:02 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*get_env(char **env, char *var)
+static void	close_fds(t_pipex *pipex_var)
 {
-	int		i;
-	int		len_var_name;
-	char	*var_content;
-
-	i = 0;
-	len_var_name = ft_strlen(var);
-	while (env[i] && ft_strncmp(env[i], var, len_var_name))
-		i++;
-	if (!env[i])
-		return (NULL);
-	var_content = ft_calloc(sizeof(char), ft_strlen(env[i]) - len_var_name);
-	var_content = ft_strcpy(var_content, &env[i][len_var_name + 1]);
-	return (var_content);
-}
-
-void	ft_free_path(char **splited_path, int i)
-{
-	if (splited_path && !splited_path[i])
-	{
-		mem_free(splited_path);
-		return ;
-	}
-	ft_double_free_start(splited_path, i);
-}
-
-char	*test_all_path(char *path, t_cmd *cmd)
-{
-	char	*cmd_path;
-	char	**splited_path;
-	int		i;
-
-	if (!path || !path[0])
-		return (NULL);
-	splited_path = ft_split(path, ':');
-	i = 0;
-	cmd_path = NULL;
-	while (splited_path && splited_path[i])
-	{
-		cmd_path = path_join(splited_path[i++], cmd->name);
-		if (!access(cmd_path, F_OK))
-			break ;
-		mem_free(cmd_path);
-		cmd_path = NULL;
-	}
-	ft_double_mem_free(splited_path);
-	return (cmd_path);
-}
-
-void	get_cmd_path(t_cmd *cmd, t_minishell *minishell)
-{
-	char	*path;
-	char	*cmd_path;
-
-	if (!cmd->name)
-	{
-		errno = 13;
-		cmd->path = NULL;
-		return ;
-	}
-	cmd_path = ft_strdup(cmd->name);
-	if (cmd_path && ft_strchr(cmd_path, '/'))
-	{
-		cmd->path = cmd_path;
-		return ;
-	}
-	mem_free(cmd_path);
-	cmd_path = NULL;
-	path = env_variables_get(&minishell->env_variables_manager,
-			"PATH");
-	if (!path)
-		cmd->path = NULL;
-	if (!path)
-		return ;
-	cmd_path = test_all_path(path, cmd);
-	cmd->path = cmd_path;
-}
-
-void	take_child(t_pipex *pipex_var)
-{
-	char	**env;
-
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
@@ -106,6 +25,42 @@ void	take_child(t_pipex *pipex_var)
 		close(pipex_var->fds[1]);
 	}
 	close_all_fds();
+}
+
+static void	exec_if_file_exists(t_pipex *pipex_var)
+{
+	char	**env;
+
+	if (!access(pipex_var->cmd->path, F_OK))
+	{
+		if (!access(pipex_var->cmd->path, X_OK | F_OK))
+		{
+			env = env_variables_get_env(
+					&pipex_var->minishell->env_variables_manager);
+			execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
+		}
+		else
+		{
+			perror(pipex_var->cmd->name);
+			ft_cmdclear(pipex_var->cmd);
+			clear_garbage_collector();
+			exit(126);
+		}
+	}
+}
+
+static void	command_not_found_error(t_pipex *pipex_var)
+{
+	write(2, pipex_var->cmd->name, ft_strlen(pipex_var->cmd->name));
+	write(2, ": Command not found.\n", 22);
+	ft_cmdclear(pipex_var->cmd);
+	clear_garbage_collector();
+	exit(127);
+}
+
+void	take_child(t_pipex *pipex_var)
+{
+	close_fds(pipex_var);
 	if (is_command_built_in(pipex_var->cmd->name))
 	{
 		pipex_var->fds[0] = 0;
@@ -118,21 +73,7 @@ void	take_child(t_pipex *pipex_var)
 	}
 	else if (pipex_var->cmd->path && pipex_var->fds[0] != -1)
 	{
-		if (!access(pipex_var->cmd->path, F_OK))
-		{
-		if (!access(pipex_var->cmd->path, X_OK | F_OK))
-			{
-				env = env_variables_get_env(&pipex_var->minishell->env_variables_manager);
-				execve(pipex_var->cmd->path, pipex_var->cmd->argv, env);
-			}
-			else
-			{
-				perror(pipex_var->cmd->name);
-				ft_cmdclear(pipex_var->cmd);
-				clear_garbage_collector();
-				exit(126);
-			}
-		}
+		exec_if_file_exists(pipex_var);
 		perror(pipex_var->cmd->name);
 		ft_cmdclear(pipex_var->cmd);
 		clear_garbage_collector();
@@ -140,9 +81,5 @@ void	take_child(t_pipex *pipex_var)
 			exit(126);
 		exit(127);
 	}
-	write(2, pipex_var->cmd->name, ft_strlen(pipex_var->cmd->name));
-	write(2, ": Command not found.\n", 22);
-	ft_cmdclear(pipex_var->cmd);
-	clear_garbage_collector();
-	exit(127);
+	command_not_found_error(pipex_var);
 }
