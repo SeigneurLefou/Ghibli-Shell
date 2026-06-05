@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 10:28:20 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/01 15:11:55 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/05 18:28:04 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,6 @@ char	*take_line(char **str)
 		size++;
 	line = mem_alloc(size + 1 + ((*str)[size] == '\n'), default_error_exit,
 			NULL, 0b1);
-	if (!line)
-	{
-		safe_free(str);
-		return (NULL);
-	}
 	line[size + ((*str)[size] == '\n')] = 0;
 	index = -1;
 	while (++index <= size)
