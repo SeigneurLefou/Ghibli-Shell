@@ -6,19 +6,17 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:16:20 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 13:13:57 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:27:30 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec.h"
 #include "exits.h"
+#include "vec.h"
 
 bool	vec_append(t_vec *vec, void *data)
 {
 	char	*new_data;
 
-	assert((int[]){vec != NULL, data != NULL, 42},
-		"Null passed to vec_append.");
 	if (vec->failed)
 		return (false);
 	if (!vec->data || vec->size >= vec->allocated_size)
@@ -47,12 +45,6 @@ void	vec_expand_and_free(t_vec *vec, t_vec *other)
 	char			*new_data;
 	unsigned int	alloc_size;
 
-	assert((int[]){vec != NULL, other != NULL, 42},
-		"Null passed to vec_expand_and_free.");
-	assert((int[]){vec->type_size == other->type_size, 42},
-		"Typesize is different between vec and other.");
-	assert((int[]){!vec->failed, !other->failed, 42},
-		"Attempted to read a failed vec.");
 	if (vec->failed)
 		return ;
 	alloc_size = (vec->size + other->size + vec->buff_size) * vec->type_size;
@@ -78,10 +70,6 @@ void	vec_expand(t_vec *vec, t_vec *other)
 	char			*new_data;
 	unsigned int	alloc_size;
 
-	assert((int[]){vec != NULL, other != NULL, 42},
-		"Null passed to vec_expand_and_free.");
-	assert((int[]){vec->type_size == other->type_size, 42},
-		"Typesize is different between vec and other.");
 	if (vec->failed)
 		return ;
 	alloc_size = (vec->size + other->size + vec->buff_size) * vec->type_size;
@@ -101,7 +89,7 @@ void	vec_expand(t_vec *vec, t_vec *other)
 /* Could be optimized but hey! Blackhole is comming!*/
 void	vec_expand_from_str(t_vec *vec, char *str)
 {
-	unsigned int index;
+	unsigned int	index;
 
 	index = 0;
 	while (str[index])
