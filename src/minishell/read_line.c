@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 09:36:36 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 15:15:29 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/05 15:34:23 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,10 @@ void	handle_prompt(t_minishell *minishell)
 				continue ;
 			}
 			else
+			{
 				minishell->request_exit = true;
+				write(2, "exit\n", 6);
+			}
 		}
 		else
 		{
