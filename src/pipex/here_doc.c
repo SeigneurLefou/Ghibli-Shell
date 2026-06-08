@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:48:59 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 17:10:32 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/08 14:44:06 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static bool	write_buffer_to_pipe(int pipe_fd[2], char *limiter, bool can_expand,
 	char	*input_user;
 
 	setup_sig_handler();
-	input_user = ft_calloc(1, sizeof(char));
 	if (pipe(pipe_fd) < 0)
 	{
 		disable_sig_handler();

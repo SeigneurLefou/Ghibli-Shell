@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:58:09 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 16:34:25 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/08 14:46:35 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,9 @@ typedef struct s_pipex
 void						here_doc_file(char *limiter, int *fd, t_btree *tree,
 								unsigned int token_index);
 int							fork_pid(t_pipex *pipex_var, int stdin_pid_copy);
-int							infile_gestion(t_pipex *pipex_var);
-int							child_gestion(t_pipex *pipex_var);
 void						take_child(t_pipex *pipex_var);
 void						get_cmd_path(t_cmd *cmd, t_minishell *minishell);
 char						*test_all_path(char *path, t_cmd *cmd);
-void						ft_free_path(char **splited_path, int i);
 char						*get_env(char **env, char *var);
 int							wait_all_pid(t_vec *pids);
 int							give_exit_code(int status);

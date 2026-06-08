@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:55:07 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 17:57:39 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/08 15:14:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include "history.h"
 # include "libft.h"
 # include "list.h"
-# include "pid.h"
 # include "pipex.h"
 # include "signals.h"
 # include "token.h"

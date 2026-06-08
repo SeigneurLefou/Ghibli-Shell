@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 08:56:54 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 16:40:02 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/08 15:14:02 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "vec_to_cmd.h"
 # include "token.h"
 # include "cmd.h"
-# include "pid.h"
 # include "pipex.h"
 # include "libft.h"
 # include "minishell.h"
@@ -71,8 +70,6 @@ typedef struct s_btree
 }	t_btree;
 
 bool	exec_pipeline(t_btree *tree, int files[2], t_vec *pid_list);
-bool	exec_right_left_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
-			t_vec *command_pid);
 bool	exec_right_pipeline(t_btree *tree, int files[2], t_vec *command_pid);
 
 bool	exec_binary_tree(t_btree *tree, int files[2]);
