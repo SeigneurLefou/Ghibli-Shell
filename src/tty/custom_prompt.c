@@ -6,187 +6,46 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 11:54:55 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/01 15:18:44 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/05 20:05:53 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tty.h"
 
-static bool	is_flag_active(char flag, t_minishell *minishell)
+void	add_regular_char_and_escape(char *base_prompt, unsigned int *index,
+		t_vec *rendered)
 {
-	char	*home;
-	char	*pwd;
+	char	c;
 
-	if (flag == 'h')
-	{
-		home = env_variables_get(&minishell->env_variables_manager, "HOME");
-		pwd = env_variables_get(&minishell->env_variables_manager, "PWD");
-		return (pwd && home && !ft_strncmp(home, pwd, ft_strlen(home)));
-	}
-	if (flag == 's')
-		return (!minishell->last_status);
-	return (false);
-}
-
-static char	parse_escape(char escaped_char)
-{
-	if (escaped_char == 'n')
-		return ('\n');
-	if (escaped_char == 't')
-		return ('\t');
-	if (escaped_char == 'v')
-		return ('\v');
-	if (escaped_char == 'e')
-		return ('\e');
-	if (escaped_char == 'a')
-		return ('\a');
+	if (base_prompt[(*index) + 1] && base_prompt[(*index)] == '\\')
+		c = parse_escape(base_prompt[++(*index)]);
 	else
-		return (escaped_char);
-}
-
-static void	push_expand(t_vec *rendered, char *expand)
-{
-	unsigned int	index;
-
-	if (!expand)
-		return ;
-	index = 0;
-	while (expand[index])
-	{
-		vec_append(rendered, &expand[index]);
-		index++;
-	}
-	return ;
-}
-
-static char	*get_home_relative_pwd(t_minishell *minishell)
-{
-	char			*pwd;
-	char			*home;
-	unsigned int	home_size;
-
-	pwd = env_variables_get(&minishell->env_variables_manager, "PWD");
-	home = env_variables_get(&minishell->env_variables_manager, "HOME");
-	if (!pwd || !home)
-		return (NULL);
-	home_size = ft_strlen(home);
-	if (!ft_strncmp(home, pwd, home_size))
-		return (pwd + home_size);
-	return (pwd);
-}
-
-static bool	expand_prompt_custom(t_vec *rendered, char c,
-		t_minishell *minishell)
-{
-	char	*str;
-
-	str = NULL;
-	if (c == 'l')
-		str = env_variables_get(&minishell->env_variables_manager, "PWD");
-	if (c == 'u')
-		str = env_variables_get(&minishell->env_variables_manager, "USER");
-	if (c == 'r')
-		str = get_home_relative_pwd(minishell);
-	if (c == 's')
-		str = env_variables_get(&minishell->env_variables_manager, "?");
-	if (c == '1')
-		str = "\001\x1b";
-	if (c == '2')
-		str = "\002";
-	if (str)
-		push_expand(rendered, str);
-	return (true);
+		c = base_prompt[(*index)];
+	vec_append(rendered, &c);
 }
 
 char	*render_prompt(char *base_prompt, t_minishell *minishell)
 {
 	unsigned int	index;
 	t_vec			rendered;
-	char			flag;
 	char			*prompt;
-	bool			flag_result;
-	char			c;
 
 	index = 0;
 	vec_init(&rendered, sizeof(char), 16);
-	if (!base_prompt)
-		return (NULL);
 	while (base_prompt[index])
 	{
 		if ((base_prompt[index] == '%' || base_prompt[index] == '!')
 			&& base_prompt[index + 1] && base_prompt[index + 2])
-		{
-			flag = base_prompt[index + 1];
-			index += 2;
-			flag_result = is_flag_active(flag, minishell);
-			if ((base_prompt[index - 2] == '%' && flag_result)
-				|| (base_prompt[index - 2] == '!' && !flag_result))
-			{
-				while (base_prompt[index] && base_prompt[index] != ';')
-				{
-					if (base_prompt[index + 1] && base_prompt[index] == '\\')
-					{
-						if (base_prompt[index + 1] == ';' || base_prompt[index
-								+ 1] == '@' || base_prompt[index + 1] == '\\')
-							c = base_prompt[++index];
-						else
-							c = parse_escape(base_prompt[++index]);
-					}
-					else if (base_prompt[index] == '@'
-						&& base_prompt[index + 1])
-					{
-						index++;
-						expand_prompt_custom(&rendered, base_prompt[index],
-							minishell);
-						index++;
-						continue ;
-					}
-					else
-						c = base_prompt[index];
-					vec_append(&rendered, &c);
-					if (base_prompt[index])
-						index++;
-				}
-			}
-			else
-			{
-				while (base_prompt[index] && base_prompt[index] != ';')
-				{
-					if (base_prompt[index] == '\\' && (base_prompt[index
-								+ 1] == ';' || base_prompt[index + 1] == '@'
-							|| base_prompt[index + 1] == '\\'))
-						index++;
-					index++;
-				}
-			}
-		}
-		else if (base_prompt[index] == '\\' && (base_prompt[index + 1] == '%'
-				|| base_prompt[index + 1] == '!' || base_prompt[index
-					+ 1] == '@' || base_prompt[index + 1] == '\\'))
-		{
+			process_condicionals(base_prompt, minishell, &index, &rendered);
+		else if (can_escape(base_prompt, index))
 			vec_append(&rendered, &base_prompt[++index]);
-		}
 		else if (base_prompt[index] == '@' && base_prompt[index + 1])
-		{
-			index++;
-			expand_prompt_custom(&rendered, base_prompt[index], minishell);
-		}
+			expand_prompt_custom(&rendered, base_prompt[++index], minishell);
 		else
-		{
-			if (base_prompt[index + 1] && base_prompt[index] == '\\')
-				c = parse_escape(base_prompt[++index]);
-			else
-				c = base_prompt[index];
-			vec_append(&rendered, &c);
-		}
+			add_regular_char_and_escape(base_prompt, &index, &rendered);
 		if (!base_prompt[index])
 			break ;
 		index++;
-	}
-	if (rendered.failed)
-	{
-		vec_free(&rendered);
-		return (NULL);
 	}
 	prompt = vec_to_cstring(&rendered);
 	vec_free(&rendered);

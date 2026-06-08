@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchamard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:08:39 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 14:08:40 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/05 20:05:12 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static char	parse_escape(char escaped_char)
+static char	echo_parse_escape(char escaped_char)
 {
 	if (escaped_char == 'n')
 		return ('\n');
@@ -41,7 +41,7 @@ void	echo_print_format(char **parts, int fds[2])
 		while (parts[index][index2])
 		{
 			if (parts[index][index2 + 1] && parts[index][index2] == '\\')
-				c = parse_escape(parts[index][++index2]);
+				c = echo_parse_escape(parts[index][++index2]);
 			else
 				c = parts[index][index2];
 			write(fds[1], &c, 1);
