@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 15:45:13 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 14:27:30 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/08 14:45:24 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,5 @@ t_cmd	*ft_cmdlast(t_cmd *cmd);
 void	ft_cmdadd_back(t_cmd **cmd, t_cmd **new);
 int		ft_cmdsize(t_cmd **cmd);
 void	ft_cmdclear(t_cmd *cmd);
-void	ft_cmdshow(t_cmd *cmd);
-void	showallcmd(t_cmd **cmd);
 
 #endif
