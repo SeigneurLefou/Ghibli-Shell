@@ -71,6 +71,10 @@ Here is the default prompt line:
 ```bash
 export PROMPT='@1[1;35m@2GhibliShell@1[0m@2 @u\@%h@1[1\;33m@2~@1[0m@2@1[36m@2@r@1[0m@2;!h@1[36m@2@l@1[0m@2; @1[1m@2%s@1[32m@2>@1[0m@2;!s@1[31m@2X@1[0m@2;@1[22m@2 '
 ```
+But you can also try this one:
+```bash
+export PROMPT="@1[46;35;1m@2GSh@1[38;5;21m@2 @u@1[38;5;214m@2\@@1[22m@2@1[35m@2%h🏠@1[30m@2@r;!h@1[30m@2@l; %s@1[38\;5\;22m@2✔@1[39m@2;!s@1[91m@2✘➙@s@1[39m@2; @1[0m@2@1[36m@2🭬@1[0m"
+```
 The prompt line also have support for some escapes including `\e` and ansii escape sequences using `@1` and `@2`.
 
 ## Resources
