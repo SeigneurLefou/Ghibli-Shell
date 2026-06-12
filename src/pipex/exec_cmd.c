@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/05 20:22:02 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/12 17:44:45 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ void	take_child(t_pipex *pipex_var)
 	{
 		exec_if_file_exists(pipex_var);
 		perror(pipex_var->cmd->name);
-		ft_cmdclear(pipex_var->cmd);
-		clear_garbage_collector();
 		if (!access(pipex_var->cmd->path, X_OK))
+		{
+			clear_garbage_collector();
 			exit(126);
+		}
+		clear_garbage_collector();
 		exit(127);
 	}
 	command_not_found_error(pipex_var);
