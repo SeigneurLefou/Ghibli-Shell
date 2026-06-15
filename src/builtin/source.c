@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/05/28 12:17:53 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/15 10:33:34 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_source(int argc, char **argv, t_minishell *minishell)
 
 	if (argc != 2)
 	{
-		write(2, "Source needs one argument <path>.", 34);
+		write(2, "Source needs one argument <path>.\n", 35);
 		return (1);
 	}
 	minishell->internal_file_recursion++;

@@ -112,6 +112,7 @@ ifndef DEBUG
 endif
 	@rm -rf $(OUTPUT_DIR)
 	@echo -e "\e[32mCatbus cleaned the objects. Thank you Catbus!\e[0m"
+	@echo -e "\e[?25h"
 
 fclean: clean
 	@echo -e "\e[32mCatbus cleaned the binary too!\e[0m"
