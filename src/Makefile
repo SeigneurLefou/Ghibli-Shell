@@ -109,6 +109,7 @@ ifndef DEBUG
 		/bin/echo -e "\e[?25l\e[14F";                                                                                                              \
 		sleep 0.01;                                                                                                                                \
 	done
+	@echo -e "\e[?25h"
 endif
 	@rm -rf $(OUTPUT_DIR)
 	@echo -e "\e[32mCatbus cleaned the objects. Thank you Catbus!\e[0m"

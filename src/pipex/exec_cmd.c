@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/15 16:53:12 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/15 17:28:27 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ static void	close_fds(t_pipex *pipex_var)
 	{
 		dup2(pipex_var->fds[1], 1);
 		close(pipex_var->fds[1]);
+	}
+	if (!(pipex_var->cmd->name && pipex_var->cmd->name[0]))
+	{
+		clear_garbage_collector();
+		exit(0);
 	}
 	close_all_fds();
 }

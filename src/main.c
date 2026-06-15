@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:56:05 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/08 15:13:51 by yben-dje         ###   ########.fr       */
+/*   Updated: 2026/06/15 17:24:50 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ bool	create_and_exec_tree(t_vec *parsed, t_btree_node *root,
 	tree->minishell->last_status = tree->node->wstatus;
 	status = ft_itoa(tree->node->wstatus);
 	env_variables_set(&tree->minishell->env_variables_manager, "?", status);
+	mem_free(status);
 	mem_free(tree);
 	return (true);
 }
