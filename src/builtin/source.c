@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 14:32:35 by yben-dje          #+#    #+#             */
-/*   Updated: 2026/06/15 10:33:34 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/15 10:58:15 by yben-dje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ int	builtin_source(int argc, char **argv, t_minishell *minishell)
 	}
 	result = execute_file(argv[1], minishell);
 	minishell->internal_file_recursion--;
-	return (result);
+	return (!result);
 }
