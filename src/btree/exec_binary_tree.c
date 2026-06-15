@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 08:46:18 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/01 14:07:02 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/15 10:58:04 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ bool	exec_cmd(t_btree *tree, int files[2], t_vec *pid_list)
 	pipex_var.fds[0] = files[0];
 	pipex_var.fds[1] = files[1];
 	pipex_var.wstatus = 0;
+	printf("cmd : %s\n", pipex_var.cmd->name);
 	if (pipex_var.cmd->name && pipex_var.cmd->name[0])
 	{
 		fork_pid(&pipex_var, tree->minishell->stdin_save);
