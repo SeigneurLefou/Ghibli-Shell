@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 16:45:14 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/15 15:32:28 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/15 15:40:01 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,17 @@ bool	exec_left_right_pipeline(t_btree *tree, int files[2], t_vec *pid_list,
 	if (command_pid->data)
 		vec_expand_and_free(pid_list, command_pid);
 	vec_init(command_pid, sizeof(pid_t), 5);
-	close (pipe_fd[1]);
+	close(pipe_fd[1]);
 	new_files[0] = pipe_fd[0];
 	new_files[1] = files[1];
 	if (!exec_right_pipeline(tree, new_files, command_pid))
 	{
-		close (pipe_fd[0]);
+		close(pipe_fd[0]);
 		return (false);
 	}
 	if (command_pid->data)
 		vec_expand_and_free(pid_list, command_pid);
-	close (pipe_fd[0]);
+	close(pipe_fd[0]);
 	return (true);
 }
 

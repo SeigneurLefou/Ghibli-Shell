@@ -6,7 +6,7 @@
 /*   By: yben-dje <yben-dje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 17:46:01 by lchamard          #+#    #+#             */
-/*   Updated: 2026/06/15 15:36:49 by lchamard         ###   ########.fr       */
+/*   Updated: 2026/06/15 16:53:12 by lchamard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	close_fds(t_pipex *pipex_var)
 {
-	printf("[%d, %d]\n", pipex_var->fds[0], pipex_var->fds[1]);
 	if (pipex_var->fds[0] > 2)
 	{
 		dup2(pipex_var->fds[0], 0);
