@@ -91,3 +91,6 @@ What? You just said I-I ? Oh no, "AI"? I don't know what that means. Well... ok.
 Hum... How are you today 🤗?
 
 Go watch **Ghibli** films now!
+
+# Legal
+This project is not associated or endorsed by Studio Ghibli. It's only a project inspired by there art and we have no relationship with the studio. The project doesn't contain copyrighted material from Studio Ghibli.
